@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+        <link rel="stylesheet" href="resources/bootstrap.min.css">
+        <link rel="stylesheet" href="resources/style.css">
+        <link rel="stylesheet" href="resources/jquery.iviewer.css">
+
+        <title>
+            Interface: ITokenStorage - SmartFactory OAuth2 Server
+        </title>
+    </head>
+
+    <body>
+        <div id="navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar">
+                    <ul class="nav navbar-nav">
+                        
+                        
+                        <li>
+                            <a href="index.html" class="">
+                                Overview
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <a href="classes.html" class="">
+                                Classes
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <a href="interfaces.html" class="active">
+                                Interfaces
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <a href="diagram.html" class="">
+                                Diagram
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <a href="structure.html" class="">
+                                Structure
+                            </a>
+                        </li>
+                        
+
+                    </ul>
+
+                    <form id="search" class="pull-right">
+                        <input type="text" name="q" class="form-control text" placeholder="Search class, function or namespace">
+                    </form>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+        
+        <div id="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+            
+                
+                <div class="pull-left type">
+                    <span class="label label-info">Interface</span>
+                </div>
+                
+                
+                <ol class="breadcrumb pull-left">
+                        
+                        
+
+                        <li>
+                            <a href="namespace-OAuth2.html">OAuth2</a>
+                        </li>
+
+                        <!-- if separator -->
+                        <li class="backslash">\</li>
+                        <!-- endif separator -->
+
+                        
+
+                        <li>
+                            <a href="namespace-OAuth2.Interfaces.html">Interfaces</a>
+                        </li>
+
+                        <!-- if separator -->
+                        <li class="backslash">\</li>
+                        <!-- endif separator -->
+
+                        
+ 
+
+                        <li class="active">ITokenStorage</li>
+                </ol>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Interface: ITokenStorage</h1>
+
+
+<div class="short-description">
+Interface for storing and validating of the stored tokens. It can be implemnted for a database or
+for a cache solution like Redis.
+</div>
+
+
+
+
+
+<h2>Extends</h2>
+<div class="item_list">
+
+\SmartFactory\Interfaces\IInitable<br>
+
+</div>
+
+
+
+
+
+
+
+<h2>Author</h2>
+Oleg Schildt
+
+
+
+
+<h2>Source code</h2>
+<a href="source-OAuth2.Interfaces.ITokenStorage.html#15">OAuth2\Interfaces\ITokenStorage.php</a>
+
+
+
+
+
+
+
+<p>&nbsp;</p>
+
+
+
+
+  <table class="table table-responsive table-bordered table-striped class_multicolumn">
+      <tr><th colspan="2">Methods</th></tr>
+      
+      
+      <tr>
+          <td>
+              <a href="#deleteTokenRecordByKey">deleteTokenRecordByKey</a>
+          </td>
+          <td class="description_column">
+              Deletes the token record by a key.
+          </td>
+      </tr>
+      
+      <tr>
+          <td>
+              <a href="#saveTokenRecord">saveTokenRecord</a>
+          </td>
+          <td class="description_column">
+              Saves the token record.
+          </td>
+      </tr>
+      
+      <tr>
+          <td>
+              <a href="#verifyAccessToken">verifyAccessToken</a>
+          </td>
+          <td class="description_column">
+              Verifies the access token.
+          </td>
+      </tr>
+      
+      <tr>
+          <td>
+              <a href="#verifyRefreshToken">verifyRefreshToken</a>
+          </td>
+          <td class="description_column">
+              Verifies the refresh token.
+          </td>
+      </tr>
+      
+      
+  </table>
+
+
+
+
+
+  
+  <hr id="deleteTokenRecordByKey">
+  
+  <h1>Method: deleteTokenRecordByKey</h1>
+
+  <div class="definition"><span class="php-keyword1">public</span> <b>deleteTokenRecordByKey</b>(string &amp;<span class="php-var">$key</span>, string &amp;<span class="php-var">$value</span>) : boolean</div>
+
+  
+  <div class="short-description">
+  Deletes the token record by a key.
+  </div>
+  
+
+  
+
+  
+  <h2>Parameters</h2>
+  
+      <h3>$key</h3>
+      <span class="type_label">Type:</span> string
+      
+      <div class="param-description">
+      <p>The name of the key, by which the record should be located and deleted. The possible keys are:</p>
+<ul>
+<li>
+<p>'user_id' - id of the user.</p>
+</li>
+<li>
+<p>'client_id' - id of the client (device token etc.).</p>
+</li>
+<li>
+<p>'access_token' - access token generated upon successful authentication.</p>
+</li>
+<li>
+<p>'refresh_token' - refresh token generated upon successful authentication.</p>
+</li>
+</ul>
+      </div>
+      
+  
+      <h3>$value</h3>
+      <span class="type_label">Type:</span> string
+      
+      <div class="param-description">
+      <p>The vale of the key, by which the record should be located and deleted.</p>
+      </div>
+      
+  
+  
+
+  
+  <h2>Returns</h2>
+  <span class="type_label">Type:</span> boolean
+  
+  <div class="param-description">
+  <p>The method should return true upon successful deletion, otherwise false.</p>
+  </div>
+  
+  
+
+  
+  <h2>Throws</h2>
+  <div class="item_list">
+  
+      <b>\SmartFactory\SmartException</b><br>
+      
+      
+      <p>It might throw an exception in the case of any errors. Possible codes are:</p>
+<ul>
+<li>user_id_does_not_exist - no records found with this user id</li>
+<li>client_id_does_not_exist - no records found with this client id</li>
+<li>access_token_does_not_exist - no records found with this access token</li>
+<li>refresh_token_does_not_exist - no records found with this refresh</li>
+<li>ivalid_data_error - if some input data is ivalid</li>
+</ul><br>
+      
+  
+  </div>
+  
+
+  
+  
+  
+  
+  
+  <h2>Author</h2>
+  Oleg Schildt
+  
+
+  <h2>Source code</h2>
+  <a href="source-OAuth2.Interfaces.ITokenStorage.html#84">OAuth2\Interfaces\ITokenStorage.php</a>
+
+  
+
+  
+
+  
+  <h2>Used by</h2>
+  <div class="item_list">
+  
+  <a href="interface-OAuth2.Interfaces.IOAuthManager.html#invalidateUser">\OAuth2\Interfaces\IOAuthManager::invalidateUser()</a><br>
+  
+  <a href="interface-OAuth2.Interfaces.IOAuthManager.html#invalidateClient">\OAuth2\Interfaces\IOAuthManager::invalidateClient()</a><br>
+  
+  <a href="interface-OAuth2.Interfaces.IOAuthManager.html#invalidateJwtAccessToken">\OAuth2\Interfaces\IOAuthManager::invalidateJwtAccessToken()</a><br>
+  
+  <a href="interface-OAuth2.Interfaces.IOAuthManager.html#invalidateRefreshToken">\OAuth2\Interfaces\IOAuthManager::invalidateRefreshToken()</a><br>
+  
+  </div>
+  
+  
+  
+  <hr id="saveTokenRecord">
+  
+  <h1>Method: saveTokenRecord</h1>
+
+  <div class="definition"><span class="php-keyword1">public</span> <b>saveTokenRecord</b>(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>) : boolean</div>
+
+  
+  <div class="short-description">
+  Saves the token record.
+  </div>
+  
+
+  
+  <div class="long-description">
+  <h2>Details</h2>
+  <p>It is reccomnended to look for an existing record by user_id and client_id, and if it exists,
+it should be overwritten.</p>
+  </div>
+  
+
+  
+  <h2>Parameters</h2>
+  
+      <h3>$token_record</h3>
+      <span class="type_label">Type:</span> array
+      
+      <div class="param-description">
+      <p>The token record may vary depending on implementation. The expected parameters are:</p>
+<ul>
+<li>
+<p>$token_record["user_id"] - id of the user.</p>
+</li>
+<li>
+<p>$token_record["client_id"] - id of the client (device token etc.).</p>
+</li>
+<li>
+<p>$token_record["access_token"] - access token generated upon successful authentication.</p>
+</li>
+<li>
+<p>$token_record["refresh_token"] - refresh token generated upon successful authentication.</p>
+</li>
+<li>
+<p>$token_record["access_token_ttl"] - time to live in seconds for the access token.</p>
+</li>
+<li>
+<p>$token_record["refresh_token_ttl"] - time to live in seconds for the refresh token.</p>
+</li>
+</ul>
+      </div>
+      
+  
+  
+
+  
+  <h2>Returns</h2>
+  <span class="type_label">Type:</span> boolean
+  
+  <div class="param-description">
+  <p>The method should return true upon successful save operation, otherwise false.</p>
+  </div>
+  
+  
+
+  
+  <h2>Throws</h2>
+  <div class="item_list">
+  
+      <b>\SmartFactory\SmartException</b><br>
+      
+      
+      <p>It might throw an exception in the case of any errors.</p><br>
+      
+  
+  </div>
+  
+
+  
+  
+  
+  
+  
+  <h2>Author</h2>
+  Oleg Schildt
+  
+
+  <h2>Source code</h2>
+  <a href="source-OAuth2.Interfaces.ITokenStorage.html#46">OAuth2\Interfaces\ITokenStorage.php</a>
+
+  
+
+  
+
+  
+  
+  
+  <hr id="verifyAccessToken">
+  
+  <h1>Method: verifyAccessToken</h1>
+
+  <div class="definition"><span class="php-keyword1">public</span> <b>verifyAccessToken</b>(string &amp;<span class="php-var">$access_token</span>,
+                         string &amp;<span class="php-var">$user_id</span>,
+                         string &amp;<span class="php-var">$client_id</span>
+                        ) : boolean</div>
+
+  
+  <div class="short-description">
+  Verifies the access token.
+  </div>
+  
+
+  
+
+  
+  <h2>Parameters</h2>
+  
+      <h3>$access_token</h3>
+      <span class="type_label">Type:</span> string
+      
+      <div class="param-description">
+      <p>The access token to be verified.</p>
+      </div>
+      
+  
+      <h3>$user_id</h3>
+      <span class="type_label">Type:</span> string
+      
+      <div class="param-description">
+      <p>The user id for which the access token was issued.</p>
+      </div>
+      
+  
+      <h3>$client_id</h3>
+      <span class="type_label">Type:</span> string
+      
+      <div class="param-description">
+      <p>The client id for which the access token was issued.</p>
+      </div>
+      
+  
+  
+
+  
+  <h2>Returns</h2>
+  <span class="type_label">Type:</span> boolean
+  
+  <div class="param-description">
+  <p>The method should return true upon successful verification, otherwise false.</p>
+  </div>
+  
+  
+
+  
+  <h2>Throws</h2>
+  <div class="item_list">
+  
+      <b>\SmartFactory\SmartException</b><br>
+      
+      
+      <p>It might throw an exception in the case of any errors.</p><br>
+      
+  
+  </div>
+  
+
+  
+  
+  
+  
+  
+  <h2>Author</h2>
+  Oleg Schildt
+  
+
+  <h2>Source code</h2>
+  <a href="source-OAuth2.Interfaces.ITokenStorage.html#106">OAuth2\Interfaces\ITokenStorage.php</a>
+
+  
+
+  
+
+  
+  
+  
+  <hr id="verifyRefreshToken">
+  
+  <h1>Method: verifyRefreshToken</h1>
+
+  <div class="definition"><span class="php-keyword1">public</span> <b>verifyRefreshToken</b>(string &amp;<span class="php-var">$refresh_token</span>,
+                          string &amp;<span class="php-var">$user_id</span>,
+                          string &amp;<span class="php-var">$client_id</span>
+                         ) : boolean</div>
+
+  
+  <div class="short-description">
+  Verifies the refresh token.
+  </div>
+  
+
+  
+
+  
+  <h2>Parameters</h2>
+  
+      <h3>$refresh_token</h3>
+      <span class="type_label">Type:</span> string
+      
+      <div class="param-description">
+      <p>The refresh token to be verified.</p>
+      </div>
+      
+  
+      <h3>$user_id</h3>
+      <span class="type_label">Type:</span> string
+      
+      <div class="param-description">
+      <p>The user id for which the refresh token was issued.</p>
+      </div>
+      
+  
+      <h3>$client_id</h3>
+      <span class="type_label">Type:</span> string
+      
+      <div class="param-description">
+      <p>The client id for which the refresh token was issued.</p>
+      </div>
+      
+  
+  
+
+  
+  <h2>Returns</h2>
+  <span class="type_label">Type:</span> boolean
+  
+  <div class="param-description">
+  <p>The method should return true upon successful verification, otherwise false.</p>
+  </div>
+  
+  
+
+  
+  <h2>Throws</h2>
+  <div class="item_list">
+  
+      <b>\SmartFactory\SmartException</b><br>
+      
+      
+      <p>It might throw an exception in the case of any errors.</p><br>
+      
+  
+  </div>
+  
+
+  
+  
+  
+  
+  
+  <h2>Author</h2>
+  Oleg Schildt
+  
+
+  <h2>Source code</h2>
+  <a href="source-OAuth2.Interfaces.ITokenStorage.html#128">OAuth2\Interfaces\ITokenStorage.php</a>
+
+  
+
+  
+
+  
+  
+  
+
+
+
+                    
+                    <div id="footer">
+                        Generated on 2018-12-21 08:31
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
+        <script src="resources/jquery-3.2.1.min.js"></script>
+        <script src="resources/jquery-ui-1.12.1.min.js"></script>
+
+        <script src="elementlist.js"></script>
+        <script src="resources/main.js"></script>
+        
+        <script src="resources/jquery.iviewer.js" type="text/javascript"></script>
+        <script src="resources/jquery.mousewheel.js" type="text/javascript"></script>
+        
+        <script type="text/javascript">
+            $(window).resize(function(){
+                $("#viewer").height(1400);
+            });
+
+            $(document).ready(function() {
+                $("#viewer").iviewer({src: 'resources/classes.svg', zoom_animation: false});
+                $('#viewer img').bind('dragstart', function(event){
+                    event.preventDefault();
+                });
+                $(window).resize();
+            });
+        </script>
+        
+    </body>
+</html>
+
+
