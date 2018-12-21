@@ -14,7 +14,7 @@
   "autoload": {
     "psr-4": {
       "OAuth2\\": "src/OAuth2"
-    },
+    }
   },
   
   "require": {
