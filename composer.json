@@ -1,0 +1,24 @@
+{
+  "name": "smartfactory/oauth2",
+  "description": "Implementation of the OAuth2 and JWT.",
+  "keywords": ["OAuth2", "library", "JWT"],
+  "license": "MIT",
+  
+  "authors": [
+    {
+      "name": "Oleg Schildt",
+      "email": "oleg.schildt@gmail.com"
+    }
+  ],
+  
+  "autoload": {
+    "psr-4": {
+      "OAuth2\\": "src/OAuth2"
+    },
+  },
+  
+  "require": {
+    "php": ">=7.2.0",
+    "smartfactory/smartfactory": ">=2.0.0"
+  }
+}
