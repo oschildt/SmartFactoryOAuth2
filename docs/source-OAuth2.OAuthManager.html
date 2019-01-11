@@ -516,7 +516,7 @@
 </span><span class="line" id="440">440: </span><span class="php-comment">     * @param string $jwt_access_token
 </span><span class="line" id="441">441: </span><span class="php-comment">     * The jwt access token.
 </span><span class="line" id="442">442: </span><span class="php-comment">     *
-</span><span class="line" id="443">443: </span><span class="php-comment">     * @param boolean $verify
+</span><span class="line" id="443">443: </span><span class="php-comment">     * @param boolean $verify_signature
 </span><span class="line" id="444">444: </span><span class="php-comment">     * The flag to control whether the signature should be verified or not.
 </span><span class="line" id="445">445: </span><span class="php-comment">     *
 </span><span class="line" id="446">446: </span><span class="php-comment">     * @return array
@@ -535,7 +535,7 @@
 </span><span class="line" id="459">459: </span><span class="php-comment">     *
 </span><span class="line" id="460">460: </span><span class="php-comment">     * @author Oleg Schildt
 </span><span class="line" id="461">461: </span><span class="php-comment">     */</span>
-<span class="line" id="462">462: </span>    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> getJwtPayload(<span class="php-var">$jwt_access_token</span>, <span class="php-var">$verify</span> = <span class="php-keyword1">true</span>)
+<span class="line" id="462">462: </span>    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> getJwtPayload(<span class="php-var">$jwt_access_token</span>, <span class="php-var">$verify_signature</span> = <span class="php-keyword1">true</span>)
 <span class="line" id="463">463: </span>    {
 <span class="line" id="464">464: </span>        <span class="php-keyword1">if</span> (!<span class="php-keyword2">strpos</span>(<span class="php-var">$jwt_access_token</span>, <span class="php-quote">'.'</span>)) {
 <span class="line" id="465">465: </span>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \SmartFactory\SmartException(<span class="php-quote">&quot;The access token is invalid!&quot;</span>, <span class="php-quote">&quot;invalid_access_token&quot;</span>);
@@ -557,7 +557,7 @@
 <span class="line" id="481">481: </span>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \SmartFactory\SmartException(<span class="php-quote">&quot;The access token is invalid!&quot;</span>, <span class="php-quote">&quot;invalid_access_token&quot;</span>);
 <span class="line" id="482">482: </span>        }
 <span class="line" id="483">483: </span>        
-<span class="line" id="484">484: </span>        <span class="php-keyword1">if</span> (!<span class="php-var">$verify</span>) {
+<span class="line" id="484">484: </span>        <span class="php-keyword1">if</span> (!<span class="php-var">$verify_signature</span>) {
 <span class="line" id="485">485: </span>            <span class="php-keyword1">return</span> <span class="php-var">$payload</span>;
 <span class="line" id="486">486: </span>        }
 <span class="line" id="487">487: </span>        
@@ -887,8 +887,8 @@
 </span><span class="line" id="811">811: </span><span class="php-comment">     * @param string $jwt_access_token
 </span><span class="line" id="812">812: </span><span class="php-comment">     * The jwt access token generated upon successful authentication.
 </span><span class="line" id="813">813: </span><span class="php-comment">     *
-</span><span class="line" id="814">814: </span><span class="php-comment">     * @return boolean
-</span><span class="line" id="815">815: </span><span class="php-comment">     * Returns true on successful verification, otherwise false.
+</span><span class="line" id="814">814: </span><span class="php-comment">     * @return array|false
+</span><span class="line" id="815">815: </span><span class="php-comment">     * Returns the payload array on successful verification, otherwise false.
 </span><span class="line" id="816">816: </span><span class="php-comment">     *
 </span><span class="line" id="817">817: </span><span class="php-comment">     * @throws \SmartFactory\SmartException
 </span><span class="line" id="818">818: </span><span class="php-comment">     * It throws the following exception strings:
@@ -913,162 +913,166 @@
 <span class="line" id="837">837: </span>        }
 <span class="line" id="838">838: </span>        
 <span class="line" id="839">839: </span>        <span class="php-keyword1">if</span> (!<span class="php-var">$check_on_server</span>) {
-<span class="line" id="840">840: </span>            <span class="php-keyword1">return</span> <span class="php-keyword1">true</span>;
+<span class="line" id="840">840: </span>            <span class="php-keyword1">return</span> <span class="php-var">$payload</span>;
 <span class="line" id="841">841: </span>        }
-<span class="line" id="842">842: </span>    
-<span class="line" id="843">843: </span>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;token_storage-&gt;verifyAccessToken(<span class="php-var">$payload</span>[<span class="php-quote">&quot;access_token&quot;</span>], <span class="php-var">$payload</span>[<span class="php-quote">&quot;user_id&quot;</span>], <span class="php-var">$payload</span>[<span class="php-quote">&quot;client_id&quot;</span>]);
-<span class="line" id="844">844: </span>    }
-<span class="line" id="845">845: </span>    
-<span class="line" id="846">846: </span>    <span class="php-comment">/**
-</span><span class="line" id="847">847: </span><span class="php-comment">     * Invalidates all token records for the user.
-</span><span class="line" id="848">848: </span><span class="php-comment">     *
-</span><span class="line" id="849">849: </span><span class="php-comment">     * The invalidation by the user id is asserted by a valid client id and
-</span><span class="line" id="850">850: </span><span class="php-comment">     * a valid refresh token. If the refresh token is expired, the invalidation
-</span><span class="line" id="851">851: </span><span class="php-comment">     * can be done only after authentication.
+<span class="line" id="842">842: </span>        
+<span class="line" id="843">843: </span>        <span class="php-keyword1">if</span> (<span class="php-var">$this</span>-&gt;token_storage-&gt;verifyAccessToken(<span class="php-var">$payload</span>[<span class="php-quote">&quot;access_token&quot;</span>], <span class="php-var">$payload</span>[<span class="php-quote">&quot;user_id&quot;</span>], <span class="php-var">$payload</span>[<span class="php-quote">&quot;client_id&quot;</span>])) {
+<span class="line" id="844">844: </span>            <span class="php-keyword1">return</span> <span class="php-var">$payload</span>;
+<span class="line" id="845">845: </span>        }
+<span class="line" id="846">846: </span>        
+<span class="line" id="847">847: </span>        <span class="php-keyword1">return</span> <span class="php-keyword1">false</span>;
+<span class="line" id="848">848: </span>    }
+<span class="line" id="849">849: </span>    
+<span class="line" id="850">850: </span>    <span class="php-comment">/**
+</span><span class="line" id="851">851: </span><span class="php-comment">     * Invalidates all token records for the user.
 </span><span class="line" id="852">852: </span><span class="php-comment">     *
-</span><span class="line" id="853">853: </span><span class="php-comment">     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'user_id'.
-</span><span class="line" id="854">854: </span><span class="php-comment">     *
-</span><span class="line" id="855">855: </span><span class="php-comment">     * @param string $user_id
-</span><span class="line" id="856">856: </span><span class="php-comment">     * The user id for which the refresh token was issued.
-</span><span class="line" id="857">857: </span><span class="php-comment">     *
-</span><span class="line" id="858">858: </span><span class="php-comment">     * @param string $client_id
-</span><span class="line" id="859">859: </span><span class="php-comment">     * The client id for which the refresh token was issued.
-</span><span class="line" id="860">860: </span><span class="php-comment">     *
-</span><span class="line" id="861">861: </span><span class="php-comment">     * @param string $refresh_token
-</span><span class="line" id="862">862: </span><span class="php-comment">     * The refresh token generated upon successful authentication.
-</span><span class="line" id="863">863: </span><span class="php-comment">     *
-</span><span class="line" id="864">864: </span><span class="php-comment">     * @return boolean
-</span><span class="line" id="865">865: </span><span class="php-comment">     * Returns true on successful invalidation, otherwise false.
-</span><span class="line" id="866">866: </span><span class="php-comment">     *
-</span><span class="line" id="867">867: </span><span class="php-comment">     * @throws \SmartFactory\SmartException
-</span><span class="line" id="868">868: </span><span class="php-comment">     * It might throw an exception in the case of any errors:
-</span><span class="line" id="869">869: </span><span class="php-comment">     *
-</span><span class="line" id="870">870: </span><span class="php-comment">     * - refresh_token_expired - if the refresh token is expired.
-</span><span class="line" id="871">871: </span><span class="php-comment">     * - invalid_refresh_token - if the refresh token is invalid.
-</span><span class="line" id="872">872: </span><span class="php-comment">     *
-</span><span class="line" id="873">873: </span><span class="php-comment">     * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
-</span><span class="line" id="874">874: </span><span class="php-comment">     *
-</span><span class="line" id="875">875: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="876">876: </span><span class="php-comment">     */</span>
-<span class="line" id="877">877: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateUser(<span class="php-var">$user_id</span>, <span class="php-var">$client_id</span>, <span class="php-var">$refresh_token</span>)
-<span class="line" id="878">878: </span>    {
-<span class="line" id="879">879: </span>        <span class="php-keyword1">if</span> (!<span class="php-var">$this</span>-&gt;token_storage-&gt;verifyRefreshToken(<span class="php-var">$refresh_token</span>, <span class="php-var">$user_id</span>, <span class="php-var">$client_id</span>)) {
-<span class="line" id="880">880: </span>            <span class="php-keyword1">return</span> <span class="php-keyword1">false</span>;
-<span class="line" id="881">881: </span>        }
-<span class="line" id="882">882: </span>        
-<span class="line" id="883">883: </span>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;token_storage-&gt;deleteTokenRecordByKey(<span class="php-quote">&quot;user_id&quot;</span>, <span class="php-var">$user_id</span>);
-<span class="line" id="884">884: </span>    }
-<span class="line" id="885">885: </span>    
-<span class="line" id="886">886: </span>    <span class="php-comment">/**
-</span><span class="line" id="887">887: </span><span class="php-comment">     * Invalidates all token records for the client.
-</span><span class="line" id="888">888: </span><span class="php-comment">     *
-</span><span class="line" id="889">889: </span><span class="php-comment">     * The invalidation by the client id is asserted by a valid client id and
-</span><span class="line" id="890">890: </span><span class="php-comment">     * a valid refresh token. If the refresh token is expired, the invalidation
-</span><span class="line" id="891">891: </span><span class="php-comment">     * can be done only after authentication.
+</span><span class="line" id="853">853: </span><span class="php-comment">     * The invalidation by the user id is asserted by a valid client id and
+</span><span class="line" id="854">854: </span><span class="php-comment">     * a valid refresh token. If the refresh token is expired, the invalidation
+</span><span class="line" id="855">855: </span><span class="php-comment">     * can be done only after authentication.
+</span><span class="line" id="856">856: </span><span class="php-comment">     *
+</span><span class="line" id="857">857: </span><span class="php-comment">     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'user_id'.
+</span><span class="line" id="858">858: </span><span class="php-comment">     *
+</span><span class="line" id="859">859: </span><span class="php-comment">     * @param string $user_id
+</span><span class="line" id="860">860: </span><span class="php-comment">     * The user id for which the refresh token was issued.
+</span><span class="line" id="861">861: </span><span class="php-comment">     *
+</span><span class="line" id="862">862: </span><span class="php-comment">     * @param string $client_id
+</span><span class="line" id="863">863: </span><span class="php-comment">     * The client id for which the refresh token was issued.
+</span><span class="line" id="864">864: </span><span class="php-comment">     *
+</span><span class="line" id="865">865: </span><span class="php-comment">     * @param string $refresh_token
+</span><span class="line" id="866">866: </span><span class="php-comment">     * The refresh token generated upon successful authentication.
+</span><span class="line" id="867">867: </span><span class="php-comment">     *
+</span><span class="line" id="868">868: </span><span class="php-comment">     * @return boolean
+</span><span class="line" id="869">869: </span><span class="php-comment">     * Returns true on successful invalidation, otherwise false.
+</span><span class="line" id="870">870: </span><span class="php-comment">     *
+</span><span class="line" id="871">871: </span><span class="php-comment">     * @throws \SmartFactory\SmartException
+</span><span class="line" id="872">872: </span><span class="php-comment">     * It might throw an exception in the case of any errors:
+</span><span class="line" id="873">873: </span><span class="php-comment">     *
+</span><span class="line" id="874">874: </span><span class="php-comment">     * - refresh_token_expired - if the refresh token is expired.
+</span><span class="line" id="875">875: </span><span class="php-comment">     * - invalid_refresh_token - if the refresh token is invalid.
+</span><span class="line" id="876">876: </span><span class="php-comment">     *
+</span><span class="line" id="877">877: </span><span class="php-comment">     * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
+</span><span class="line" id="878">878: </span><span class="php-comment">     *
+</span><span class="line" id="879">879: </span><span class="php-comment">     * @author Oleg Schildt
+</span><span class="line" id="880">880: </span><span class="php-comment">     */</span>
+<span class="line" id="881">881: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateUser(<span class="php-var">$user_id</span>, <span class="php-var">$client_id</span>, <span class="php-var">$refresh_token</span>)
+<span class="line" id="882">882: </span>    {
+<span class="line" id="883">883: </span>        <span class="php-keyword1">if</span> (!<span class="php-var">$this</span>-&gt;token_storage-&gt;verifyRefreshToken(<span class="php-var">$refresh_token</span>, <span class="php-var">$user_id</span>, <span class="php-var">$client_id</span>)) {
+<span class="line" id="884">884: </span>            <span class="php-keyword1">return</span> <span class="php-keyword1">false</span>;
+<span class="line" id="885">885: </span>        }
+<span class="line" id="886">886: </span>        
+<span class="line" id="887">887: </span>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;token_storage-&gt;deleteTokenRecordByKey(<span class="php-quote">&quot;user_id&quot;</span>, <span class="php-var">$user_id</span>);
+<span class="line" id="888">888: </span>    }
+<span class="line" id="889">889: </span>    
+<span class="line" id="890">890: </span>    <span class="php-comment">/**
+</span><span class="line" id="891">891: </span><span class="php-comment">     * Invalidates all token records for the client.
 </span><span class="line" id="892">892: </span><span class="php-comment">     *
-</span><span class="line" id="893">893: </span><span class="php-comment">     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'client_id'.
-</span><span class="line" id="894">894: </span><span class="php-comment">     *
-</span><span class="line" id="895">895: </span><span class="php-comment">     * @param string $user_id
-</span><span class="line" id="896">896: </span><span class="php-comment">     * The user id for which the refresh token was issued.
-</span><span class="line" id="897">897: </span><span class="php-comment">     *
-</span><span class="line" id="898">898: </span><span class="php-comment">     * @param string $client_id
-</span><span class="line" id="899">899: </span><span class="php-comment">     * The client id for which the refresh token was issued.
-</span><span class="line" id="900">900: </span><span class="php-comment">     *
-</span><span class="line" id="901">901: </span><span class="php-comment">     * @param string $refresh_token
-</span><span class="line" id="902">902: </span><span class="php-comment">     * The refresh token generated upon successful authentication.
-</span><span class="line" id="903">903: </span><span class="php-comment">     *
-</span><span class="line" id="904">904: </span><span class="php-comment">     * @return boolean
-</span><span class="line" id="905">905: </span><span class="php-comment">     * Returns true on successful invalidation, otherwise false.
-</span><span class="line" id="906">906: </span><span class="php-comment">     *
-</span><span class="line" id="907">907: </span><span class="php-comment">     * @throws \SmartFactory\SmartException
-</span><span class="line" id="908">908: </span><span class="php-comment">     * It might throw an exception in the case of any errors:
-</span><span class="line" id="909">909: </span><span class="php-comment">     *
-</span><span class="line" id="910">910: </span><span class="php-comment">     * - refresh_token_expired - if the refresh token is expired.
-</span><span class="line" id="911">911: </span><span class="php-comment">     * - invalid_refresh_token - if the refresh token is invalid.
-</span><span class="line" id="912">912: </span><span class="php-comment">     *
-</span><span class="line" id="913">913: </span><span class="php-comment">     * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
-</span><span class="line" id="914">914: </span><span class="php-comment">     *
-</span><span class="line" id="915">915: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="916">916: </span><span class="php-comment">     */</span>
-<span class="line" id="917">917: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateClient(<span class="php-var">$user_id</span>, <span class="php-var">$client_id</span>, <span class="php-var">$refresh_token</span>)
-<span class="line" id="918">918: </span>    {
-<span class="line" id="919">919: </span>        <span class="php-keyword1">if</span> (!<span class="php-var">$this</span>-&gt;token_storage-&gt;verifyRefreshToken(<span class="php-var">$refresh_token</span>, <span class="php-var">$user_id</span>, <span class="php-var">$client_id</span>)) {
-<span class="line" id="920">920: </span>            <span class="php-keyword1">return</span> <span class="php-keyword1">false</span>;
-<span class="line" id="921">921: </span>        }
-<span class="line" id="922">922: </span>        
-<span class="line" id="923">923: </span>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;token_storage-&gt;deleteTokenRecordByKey(<span class="php-quote">&quot;client_id&quot;</span>, <span class="php-var">$client_id</span>);
-<span class="line" id="924">924: </span>    }
-<span class="line" id="925">925: </span>    
-<span class="line" id="926">926: </span>    <span class="php-comment">/**
-</span><span class="line" id="927">927: </span><span class="php-comment">     * Invalidates the token record for the jwt access token.
-</span><span class="line" id="928">928: </span><span class="php-comment">     *
-</span><span class="line" id="929">929: </span><span class="php-comment">     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'access_token'.
-</span><span class="line" id="930">930: </span><span class="php-comment">     *
-</span><span class="line" id="931">931: </span><span class="php-comment">     * The origin access token is extracted from the jwt payload.
+</span><span class="line" id="893">893: </span><span class="php-comment">     * The invalidation by the client id is asserted by a valid client id and
+</span><span class="line" id="894">894: </span><span class="php-comment">     * a valid refresh token. If the refresh token is expired, the invalidation
+</span><span class="line" id="895">895: </span><span class="php-comment">     * can be done only after authentication.
+</span><span class="line" id="896">896: </span><span class="php-comment">     *
+</span><span class="line" id="897">897: </span><span class="php-comment">     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'client_id'.
+</span><span class="line" id="898">898: </span><span class="php-comment">     *
+</span><span class="line" id="899">899: </span><span class="php-comment">     * @param string $user_id
+</span><span class="line" id="900">900: </span><span class="php-comment">     * The user id for which the refresh token was issued.
+</span><span class="line" id="901">901: </span><span class="php-comment">     *
+</span><span class="line" id="902">902: </span><span class="php-comment">     * @param string $client_id
+</span><span class="line" id="903">903: </span><span class="php-comment">     * The client id for which the refresh token was issued.
+</span><span class="line" id="904">904: </span><span class="php-comment">     *
+</span><span class="line" id="905">905: </span><span class="php-comment">     * @param string $refresh_token
+</span><span class="line" id="906">906: </span><span class="php-comment">     * The refresh token generated upon successful authentication.
+</span><span class="line" id="907">907: </span><span class="php-comment">     *
+</span><span class="line" id="908">908: </span><span class="php-comment">     * @return boolean
+</span><span class="line" id="909">909: </span><span class="php-comment">     * Returns true on successful invalidation, otherwise false.
+</span><span class="line" id="910">910: </span><span class="php-comment">     *
+</span><span class="line" id="911">911: </span><span class="php-comment">     * @throws \SmartFactory\SmartException
+</span><span class="line" id="912">912: </span><span class="php-comment">     * It might throw an exception in the case of any errors:
+</span><span class="line" id="913">913: </span><span class="php-comment">     *
+</span><span class="line" id="914">914: </span><span class="php-comment">     * - refresh_token_expired - if the refresh token is expired.
+</span><span class="line" id="915">915: </span><span class="php-comment">     * - invalid_refresh_token - if the refresh token is invalid.
+</span><span class="line" id="916">916: </span><span class="php-comment">     *
+</span><span class="line" id="917">917: </span><span class="php-comment">     * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
+</span><span class="line" id="918">918: </span><span class="php-comment">     *
+</span><span class="line" id="919">919: </span><span class="php-comment">     * @author Oleg Schildt
+</span><span class="line" id="920">920: </span><span class="php-comment">     */</span>
+<span class="line" id="921">921: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateClient(<span class="php-var">$user_id</span>, <span class="php-var">$client_id</span>, <span class="php-var">$refresh_token</span>)
+<span class="line" id="922">922: </span>    {
+<span class="line" id="923">923: </span>        <span class="php-keyword1">if</span> (!<span class="php-var">$this</span>-&gt;token_storage-&gt;verifyRefreshToken(<span class="php-var">$refresh_token</span>, <span class="php-var">$user_id</span>, <span class="php-var">$client_id</span>)) {
+<span class="line" id="924">924: </span>            <span class="php-keyword1">return</span> <span class="php-keyword1">false</span>;
+<span class="line" id="925">925: </span>        }
+<span class="line" id="926">926: </span>        
+<span class="line" id="927">927: </span>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;token_storage-&gt;deleteTokenRecordByKey(<span class="php-quote">&quot;client_id&quot;</span>, <span class="php-var">$client_id</span>);
+<span class="line" id="928">928: </span>    }
+<span class="line" id="929">929: </span>    
+<span class="line" id="930">930: </span>    <span class="php-comment">/**
+</span><span class="line" id="931">931: </span><span class="php-comment">     * Invalidates the token record for the jwt access token.
 </span><span class="line" id="932">932: </span><span class="php-comment">     *
-</span><span class="line" id="933">933: </span><span class="php-comment">     * @param string $jwt_access_token
-</span><span class="line" id="934">934: </span><span class="php-comment">     * The jwt access token generated upon successful authentication.
-</span><span class="line" id="935">935: </span><span class="php-comment">     *
-</span><span class="line" id="936">936: </span><span class="php-comment">     * @return boolean
-</span><span class="line" id="937">937: </span><span class="php-comment">     * Returns true on successful invalidation, otherwise false.
-</span><span class="line" id="938">938: </span><span class="php-comment">     *
-</span><span class="line" id="939">939: </span><span class="php-comment">     * @throws \SmartFactory\SmartException
-</span><span class="line" id="940">940: </span><span class="php-comment">     * It might throw an exception in the case of any errors:
-</span><span class="line" id="941">941: </span><span class="php-comment">     *
-</span><span class="line" id="942">942: </span><span class="php-comment">     * It might throw an exception in the case of any errors:
-</span><span class="line" id="943">943: </span><span class="php-comment">     *
-</span><span class="line" id="944">944: </span><span class="php-comment">     * - invalid_access_token - if the jwt access token is invalid.
-</span><span class="line" id="945">945: </span><span class="php-comment">     * - missing_data_error - if the required parameters are empty.
-</span><span class="line" id="946">946: </span><span class="php-comment">     * - invalid_data_error - if some parameters are invalid.
-</span><span class="line" id="947">947: </span><span class="php-comment">     * - invalid_data_error - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-</span><span class="line" id="948">948: </span><span class="php-comment">     * - invalid_data_error - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
-</span><span class="line" id="949">949: </span><span class="php-comment">     *
-</span><span class="line" id="950">950: </span><span class="php-comment">     * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
-</span><span class="line" id="951">951: </span><span class="php-comment">     *
-</span><span class="line" id="952">952: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="953">953: </span><span class="php-comment">     */</span>
-<span class="line" id="954">954: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateJwtAccessToken(<span class="php-var">$jwt_access_token</span>)
-<span class="line" id="955">955: </span>    {
-<span class="line" id="956">956: </span>        <span class="php-var">$payload</span> = <span class="php-var">$this</span>-&gt;getJwtPayload(<span class="php-var">$jwt_access_token</span>, <span class="php-keyword1">false</span>);
-<span class="line" id="957">957: </span>        
-<span class="line" id="958">958: </span>        <span class="php-keyword1">if</span> (<span class="php-keyword1">empty</span>(<span class="php-var">$payload</span>) || <span class="php-keyword1">empty</span>(<span class="php-var">$payload</span>[<span class="php-quote">&quot;access_token&quot;</span>])) {
-<span class="line" id="959">959: </span>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \SmartFactory\SmartException(<span class="php-quote">&quot;The access token is invalid!&quot;</span>, <span class="php-quote">&quot;invalid_access_token&quot;</span>);
-<span class="line" id="960">960: </span>        }
+</span><span class="line" id="933">933: </span><span class="php-comment">     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'access_token'.
+</span><span class="line" id="934">934: </span><span class="php-comment">     *
+</span><span class="line" id="935">935: </span><span class="php-comment">     * The origin access token is extracted from the jwt payload.
+</span><span class="line" id="936">936: </span><span class="php-comment">     *
+</span><span class="line" id="937">937: </span><span class="php-comment">     * @param string $jwt_access_token
+</span><span class="line" id="938">938: </span><span class="php-comment">     * The jwt access token generated upon successful authentication.
+</span><span class="line" id="939">939: </span><span class="php-comment">     *
+</span><span class="line" id="940">940: </span><span class="php-comment">     * @return boolean
+</span><span class="line" id="941">941: </span><span class="php-comment">     * Returns true on successful invalidation, otherwise false.
+</span><span class="line" id="942">942: </span><span class="php-comment">     *
+</span><span class="line" id="943">943: </span><span class="php-comment">     * @throws \SmartFactory\SmartException
+</span><span class="line" id="944">944: </span><span class="php-comment">     * It might throw an exception in the case of any errors:
+</span><span class="line" id="945">945: </span><span class="php-comment">     *
+</span><span class="line" id="946">946: </span><span class="php-comment">     * It might throw an exception in the case of any errors:
+</span><span class="line" id="947">947: </span><span class="php-comment">     *
+</span><span class="line" id="948">948: </span><span class="php-comment">     * - invalid_access_token - if the jwt access token is invalid.
+</span><span class="line" id="949">949: </span><span class="php-comment">     * - missing_data_error - if the required parameters are empty.
+</span><span class="line" id="950">950: </span><span class="php-comment">     * - invalid_data_error - if some parameters are invalid.
+</span><span class="line" id="951">951: </span><span class="php-comment">     * - invalid_data_error - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
+</span><span class="line" id="952">952: </span><span class="php-comment">     * - invalid_data_error - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
+</span><span class="line" id="953">953: </span><span class="php-comment">     *
+</span><span class="line" id="954">954: </span><span class="php-comment">     * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
+</span><span class="line" id="955">955: </span><span class="php-comment">     *
+</span><span class="line" id="956">956: </span><span class="php-comment">     * @author Oleg Schildt
+</span><span class="line" id="957">957: </span><span class="php-comment">     */</span>
+<span class="line" id="958">958: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateJwtAccessToken(<span class="php-var">$jwt_access_token</span>)
+<span class="line" id="959">959: </span>    {
+<span class="line" id="960">960: </span>        <span class="php-var">$payload</span> = <span class="php-var">$this</span>-&gt;getJwtPayload(<span class="php-var">$jwt_access_token</span>, <span class="php-keyword1">false</span>);
 <span class="line" id="961">961: </span>        
-<span class="line" id="962">962: </span>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;token_storage-&gt;deleteTokenRecordByKey(<span class="php-quote">&quot;access_token&quot;</span>, <span class="php-var">$payload</span>[<span class="php-quote">&quot;access_token&quot;</span>]);
-<span class="line" id="963">963: </span>    }
-<span class="line" id="964">964: </span>    
-<span class="line" id="965">965: </span>    <span class="php-comment">/**
-</span><span class="line" id="966">966: </span><span class="php-comment">     * Invalidates all token records for the refresh token.
-</span><span class="line" id="967">967: </span><span class="php-comment">     *
-</span><span class="line" id="968">968: </span><span class="php-comment">     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'refresh_token'.
-</span><span class="line" id="969">969: </span><span class="php-comment">     *
-</span><span class="line" id="970">970: </span><span class="php-comment">     * @param string $refresh_token
-</span><span class="line" id="971">971: </span><span class="php-comment">     * The refresh token generated upon successful authentication.
-</span><span class="line" id="972">972: </span><span class="php-comment">     *
-</span><span class="line" id="973">973: </span><span class="php-comment">     * @return boolean
-</span><span class="line" id="974">974: </span><span class="php-comment">     * Returns true on successful invalidation, otherwise false.
-</span><span class="line" id="975">975: </span><span class="php-comment">     *
-</span><span class="line" id="976">976: </span><span class="php-comment">     * @throws \SmartFactory\SmartException
-</span><span class="line" id="977">977: </span><span class="php-comment">     * It might throw an exception in the case of any errors:
-</span><span class="line" id="978">978: </span><span class="php-comment">     *
-</span><span class="line" id="979">979: </span><span class="php-comment">     * - invalid_data_error - if some database parameters are invalid.
-</span><span class="line" id="980">980: </span><span class="php-comment">     *
-</span><span class="line" id="981">981: </span><span class="php-comment">     * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
+<span class="line" id="962">962: </span>        <span class="php-keyword1">if</span> (<span class="php-keyword1">empty</span>(<span class="php-var">$payload</span>) || <span class="php-keyword1">empty</span>(<span class="php-var">$payload</span>[<span class="php-quote">&quot;access_token&quot;</span>])) {
+<span class="line" id="963">963: </span>            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \SmartFactory\SmartException(<span class="php-quote">&quot;The access token is invalid!&quot;</span>, <span class="php-quote">&quot;invalid_access_token&quot;</span>);
+<span class="line" id="964">964: </span>        }
+<span class="line" id="965">965: </span>        
+<span class="line" id="966">966: </span>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;token_storage-&gt;deleteTokenRecordByKey(<span class="php-quote">&quot;access_token&quot;</span>, <span class="php-var">$payload</span>[<span class="php-quote">&quot;access_token&quot;</span>]);
+<span class="line" id="967">967: </span>    }
+<span class="line" id="968">968: </span>    
+<span class="line" id="969">969: </span>    <span class="php-comment">/**
+</span><span class="line" id="970">970: </span><span class="php-comment">     * Invalidates all token records for the refresh token.
+</span><span class="line" id="971">971: </span><span class="php-comment">     *
+</span><span class="line" id="972">972: </span><span class="php-comment">     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'refresh_token'.
+</span><span class="line" id="973">973: </span><span class="php-comment">     *
+</span><span class="line" id="974">974: </span><span class="php-comment">     * @param string $refresh_token
+</span><span class="line" id="975">975: </span><span class="php-comment">     * The refresh token generated upon successful authentication.
+</span><span class="line" id="976">976: </span><span class="php-comment">     *
+</span><span class="line" id="977">977: </span><span class="php-comment">     * @return boolean
+</span><span class="line" id="978">978: </span><span class="php-comment">     * Returns true on successful invalidation, otherwise false.
+</span><span class="line" id="979">979: </span><span class="php-comment">     *
+</span><span class="line" id="980">980: </span><span class="php-comment">     * @throws \SmartFactory\SmartException
+</span><span class="line" id="981">981: </span><span class="php-comment">     * It might throw an exception in the case of any errors:
 </span><span class="line" id="982">982: </span><span class="php-comment">     *
-</span><span class="line" id="983">983: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="984">984: </span><span class="php-comment">     */</span>
-<span class="line" id="985">985: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateRefreshToken(<span class="php-var">$refresh_token</span>)
-<span class="line" id="986">986: </span>    {
-<span class="line" id="987">987: </span>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;token_storage-&gt;deleteTokenRecordByKey(<span class="php-quote">&quot;refresh_token&quot;</span>, <span class="php-var">$refresh_token</span>);
-<span class="line" id="988">988: </span>    }
-<span class="line" id="989">989: </span>}
+</span><span class="line" id="983">983: </span><span class="php-comment">     * - invalid_data_error - if some database parameters are invalid.
+</span><span class="line" id="984">984: </span><span class="php-comment">     *
+</span><span class="line" id="985">985: </span><span class="php-comment">     * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
+</span><span class="line" id="986">986: </span><span class="php-comment">     *
+</span><span class="line" id="987">987: </span><span class="php-comment">     * @author Oleg Schildt
+</span><span class="line" id="988">988: </span><span class="php-comment">     */</span>
+<span class="line" id="989">989: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateRefreshToken(<span class="php-var">$refresh_token</span>)
+<span class="line" id="990">990: </span>    {
+<span class="line" id="991">991: </span>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;token_storage-&gt;deleteTokenRecordByKey(<span class="php-quote">&quot;refresh_token&quot;</span>, <span class="php-var">$refresh_token</span>);
+<span class="line" id="992">992: </span>    }
+<span class="line" id="993">993: </span>}
 </code>
 </pre>
 </div>
                     
                     <div id="footer">
-                        Generated on 2019-01-11 06:38
+                        Generated on 2019-01-11 18:54
                     </div>                    
                 </div>
             </div>

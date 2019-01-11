@@ -107,8 +107,8 @@ interface IOAuthManager extends IInitable
      * This flag defines whether only the signatire should be checked or also the
      * authentication server should be asked.
      *
-     * @return boolean
-     * The method should return true on successful verification, otherwise false.
+     * @return array|false
+     * The method should return the payload array on successful verification, otherwise false.
      *
      * @throws \SmartFactory\SmartException
      * It might throw an exception in the case of any errors.

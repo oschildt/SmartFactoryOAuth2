@@ -868,7 +868,7 @@ token is the access token encoded and signed by the JWT standard approach.</p>
   
   <h1>Method: verifyJwtAccessToken</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <b>verifyJwtAccessToken</b>(string &amp;<span class="php-var">$jwt_access_token</span>, boolean &amp;<span class="php-var">$check_on_server</span> = <span class="php-keyword1">true</span>) : boolean</div>
+  <div class="definition"><span class="php-keyword1">public</span> <b>verifyJwtAccessToken</b>(string &amp;<span class="php-var">$jwt_access_token</span>, boolean &amp;<span class="php-var">$check_on_server</span> = <span class="php-keyword1">true</span>) : <span class="php-keyword1">array</span>|<span class="php-keyword1">false</span></div>
 
   
   <div class="short-description">
@@ -902,10 +902,10 @@ authentication server should be asked.</p>
 
   
   <h2>Returns</h2>
-  <span class="type_label">Type:</span> boolean
+  <span class="type_label">Type:</span> array|false
   
   <div class="param-description">
-  <p>The method should return true on successful verification, otherwise false.</p>
+  <p>The method should return the payload array on successful verification, otherwise false.</p>
   </div>
   
   
@@ -947,7 +947,7 @@ authentication server should be asked.</p>
 
                     
                     <div id="footer">
-                        Generated on 2019-01-11 06:38
+                        Generated on 2019-01-11 18:54
                     </div>                    
                 </div>
             </div>

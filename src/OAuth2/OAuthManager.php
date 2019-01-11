@@ -440,7 +440,7 @@ class OAuthManager implements IOAuthManager
      * @param string $jwt_access_token
      * The jwt access token.
      *
-     * @param boolean $verify
+     * @param boolean $verify_signature
      * The flag to control whether the signature should be verified or not.
      *
      * @return array
@@ -459,7 +459,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    protected function getJwtPayload($jwt_access_token, $verify = true)
+    protected function getJwtPayload($jwt_access_token, $verify_signature = true)
     {
         if (!strpos($jwt_access_token, '.')) {
             throw new \SmartFactory\SmartException("The access token is invalid!", "invalid_access_token");
@@ -481,7 +481,7 @@ class OAuthManager implements IOAuthManager
             throw new \SmartFactory\SmartException("The access token is invalid!", "invalid_access_token");
         }
         
-        if (!$verify) {
+        if (!$verify_signature) {
             return $payload;
         }
         
@@ -811,8 +811,8 @@ class OAuthManager implements IOAuthManager
      * @param string $jwt_access_token
      * The jwt access token generated upon successful authentication.
      *
-     * @return boolean
-     * Returns true on successful verification, otherwise false.
+     * @return array|false
+     * Returns the payload array on successful verification, otherwise false.
      *
      * @throws \SmartFactory\SmartException
      * It throws the following exception strings:
@@ -837,10 +837,14 @@ class OAuthManager implements IOAuthManager
         }
         
         if (!$check_on_server) {
-            return true;
+            return $payload;
         }
-    
-        return $this->token_storage->verifyAccessToken($payload["access_token"], $payload["user_id"], $payload["client_id"]);
+        
+        if ($this->token_storage->verifyAccessToken($payload["access_token"], $payload["user_id"], $payload["client_id"])) {
+            return $payload;
+        }
+        
+        return false;
     }
     
     /**
