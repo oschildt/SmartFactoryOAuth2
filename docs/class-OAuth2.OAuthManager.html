@@ -152,12 +152,15 @@ Oleg Schildt
 
 
   <table class="table table-responsive table-bordered table-striped class_multicolumn">
-      <tr><th colspan="2">Properties</th></tr>
+      <tr><th colspan="3">Properties</th></tr>
       
       
       <tr>
           <td>
               <a href="#$access_token_ttl">$access_token_ttl</a>
+          </td>
+          <td>
+              <span class='protected'>protected</span>
           </td>
           <td class="description_column">
               Internal property for storing the time to live of the access token.
@@ -168,6 +171,9 @@ Oleg Schildt
           <td>
               <a href="#$encryption_algorithm">$encryption_algorithm</a>
           </td>
+          <td>
+              <span class='protected'>protected</span>
+          </td>
           <td class="description_column">
               Internal property for storing the encryption algorithm.
           </td>
@@ -176,6 +182,9 @@ Oleg Schildt
       <tr>
           <td>
               <a href="#$pass_phrase">$pass_phrase</a>
+          </td>
+          <td>
+              <span class='protected'>protected</span>
           </td>
           <td class="description_column">
               Internal property for storing the pass phrase for the private key.
@@ -186,6 +195,9 @@ Oleg Schildt
           <td>
               <a href="#$private_key">$private_key</a>
           </td>
+          <td>
+              <span class='protected'>protected</span>
+          </td>
           <td class="description_column">
               Internal property for storing the path to the provate key file.
           </td>
@@ -194,6 +206,9 @@ Oleg Schildt
       <tr>
           <td>
               <a href="#$public_key">$public_key</a>
+          </td>
+          <td>
+              <span class='protected'>protected</span>
           </td>
           <td class="description_column">
               Internal property for storing the path to the public key file.
@@ -204,6 +219,9 @@ Oleg Schildt
           <td>
               <a href="#$refresh_token_ttl">$refresh_token_ttl</a>
           </td>
+          <td>
+              <span class='protected'>protected</span>
+          </td>
           <td class="description_column">
               Internal property for storing the time to live of the refresh token.
           </td>
@@ -212,6 +230,9 @@ Oleg Schildt
       <tr>
           <td>
               <a href="#$secret_key">$secret_key</a>
+          </td>
+          <td>
+              <span class='protected'>protected</span>
           </td>
           <td class="description_column">
               Internal property for storing the sekret key.
@@ -222,6 +243,9 @@ Oleg Schildt
           <td>
               <a href="#$supported_algorithms">$supported_algorithms</a>
           </td>
+          <td>
+              <span class='protected'>protected</span>
+          </td>
           <td class="description_column">
               Internal property for the list of supported algorithms.
           </td>
@@ -231,6 +255,9 @@ Oleg Schildt
           <td>
               <a href="#$token_storage">$token_storage</a>
           </td>
+          <td>
+              <span class='protected'>protected</span>
+          </td>
           <td class="description_column">
               Internal reference to the token storage object.
           </td>
@@ -239,6 +266,9 @@ Oleg Schildt
       <tr>
           <td>
               <a href="#$user_authenticator">$user_authenticator</a>
+          </td>
+          <td>
+              <span class='protected'>protected</span>
           </td>
           <td class="description_column">
               Internal reference to the user authenticator object.
@@ -251,12 +281,15 @@ Oleg Schildt
 
 
   <table class="table table-responsive table-bordered table-striped class_multicolumn">
-      <tr><th colspan="2">Methods</th></tr>
+      <tr><th colspan="3">Methods</th></tr>
       
       
       <tr>
           <td>
               <a href="#authenticateUser">authenticateUser</a>
+          </td>
+          <td>
+              <span class='public'>public</span>
           </td>
           <td class="description_column">
               Authenticates the user based on the specified credentials and writes the response.
@@ -267,6 +300,9 @@ Oleg Schildt
           <td>
               <a href="#createJwtToken">createJwtToken</a>
           </td>
+          <td>
+              <span class='protected'>protected</span>
+          </td>
           <td class="description_column">
               Internal auxiliary function for creation of the jwt token.
           </td>
@@ -275,6 +311,9 @@ Oleg Schildt
       <tr>
           <td>
               <a href="#createTokenRecord">createTokenRecord</a>
+          </td>
+          <td>
+              <span class='protected'>protected</span>
           </td>
           <td class="description_column">
               Internal auxiliary function for creation of the token record.
@@ -285,6 +324,9 @@ Oleg Schildt
           <td>
               <a href="#generateJwtSignature">generateJwtSignature</a>
           </td>
+          <td>
+              <span class='protected'>protected</span>
+          </td>
           <td class="description_column">
               Internal auxiliary function for generation of the signature of the data for all supported algorithms.
           </td>
@@ -293,6 +335,9 @@ Oleg Schildt
       <tr>
           <td>
               <a href="#generateRSASignature">generateRSASignature</a>
+          </td>
+          <td>
+              <span class='protected'>protected</span>
           </td>
           <td class="description_column">
               Internal auxiliary function for generation of the signature of the data for the algorithms
@@ -304,6 +349,9 @@ RS256, RS384, RS512.
           <td>
               <a href="#generateToken">generateToken</a>
           </td>
+          <td>
+              <span class='protected'>protected</span>
+          </td>
           <td class="description_column">
               Internal auxiliary function for generation of a token string.
           </td>
@@ -312,6 +360,9 @@ RS256, RS384, RS512.
       <tr>
           <td>
               <a href="#getJwtPayload">getJwtPayload</a>
+          </td>
+          <td>
+              <span class='protected'>protected</span>
           </td>
           <td class="description_column">
               Internal auxiliary function for extraction of the payload from the jwt access token.
@@ -322,6 +373,9 @@ RS256, RS384, RS512.
           <td>
               <a href="#init">init</a>
           </td>
+          <td>
+              <span class='public'>public</span>
+          </td>
           <td class="description_column">
               Initializes the authentication manager with parameters.
           </td>
@@ -330,6 +384,9 @@ RS256, RS384, RS512.
       <tr>
           <td>
               <a href="#invalidateClient">invalidateClient</a>
+          </td>
+          <td>
+              <span class='public'>public</span>
           </td>
           <td class="description_column">
               Invalidates all token records for the client.
@@ -340,6 +397,9 @@ RS256, RS384, RS512.
           <td>
               <a href="#invalidateJwtAccessToken">invalidateJwtAccessToken</a>
           </td>
+          <td>
+              <span class='public'>public</span>
+          </td>
           <td class="description_column">
               Invalidates the token record for the jwt access token.
           </td>
@@ -348,6 +408,9 @@ RS256, RS384, RS512.
       <tr>
           <td>
               <a href="#invalidateRefreshToken">invalidateRefreshToken</a>
+          </td>
+          <td>
+              <span class='public'>public</span>
           </td>
           <td class="description_column">
               Invalidates all token records for the refresh token.
@@ -358,6 +421,9 @@ RS256, RS384, RS512.
           <td>
               <a href="#invalidateUser">invalidateUser</a>
           </td>
+          <td>
+              <span class='public'>public</span>
+          </td>
           <td class="description_column">
               Invalidates all token records for the user.
           </td>
@@ -366,6 +432,9 @@ RS256, RS384, RS512.
       <tr>
           <td>
               <a href="#refreshAccessToken">refreshAccessToken</a>
+          </td>
+          <td>
+              <span class='public'>public</span>
           </td>
           <td class="description_column">
               Refreshes the access token by using the valid refresh token, if the access token is expired.
@@ -376,6 +445,9 @@ RS256, RS384, RS512.
           <td>
               <a href="#urlSafeB64Decode">urlSafeB64Decode</a>
           </td>
+          <td>
+              <span class='protected'>protected</span>
+          </td>
           <td class="description_column">
               Internal auxiliary function for safe base64 decoding.
           </td>
@@ -384,6 +456,9 @@ RS256, RS384, RS512.
       <tr>
           <td>
               <a href="#urlSafeB64Encode">urlSafeB64Encode</a>
+          </td>
+          <td>
+              <span class='protected'>protected</span>
           </td>
           <td class="description_column">
               Internal auxiliary function for safe base64 encoding.
@@ -394,6 +469,9 @@ RS256, RS384, RS512.
           <td>
               <a href="#validateParameters">validateParameters</a>
           </td>
+          <td>
+              <span class='protected'>protected</span>
+          </td>
           <td class="description_column">
               Internal auxiliary function for validation of the parameters.
           </td>
@@ -402,6 +480,9 @@ RS256, RS384, RS512.
       <tr>
           <td>
               <a href="#verifyJwtAccessToken">verifyJwtAccessToken</a>
+          </td>
+          <td>
+              <span class='public'>public</span>
           </td>
           <td class="description_column">
               Verifies the jwt access token.
@@ -412,6 +493,9 @@ RS256, RS384, RS512.
           <td>
               <a href="#verifyJwtSignature">verifyJwtSignature</a>
           </td>
+          <td>
+              <span class='protected'>protected</span>
+          </td>
           <td class="description_column">
               Internal auxiliary function for verification of the signature of the data for all supported algorithms.
           </td>
@@ -420,6 +504,9 @@ RS256, RS384, RS512.
       <tr>
           <td>
               <a href="#verifyRSASignature">verifyRSASignature</a>
+          </td>
+          <td>
+              <span class='protected'>protected</span>
           </td>
           <td class="description_column">
               Internal auxiliary function for verification of the data signature for the algorithms
@@ -1677,7 +1764,7 @@ can be done only after authentication.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.OAuthManager.html#918">OAuth2\OAuthManager.php</a>
+  <a href="source-OAuth2.OAuthManager.html#914">OAuth2\OAuthManager.php</a>
 
   
 
@@ -1772,7 +1859,7 @@ can be done only after authentication.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.OAuthManager.html#955">OAuth2\OAuthManager.php</a>
+  <a href="source-OAuth2.OAuthManager.html#951">OAuth2\OAuthManager.php</a>
 
   
 
@@ -1861,7 +1948,7 @@ can be done only after authentication.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.OAuthManager.html#986">OAuth2\OAuthManager.php</a>
+  <a href="source-OAuth2.OAuthManager.html#982">OAuth2\OAuthManager.php</a>
 
   
 
@@ -1973,7 +2060,7 @@ can be done only after authentication.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.OAuthManager.html#878">OAuth2\OAuthManager.php</a>
+  <a href="source-OAuth2.OAuthManager.html#874">OAuth2\OAuthManager.php</a>
 
   
 
@@ -2335,11 +2422,7 @@ token is the access token encoded and signed by the JWT standard approach.</p>
   
   <h1>Method: verifyJwtAccessToken</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <b>verifyJwtAccessToken</b>(string &amp;<span class="php-var">$jwt_access_token</span>,
-                            string &amp;<span class="php-var">$user_id</span>,
-                            string &amp;<span class="php-var">$client_id</span>,
-                            boolean &amp;<span class="php-var">$check_on_server</span> = <span class="php-keyword1">true</span>
-                           ) : boolean</div>
+  <div class="definition"><span class="php-keyword1">public</span> <b>verifyJwtAccessToken</b>(string &amp;<span class="php-var">$jwt_access_token</span>, boolean &amp;<span class="php-var">$check_on_server</span> = <span class="php-keyword1">true</span>) : boolean</div>
 
   
   <div class="short-description">
@@ -2357,22 +2440,6 @@ token is the access token encoded and signed by the JWT standard approach.</p>
       
       <div class="param-description">
       <p>The jwt access token generated upon successful authentication.</p>
-      </div>
-      
-  
-      <h3>$user_id</h3>
-      <span class="type_label">Type:</span> string
-      
-      <div class="param-description">
-      <p>The user id for which the access token was issued.</p>
-      </div>
-      
-  
-      <h3>$client_id</h3>
-      <span class="type_label">Type:</span> string
-      
-      <div class="param-description">
-      <p>The client id for which the access token was issued.</p>
       </div>
       
   
@@ -2429,7 +2496,7 @@ authentication server should be asked.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.OAuthManager.html#834">OAuth2\OAuthManager.php</a>
+  <a href="source-OAuth2.OAuthManager.html#828">OAuth2\OAuthManager.php</a>
 
   
 
@@ -2664,7 +2731,7 @@ RS256, RS384, RS512.
 
                     
                     <div id="footer">
-                        Generated on 2018-12-21 08:31
+                        Generated on 2019-01-11 06:38
                     </div>                    
                 </div>
             </div>

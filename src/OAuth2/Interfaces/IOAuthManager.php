@@ -103,12 +103,6 @@ interface IOAuthManager extends IInitable
      * @param string $jwt_access_token
      * The jwt access token generated upon successful authentication.
      *
-     * @param string $user_id
-     * The user id for which the access token was issued.
-     *
-     * @param string $client_id
-     * The client id for which the access token was issued.
-     *
      * @param boolean $check_on_server
      * This flag defines whether only the signatire should be checked or also the
      * authentication server should be asked.
@@ -121,7 +115,7 @@ interface IOAuthManager extends IInitable
      *
      * @author Oleg Schildt
      */
-    public function verifyJwtAccessToken($jwt_access_token, $user_id, $client_id, $check_on_server = true);
+    public function verifyJwtAccessToken($jwt_access_token, $check_on_server = true);
     
     /**
      * Invalidates all token records for the user.

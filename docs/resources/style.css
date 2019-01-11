@@ -278,6 +278,19 @@ table .name > div > .description
 #source pre.code span {
 	white-space: pre;
 }
+
+.private {
+    color: #e71818;
+}
+
+.protected {
+    color: maroon;
+}
+
+.public {
+    color: green;
+}
+
 .php-keyword1 {
     color: #e71818;
     font-weight: bold;
@@ -427,6 +440,11 @@ code.keyword {
   width: 35%;
   word-wrap: break-word; 
   word-break: break-all;
+}
+
+.class_multicolumn tr td:nth-child(2)
+{
+  width: 90px;
 }
 
 .short-description

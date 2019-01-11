@@ -606,17 +606,17 @@ class OAuthManager implements IOAuthManager
     protected function createTokenRecord($user_id, $client_id, &$response)
     {
         $response["user_id"] = $user_id;
+        $response["client_id"] = $client_id;
         
         $response["refresh_token"] = $this->generateToken();
         $response["refresh_token_expire"] = time() + $this->refresh_token_ttl;
         
         $response["access_token"] = $this->generateToken();
         
-        $payload = ["access_token" => $response["access_token"]];
+        $payload = ["access_token" => $response["access_token"], "user_id" => $user_id, "client_id" => $client_id];
+        
         $response["jwt_access_token"] = $this->createJwtToken($payload);
         $response["access_token_expire"] = time() + $this->access_token_ttl;
-        
-        $response["client_id"] = $client_id;
         
         $this->token_storage->saveTokenRecord($response);
         
@@ -811,12 +811,6 @@ class OAuthManager implements IOAuthManager
      * @param string $jwt_access_token
      * The jwt access token generated upon successful authentication.
      *
-     * @param string $user_id
-     * The user id for which the access token was issued.
-     *
-     * @param string $client_id
-     * The client id for which the access token was issued.
-     *
      * @return boolean
      * Returns true on successful verification, otherwise false.
      *
@@ -834,17 +828,19 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    public function verifyJwtAccessToken($jwt_access_token, $user_id, $client_id, $check_on_server = true)
+    public function verifyJwtAccessToken($jwt_access_token, $check_on_server = true)
     {
         $payload = $this->getJwtPayload($jwt_access_token);
         
-        if (empty($payload) || empty($payload["access_token"])) {
+        if (empty($payload) || empty($payload["access_token"]) || empty($payload["user_id"]) || empty($payload["client_id"])) {
             throw new \SmartFactory\SmartException("The access token is invalid!", "invalid_access_token");
         }
         
-        if(!$check_on_server) return true;
-        
-        return $this->token_storage->verifyAccessToken($payload["access_token"], $user_id, $client_id);
+        if (!$check_on_server) {
+            return true;
+        }
+    
+        return $this->token_storage->verifyAccessToken($payload["access_token"], $payload["user_id"], $payload["client_id"]);
     }
     
     /**
