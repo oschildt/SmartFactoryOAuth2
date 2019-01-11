@@ -226,10 +226,10 @@ Oleg Schildt
       
       <tr>
           <td>
-              <a href="#refreshAccessToken">refreshAccessToken</a>
+              <a href="#refreshTokens">refreshTokens</a>
           </td>
           <td class="description_column">
-              Refreshes the access token by using the valid refresh token, if the access token is expired.
+              Refreshes the access and refresh tokens by using the valid refresh token.
           </td>
       </tr>
       
@@ -749,19 +749,19 @@ can be done only after authentication.</p>
   
   
   
-  <hr id="refreshAccessToken">
+  <hr id="refreshTokens">
   
-  <h1>Method: refreshAccessToken</h1>
+  <h1>Method: refreshTokens</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <b>refreshAccessToken</b>(string &amp;<span class="php-var">$refresh_token</span>,
-                          string &amp;<span class="php-var">$user_id</span>,
-                          string &amp;<span class="php-var">$client_id</span>,
-                          <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>
-                         ) : boolean</div>
+  <div class="definition"><span class="php-keyword1">public</span> <b>refreshTokens</b>(string &amp;<span class="php-var">$refresh_token</span>,
+                     string &amp;<span class="php-var">$user_id</span>,
+                     string &amp;<span class="php-var">$client_id</span>,
+                     <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>
+                    ) : boolean</div>
 
   
   <div class="short-description">
-  Refreshes the access token by using the valid refresh token, if the access token is expired.
+  Refreshes the access and refresh tokens by using the valid refresh token.
   </div>
   
 
@@ -947,7 +947,7 @@ authentication server should be asked.</p>
 
                     
                     <div id="footer">
-                        Generated on 2019-01-11 18:54
+                        Generated on 2019-01-11 21:42
                     </div>                    
                 </div>
             </div>

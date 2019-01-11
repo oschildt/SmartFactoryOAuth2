@@ -62,7 +62,7 @@ interface IOAuthManager extends IInitable
     public function authenticateUser($credentials, &$response);
     
     /**
-     * Refreshes the access token by using the valid refresh token, if the access token is expired.
+     * Refreshes the access and refresh tokens by using the valid refresh token.
      *
      * @param string $refresh_token
      * The refresh token generated upon successful authentication.
@@ -95,7 +95,7 @@ interface IOAuthManager extends IInitable
      *
      * @author Oleg Schildt
      */
-    public function refreshAccessToken($refresh_token, $user_id, $client_id, &$response);
+    public function refreshTokens($refresh_token, $user_id, $client_id, &$response);
     
     /**
      * Verifies the jwt access token.

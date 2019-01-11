@@ -758,7 +758,7 @@ class OAuthManager implements IOAuthManager
     }
     
     /**
-     * Refreshes the access token by using the valid refresh token, if the access token is expired.
+     * Refreshes the access and refresh tokens by using the valid refresh token.
      *
      * @param string $refresh_token
      * The refresh token generated upon successful authentication.
@@ -796,7 +796,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    public function refreshAccessToken($refresh_token, $user_id, $client_id, &$response)
+    public function refreshTokens($refresh_token, $user_id, $client_id, &$response)
     {
         if (!$this->token_storage->verifyRefreshToken($refresh_token, $user_id, $client_id)) {
             return false;

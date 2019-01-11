@@ -431,13 +431,13 @@ RS256, RS384, RS512.
       
       <tr>
           <td>
-              <a href="#refreshAccessToken">refreshAccessToken</a>
+              <a href="#refreshTokens">refreshTokens</a>
           </td>
           <td>
               <span class='public'>public</span>
           </td>
           <td class="description_column">
-              Refreshes the access token by using the valid refresh token, if the access token is expired.
+              Refreshes the access and refresh tokens by using the valid refresh token.
           </td>
       </tr>
       
@@ -1205,7 +1205,7 @@ token is the access token encoded and signed by the JWT standard approach.</p>
   
   <a href="class-OAuth2.OAuthManager.html#authenticateUser">\OAuth2\OAuthManager::authenticateUser()</a><br>
   
-  <a href="class-OAuth2.OAuthManager.html#refreshAccessToken">\OAuth2\OAuthManager::refreshAccessToken()</a><br>
+  \OAuth2\refreshAccessToken()<br>
   
   </div>
   
@@ -2076,19 +2076,19 @@ can be done only after authentication.</p>
   
   
   
-  <hr id="refreshAccessToken">
+  <hr id="refreshTokens">
   
-  <h1>Method: refreshAccessToken</h1>
+  <h1>Method: refreshTokens</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <b>refreshAccessToken</b>(string &amp;<span class="php-var">$refresh_token</span>,
-                          string &amp;<span class="php-var">$user_id</span>,
-                          string &amp;<span class="php-var">$client_id</span>,
-                          <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>
-                         ) : boolean</div>
+  <div class="definition"><span class="php-keyword1">public</span> <b>refreshTokens</b>(string &amp;<span class="php-var">$refresh_token</span>,
+                     string &amp;<span class="php-var">$user_id</span>,
+                     string &amp;<span class="php-var">$client_id</span>,
+                     <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>
+                    ) : boolean</div>
 
   
   <div class="short-description">
-  Refreshes the access token by using the valid refresh token, if the access token is expired.
+  Refreshes the access and refresh tokens by using the valid refresh token.
   </div>
   
 
@@ -2182,7 +2182,7 @@ token is the access token encoded and signed by the JWT standard approach.</p>
   
   
   <h2>Implements</h2>
-  <a href="interface-OAuth2.Interfaces.IOAuthManager.html#refreshAccessToken">\OAuth2\Interfaces\IOAuthManager::refreshAccessToken()</a><br>
+  <a href="interface-OAuth2.Interfaces.IOAuthManager.html#refreshTokens">\OAuth2\Interfaces\IOAuthManager::refreshTokens()</a><br>
   
   
   
@@ -2731,7 +2731,7 @@ RS256, RS384, RS512.
 
                     
                     <div id="footer">
-                        Generated on 2019-01-11 18:54
+                        Generated on 2019-01-11 21:42
                     </div>                    
                 </div>
             </div>

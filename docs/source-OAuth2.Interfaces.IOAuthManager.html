@@ -138,7 +138,7 @@
 <span class="line" id="62"> 62: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> authenticateUser(<span class="php-var">$credentials</span>, &amp;<span class="php-var">$response</span>);
 <span class="line" id="63"> 63: </span>    
 <span class="line" id="64"> 64: </span>    <span class="php-comment">/**
-</span><span class="line" id="65"> 65: </span><span class="php-comment">     * Refreshes the access token by using the valid refresh token, if the access token is expired.
+</span><span class="line" id="65"> 65: </span><span class="php-comment">     * Refreshes the access and refresh tokens by using the valid refresh token.
 </span><span class="line" id="66"> 66: </span><span class="php-comment">     *
 </span><span class="line" id="67"> 67: </span><span class="php-comment">     * @param string $refresh_token
 </span><span class="line" id="68"> 68: </span><span class="php-comment">     * The refresh token generated upon successful authentication.
@@ -171,7 +171,7 @@
 </span><span class="line" id="95"> 95: </span><span class="php-comment">     *
 </span><span class="line" id="96"> 96: </span><span class="php-comment">     * @author Oleg Schildt
 </span><span class="line" id="97"> 97: </span><span class="php-comment">     */</span>
-<span class="line" id="98"> 98: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> refreshAccessToken(<span class="php-var">$refresh_token</span>, <span class="php-var">$user_id</span>, <span class="php-var">$client_id</span>, &amp;<span class="php-var">$response</span>);
+<span class="line" id="98"> 98: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> refreshTokens(<span class="php-var">$refresh_token</span>, <span class="php-var">$user_id</span>, <span class="php-var">$client_id</span>, &amp;<span class="php-var">$response</span>);
 <span class="line" id="99"> 99: </span>    
 <span class="line" id="100">100: </span>    <span class="php-comment">/**
 </span><span class="line" id="101">101: </span><span class="php-comment">     * Verifies the jwt access token.
@@ -293,7 +293,7 @@
 </div>
                     
                     <div id="footer">
-                        Generated on 2019-01-11 18:54
+                        Generated on 2019-01-11 21:42
                     </div>                    
                 </div>
             </div>
