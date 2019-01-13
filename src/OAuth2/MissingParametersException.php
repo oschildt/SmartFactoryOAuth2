@@ -4,6 +4,7 @@
  *
  * @author Oleg Schildt
  */
+
 namespace OAuth2;
 
 /**

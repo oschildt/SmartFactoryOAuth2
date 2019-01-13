@@ -17,7 +17,7 @@ use SmartFactory\Interfaces\IInitable;
 interface IOAuthManager extends IInitable
 {
     /**
-     * Initializes the authentication manager with parameters. 
+     * Initializes the authentication manager with parameters.
      *
      * @param array $parameters
      * The parameters may vary depending on implementation.

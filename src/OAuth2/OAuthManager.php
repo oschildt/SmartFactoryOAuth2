@@ -829,15 +829,15 @@ class OAuthManager implements IOAuthManager
         if (empty($user_id)) {
             throw new MissingParametersException("The user id is not specified!");
         }
-    
+        
         if (empty($client_id)) {
             throw new MissingParametersException("The client id is not specified!");
         }
-    
+        
         if (empty($client_id)) {
             throw new MissingParametersException("The refresh token is not specified!");
         }
-    
+        
         if (!$this->token_storage->verifyRefreshToken($refresh_token, $user_id, $client_id)) {
             return false;
         }
@@ -874,7 +874,6 @@ class OAuthManager implements IOAuthManager
      *
      * @throws \OAuth2\MissingParametersException
      * It might throw the MissingParametersException if any required paramters are empty.
-
      * @uses ITokenStorage::verifyAccessToken()
      *
      * @author Oleg Schildt
@@ -886,19 +885,19 @@ class OAuthManager implements IOAuthManager
         if (empty($payload)) {
             throw new InvalidTokenException("The jwt access token is invalid, the payload is empty!");
         }
-    
+        
         if (empty($payload["access_token"])) {
             throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'access_token'!");
         }
-    
+        
         if (empty($payload["user_id"])) {
             throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'user_id'!");
         }
-    
+        
         if (empty($payload["client_id"])) {
             throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'client_id'!");
         }
-
+        
         if (!$check_on_server) {
             return $payload;
         }
@@ -952,15 +951,15 @@ class OAuthManager implements IOAuthManager
         if (empty($user_id)) {
             throw new MissingParametersException("The user id is not specified!");
         }
-    
+        
         if (empty($client_id)) {
             throw new MissingParametersException("The client id is not specified!");
         }
-    
+        
         if (empty($client_id)) {
             throw new MissingParametersException("The refresh token is not specified!");
         }
-    
+        
         if (!$this->token_storage->verifyRefreshToken($refresh_token, $user_id, $client_id)) {
             return false;
         }
@@ -1010,15 +1009,15 @@ class OAuthManager implements IOAuthManager
         if (empty($user_id)) {
             throw new MissingParametersException("The user id is not specified!");
         }
-    
+        
         if (empty($client_id)) {
             throw new MissingParametersException("The client id is not specified!");
         }
-    
+        
         if (empty($client_id)) {
             throw new MissingParametersException("The refresh token is not specified!");
         }
-
+        
         if (!$this->token_storage->verifyRefreshToken($refresh_token, $user_id, $client_id)) {
             return false;
         }
@@ -1060,11 +1059,11 @@ class OAuthManager implements IOAuthManager
     public function invalidateJwtAccessToken($jwt_access_token)
     {
         $payload = $this->getJwtPayload($jwt_access_token, true);
-    
+        
         if (empty($payload)) {
             throw new InvalidTokenException("The jwt access token is invalid, the payload is empty!");
         }
-    
+        
         if (empty($payload["access_token"])) {
             throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'access_token'!");
         }
