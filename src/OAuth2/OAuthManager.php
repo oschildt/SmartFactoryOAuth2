@@ -180,15 +180,15 @@ class OAuthManager implements IOAuthManager
      * @return boolean
      * Returns true if the verification was successful, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
-     * It might throw an exception in the case of any errors:
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors:
      *
-     * - missing_data_error - if the required parameters are empty.
-     * - invalid_data_error - if some parameters are invalid.
-     * - invalid_data_error - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - invalid_data_error - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
-     * - invalid_data_error - if the public key is invalid.
-     * - system_error - if the ssl verification cannot be performed due to errors.
+     * - if any required initialization parameters are empty.
+     * - if any initialization parameters are invalid.
+     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
+     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
+     * - if the public key is invalid.
+     * - if the ssl verification cannot be performed due to system errors.
      *
      * @uses generateRSASignature()
      *
@@ -204,13 +204,13 @@ class OAuthManager implements IOAuthManager
         
         $public_key = openssl_pkey_get_public("file://" . $this->public_key);
         if ($public_key === false) {
-            throw new \SmartFactory\SmartException(sprintf("The public key file '%s' is not valid! Error: %s", $this->public_key, openssl_error_string()), "invalid_data_error");
+            throw new \Exception(sprintf("The public key file '%s' is not valid! Error: %s", $this->public_key, openssl_error_string()));
         }
         
         $result = @openssl_verify($input, $signature, $public_key, $algorithm_id);
         
         if ($result == -1) {
-            throw new \SmartFactory\SmartException(sprintf("Error by data verification: %s", openssl_error_string()), "system_error");
+            throw new \Exception(sprintf("Error by data verification: %s", openssl_error_string()));
         }
         
         return $result === 1;
@@ -229,15 +229,15 @@ class OAuthManager implements IOAuthManager
      * @return string
      * Returns the signature of the data.
      *
-     * @throws \SmartFactory\SmartException
-     * It might throw an exception in the case of any errors:
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors:
      *
-     * - missing_data_error - if the required parameters are empty.
-     * - invalid_data_error - if some parameters are invalid.
-     * - invalid_data_error - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - invalid_data_error - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
-     * - invalid_data_error - if the private key is invalid.
-     * - system_error - if signing fails.
+     * - if any required initialization parameters are empty.
+     * - if any initialization parameters are invalid.
+     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
+     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
+     * - if the private key is invalid.
+     * - if ssl signing fails due to system errors.
      *
      * @see verifyRSASignature()
      *
@@ -251,12 +251,12 @@ class OAuthManager implements IOAuthManager
         
         $private_key = openssl_pkey_get_private("file://" . $this->private_key, $this->pass_phrase);
         if ($private_key === false) {
-            throw new \SmartFactory\SmartException(sprintf("The private key file '%s' or the pass phrase is not valid! Error: %s", $this->private_key, openssl_error_string()), "invalid_data_error");
+            throw new \Exception(sprintf("The private key file '%s' or the pass phrase is not valid! Error: %s", $this->private_key, openssl_error_string()));
         }
         
         $signature = "";
         if (!openssl_sign($input, $signature, $private_key, $algorithm_id)) {
-            throw new \SmartFactory\SmartException(sprintf("Error by signing data: %s", openssl_error_string()), "system_error");
+            throw new \Exception(sprintf("Error by signing data: %s", openssl_error_string()));
         }
         
         return $signature;
@@ -271,15 +271,15 @@ class OAuthManager implements IOAuthManager
      * @return string
      * Returns the signature of the data.
      *
-     * @throws \SmartFactory\SmartException
-     * It might throw an exception in the case of any errors:
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors:
      *
-     * - missing_data_error - if the required parameters are empty.
-     * - invalid_data_error - if some parameters are invalid.
-     * - invalid_data_error - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - invalid_data_error - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
-     * - invalid_data_error - if the private key is invalid.
-     * - system_error - if signing fails.
+     * - if any required initialization parameters are empty.
+     * - if any initialization parameters are invalid.
+     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
+     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
+     * - if the private key is invalid.
+     * - if ssl signing fails due to system errors.
      *
      * @uses generateRSASignature()
      *
@@ -307,7 +307,7 @@ class OAuthManager implements IOAuthManager
                 return $this->generateRSASignature($input, OPENSSL_ALGO_SHA512);
             
             default:
-                throw new \SmartFactory\SmartException(sprintf("Unsupported or invalid signing algorithm '%s'.", $this->encryption_algorithm), "invalid_data_error");
+                throw new \Exception(sprintf("Unsupported or invalid signing algorithm '%s'.", $this->encryption_algorithm));
         }
     }
     
@@ -323,15 +323,15 @@ class OAuthManager implements IOAuthManager
      * @return boolean
      * Returns true if the verification was successful, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
+     * @throws \Exception
      * It might throw an exception in the case of any errors:
      *
-     * - missing_data_error - if the required parameters are empty.
-     * - invalid_data_error - if some parameters are invalid.
-     * - invalid_data_error - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - invalid_data_error - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
-     * - invalid_data_error - if the public key is invalid.
-     * - system_error - if the ssl verification cannot be performed due to errors.
+     * - if any required initialization parameters are empty.
+     * - if any initialization parameters are invalid.
+     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
+     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
+     * - if the public key is invalid.
+     * - if the ssl verification cannot be performed due to system errors.
      *
      * @uses verifyRSASignature()
      *
@@ -355,7 +355,7 @@ class OAuthManager implements IOAuthManager
                 return $this->verifyRSASignature($input, $signature, OPENSSL_ALGO_SHA512);
             
             default:
-                throw new \SmartFactory\SmartException(sprintf("Unsupported or invalid signing algorithm '%s'.", $this->encryption_algorithm), "invalid_data_error");
+                throw new \Exception(sprintf("Unsupported or invalid signing algorithm '%s'.", $this->encryption_algorithm), "system_error");
         }
         
         return false;
@@ -367,10 +367,10 @@ class OAuthManager implements IOAuthManager
      * @return string
      * Returns the token string.
      *
-     * @throws \SmartFactory\SmartException
-     * It might throw an exception in the case of any errors:
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors:
      *
-     * - system_error - if the system funtions for generation fail.
+     * - if ssl funtions fail due to system errors.
      *
      * @author Oleg Schildt
      */
@@ -391,7 +391,7 @@ class OAuthManager implements IOAuthManager
                 }
             }
         } catch (\Exception $ex) {
-            throw new \SmartFactory\SmartException($ex->getMessage(), "system_error");
+            throw new \Exception($ex->getMessage());
         }
         
         // last resort which you probably should just get rid of:
@@ -409,15 +409,15 @@ class OAuthManager implements IOAuthManager
      * @return string
      * Returns the jwt token string.
      *
-     * @throws \SmartFactory\SmartException
-     * It might throw an exception in the case of any errors:
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors:
      *
-     * - missing_data_error - if the required parameters are empty.
-     * - invalid_data_error - if some parameters are invalid.
-     * - invalid_data_error - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - invalid_data_error - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
-     * - invalid_data_error - if the private key is invalid.
-     * - system_error - if signing fails.
+     * - if any required initialization parameters are empty.
+     * - if any initialization parameters are invalid.
+     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
+     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
+     * - if the private key is invalid.
+     * - if ssl signing fails due to system errors.
      *
      * @author Oleg Schildt
      */
@@ -446,39 +446,41 @@ class OAuthManager implements IOAuthManager
      * @return array
      * Returns the extracted payload array.
      *
-     * @throws \SmartFactory\SmartException
+     * @throws \Exception
      * It might throw an exception in the case of any errors:
      *
-     * - invalid_access_token - if the jwt access token is invalid.
-     * - missing_data_error - if the required parameters are empty.
-     * - invalid_data_error - if some parameters are invalid.
-     * - invalid_data_error - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - invalid_data_error - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
-     * - invalid_data_error - if the public key is invalid.
-     * - system_error - if the ssl verification cannot be performed due to errors.
+     * - if any required initialization parameters are empty.
+     * - if any initialization parameters are invalid.
+     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
+     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
+     * - if the public key is invalid.
+     * - if the ssl verification cannot be performed due to system errors.
+     *
+     * @throws InvalidTokenException
+     * It might throw the InvalidTokenException if the jwt access token is invalid.
      *
      * @author Oleg Schildt
      */
     protected function getJwtPayload($jwt_access_token, $verify_signature = true)
     {
         if (!strpos($jwt_access_token, '.')) {
-            throw new \SmartFactory\SmartException("The access token is invalid!", "invalid_access_token");
+            throw new InvalidTokenException("The format of the JWT access token is invalid!");
         }
         
         $segements = explode('.', $jwt_access_token);
         
         if (count($segements) != 3) {
-            throw new \SmartFactory\SmartException("The access token is invalid!", "invalid_access_token");
+            throw new InvalidTokenException("The format of the JWT access token is invalid!");
         }
         
         list($headb64, $payloadb64, $cryptob64) = $segements;
         
         if (null === ($header = json_decode($this->urlSafeB64Decode($headb64), true))) {
-            throw new \SmartFactory\SmartException("The access token is invalid!", "invalid_access_token");
+            throw new InvalidTokenException("The header of the JWT access token is invalid!");
         }
         
         if (null === $payload = json_decode($this->urlSafeB64Decode($payloadb64), true)) {
-            throw new \SmartFactory\SmartException("The access token is invalid!", "invalid_access_token");
+            throw new InvalidTokenException("The payload of the JWT access token is invalid!");
         }
         
         if (!$verify_signature) {
@@ -486,18 +488,17 @@ class OAuthManager implements IOAuthManager
         }
         
         if (empty($header['alg'])) {
-            throw new \SmartFactory\SmartException("The access token is invalid!", "invalid_access_token");
+            throw new InvalidTokenException("The signing algorithm of the JWT access token is missing in the header!");
         }
         
         $signature = $this->urlSafeB64Decode($cryptob64);
         
         if (!in_array($header['alg'], $this->supported_algorithms)) {
-            throw new \SmartFactory\SmartException("The access token is invalid!", "invalid_access_token");
+            throw new InvalidTokenException("The signing algorithm of the JWT access token is invalid!");
         }
         
-        
         if (!$this->verifyJwtSignature("$headb64.$payloadb64", $signature)) {
-            throw new \SmartFactory\SmartException("The access token is invalid!", "invalid_access_token");
+            throw new InvalidTokenException("The signature of the JWT access token is invalid!");
         }
         
         return $payload;
@@ -509,13 +510,13 @@ class OAuthManager implements IOAuthManager
      * @return boolean
      * returns true upon successful validation, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
-     * It might throw an exception in the case of any errors:
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors:
      *
-     * - missing_data_error - if the required parameters are empty.
-     * - invalid_data_error - if some parameters are invalid.
-     * - invalid_data_error - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - invalid_data_error - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
+     * - if any required initialization parameters are empty.
+     * - if any initialization parameters are invalid.
+     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
+     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
      *
      * @used_by verifyRSASignature()
      * @used_by generateRSASignature()
@@ -526,51 +527,51 @@ class OAuthManager implements IOAuthManager
     protected function validateParameters()
     {
         if (empty($this->access_token_ttl) || !is_numeric($this->access_token_ttl) || $this->access_token_ttl < 1) {
-            throw new \SmartFactory\SmartException("The 'access_token_ttl' is not specified or invalid!", "invalid_data_error");
+            throw new \Exception("The 'access_token_ttl' is not specified or invalid!");
         }
         
         if (empty($this->refresh_token_ttl) || !is_numeric($this->refresh_token_ttl) || $this->refresh_token_ttl < 1) {
-            throw new \SmartFactory\SmartException("The 'refresh_token_ttl' is not specified or invalid!", "invalid_data_error");
+            throw new \Exception("The 'refresh_token_ttl' is not specified or invalid!");
         }
         
         if (empty($this->token_storage)) {
-            throw new \SmartFactory\SmartException("The 'token_storage' is not specified!", "missing_data_error");
+            throw new \Exception("The 'token_storage' is not specified!");
         }
         
         if (!$this->token_storage instanceof ITokenStorage) {
-            throw new \SmartFactory\SmartException(sprintf("The 'token_storage' does not implement the interface '%s'!", ITokenStorage::class), "invalid_data_error");
+            throw new \Exception(sprintf("The 'token_storage' does not implement the interface '%s'!", ITokenStorage::class));
         }
         
         if (empty($this->user_authenticator)) {
-            throw new \SmartFactory\SmartException("The 'user_authenticator' is not specified!", "missing_data_error");
+            throw new \Exception("The 'user_authenticator' is not specified!");
         }
         
         if (!$this->user_authenticator instanceof IUserAuthenticator) {
-            throw new \SmartFactory\SmartException(sprintf("The 'user_authenticator' does not implement the interface '%s'!", IUserAuthenticator::class), "invalid_data_error");
+            throw new \Exception(sprintf("The 'user_authenticator' does not implement the interface '%s'!", IUserAuthenticator::class));
         }
         
         if (empty($this->encryption_algorithm)) {
-            throw new \SmartFactory\SmartException("The encryption algorithm is not specified!", "missing_data_error");
+            throw new \Exception("The encryption algorithm is not specified!");
         }
         
         if (!in_array($this->encryption_algorithm, $this->supported_algorithms)) {
-            throw new \SmartFactory\SmartException(sprintf("The encryption algorithm %s is not supported! The suppoted algoritms are: %s", $this->encryption_algorithm, implode(", ", $this->supported_algorithms)), "invalid_data_error");
+            throw new \Exception(sprintf("The encryption algorithm %s is not supported! The suppoted algoritms are: %s", $this->encryption_algorithm, implode(", ", $this->supported_algorithms)));
         }
         
         if (in_array($this->encryption_algorithm, ['HS256', 'HS384', 'HS512']) && empty($this->secret_key)) {
-            throw new \SmartFactory\SmartException(sprintf("The encryption algorithm %s requires a secret key! Set the parameter 'secret_key'.", $this->encryption_algorithm), "missing_data_error");
+            throw new \Exception(sprintf("The encryption algorithm %s requires a secret key! Set the parameter 'secret_key'.", $this->encryption_algorithm));
         }
         
         if (in_array($this->encryption_algorithm, ['RS256', 'RS384', 'RS512']) && (empty($this->public_key) || empty($this->private_key))) {
-            throw new \SmartFactory\SmartException(sprintf("The encryption algorithm %s requires a public key and a private key! Set the parameters 'public_key' and 'private_key'.", $this->encryption_algorithm));
+            throw new \Exception(sprintf("The encryption algorithm %s requires a public key and a private key! Set the parameters 'public_key' and 'private_key'.", $this->encryption_algorithm));
         }
         
         if (!file_exists($this->private_key)) {
-            throw new \SmartFactory\SmartException(sprintf("The private key file '%s' does not exists!", $this->private_key), "invalid_data_error");
+            throw new \Exception(sprintf("The private key file '%s' does not exists!", $this->private_key));
         }
         
         if (!file_exists($this->public_key)) {
-            throw new \SmartFactory\SmartException(sprintf("The public key file '%s' does not exists!", $this->public_key), "invalid_data_error");
+            throw new \Exception(sprintf("The public key file '%s' does not exists!", $this->public_key));
         }
         
         return true;
@@ -591,10 +592,16 @@ class OAuthManager implements IOAuthManager
      * @return boolean
      * returns true upon successful creation, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
+     * @throws \Exception
      * It might throw an exception in the case of any errors:
      *
-     * - system_error - if the system funtions for generation fail.
+     * - if any required initialization parameters are empty.
+     * - if any initialization parameters are invalid.
+     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
+     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
+     * - if the private key is invalid.
+     * - if ssl signing fails due to system errors.
+     * - if the token storage fails to save the token record.
      *
      * @uses ITokenStorage::saveTokenRecord()
      *
@@ -655,13 +662,13 @@ class OAuthManager implements IOAuthManager
      * @return boolean
      * returns true upon successful initialization, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
-     * It might throw an exception in the case of any errors:
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors:
      *
-     * - missing_data_error - if the required parameters are empty.
-     * - invalid_data_error - if some parameters are invalid.
-     * - invalid_data_error - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - invalid_data_error - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
+     * - if any required initialization parameters are empty.
+     * - if any initialization parameters are invalid.
+     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
+     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
      *
      * @see ITokenStorage
      * @see IUserAuthenticator
@@ -738,20 +745,29 @@ class OAuthManager implements IOAuthManager
      * @return boolean
      * Returns true upon success, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
-     * It throws the following exception strings:
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors:
      *
-     * - client_id_empty - if the client id is not specified.
-     * - user_login_empty - if the user login is not specified.
-     * - user_password_empty - if the use password is not specified.
-     * - invalid_credentials - if the credentials are invalid.
+     * - if any required initialization parameters are empty.
+     * - if any initialization parameters are invalid.
+     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
+     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
+     * - if the private key is invalid.
+     * - if ssl signing fails due to system errors.
+     * - if the token storage fails to save the token record.
+     *
+     * @throws InvalidCredentialsException
+     * It might throw the InvalidCredentialsException if the authentication fails.
+     *
+     * @throws \OAuth2\MissingParametersException
+     * It might throw the MissingParametersException if any required paramters are empty.
      *
      * @author Oleg Schildt
      */
     public function authenticateUser($credentials, &$response)
     {
         if (empty($credentials["client_id"])) {
-            throw new \SmartFactory\SmartException("The client id is not specified!", "client_id_empty");
+            throw new MissingParametersException("The client id is not specified!");
         }
         
         return $this->createTokenRecord($this->user_authenticator->authenticateUser($credentials), $credentials["client_id"], $response);
@@ -786,11 +802,23 @@ class OAuthManager implements IOAuthManager
      * @return boolean
      * Returns true upon success, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
-     * It throws the following exception strings:
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors:
      *
-     * - invalid_refresh_token - if the refresh token is invalid (does not exist).
-     * - refresh_token_expired - if the refresh token is expired.
+     * - if any required initialization parameters are empty.
+     * - if any initialization parameters are invalid.
+     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
+     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
+     * - if the private key is invalid.
+     * - if ssl signing fails due to system errors.
+     * - if the token storage fails to verify the token record.
+     * - if the token storage fails to save the token record.
+     *
+     * @throws \OAuth2\InvalidTokenException
+     * It might throw the InvalidTokenException if the refresh token is invalid or expired.
+     *
+     * @throws \OAuth2\MissingParametersException
+     * It might throw the MissingParametersException if any required paramters are empty.
      *
      * @uses ITokenStorage::verifyRefreshToken()
      *
@@ -798,6 +826,18 @@ class OAuthManager implements IOAuthManager
      */
     public function refreshTokens($refresh_token, $user_id, $client_id, &$response)
     {
+        if (empty($user_id)) {
+            throw new MissingParametersException("The user id is not specified!");
+        }
+    
+        if (empty($client_id)) {
+            throw new MissingParametersException("The client id is not specified!");
+        }
+    
+        if (empty($client_id)) {
+            throw new MissingParametersException("The refresh token is not specified!");
+        }
+    
         if (!$this->token_storage->verifyRefreshToken($refresh_token, $user_id, $client_id)) {
             return false;
         }
@@ -811,19 +851,30 @@ class OAuthManager implements IOAuthManager
      * @param string $jwt_access_token
      * The jwt access token generated upon successful authentication.
      *
-     * @return array|false
-     * Returns the payload array on successful verification, otherwise false.
-     *
-     * @throws \SmartFactory\SmartException
-     * It throws the following exception strings:
-     *
-     * - invalid_access_token - if the access token is invalid (does not exist).
-     * - access_token_expired - if the access token is expired.
-     *
      * @param boolean $check_on_server
      * This flag defines whether only the signatire should be checked or also the
      * authentication server should be asked.
      *
+     * @return array|false
+     * Returns the payload array on successful verification, otherwise false.
+     *
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors:
+     *
+     * - if any required initialization parameters are empty.
+     * - if any initialization parameters are invalid.
+     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
+     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
+     * - if the public key is invalid.
+     * - if the ssl verification cannot be performed due to system errors.
+     * - if the token storage fails to verify the token record.
+     *
+     * @throws InvalidTokenException
+     * It might throw the InvalidTokenException if the jwt access token is invalid.
+     *
+     * @throws \OAuth2\MissingParametersException
+     * It might throw the MissingParametersException if any required paramters are empty.
+
      * @uses ITokenStorage::verifyAccessToken()
      *
      * @author Oleg Schildt
@@ -832,10 +883,22 @@ class OAuthManager implements IOAuthManager
     {
         $payload = $this->getJwtPayload($jwt_access_token);
         
-        if (empty($payload) || empty($payload["access_token"]) || empty($payload["user_id"]) || empty($payload["client_id"])) {
-            throw new \SmartFactory\SmartException("The access token is invalid!", "invalid_access_token");
+        if (empty($payload)) {
+            throw new InvalidTokenException("The jwt access token is invalid, the payload is empty!");
         }
-        
+    
+        if (empty($payload["access_token"])) {
+            throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'access_token'!");
+        }
+    
+        if (empty($payload["user_id"])) {
+            throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'user_id'!");
+        }
+    
+        if (empty($payload["client_id"])) {
+            throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'client_id'!");
+        }
+
         if (!$check_on_server) {
             return $payload;
         }
@@ -868,11 +931,17 @@ class OAuthManager implements IOAuthManager
      * @return boolean
      * Returns true on successful invalidation, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
-     * It might throw an exception in the case of any errors:
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors:
      *
-     * - refresh_token_expired - if the refresh token is expired.
-     * - invalid_refresh_token - if the refresh token is invalid.
+     * - if the token storage fails to verify the token record.
+     * - if the token storage fails to delete the token record.
+     *
+     * @throws \OAuth2\InvalidTokenException
+     * It might throw the InvalidTokenException if the refresh token is invalid or expired.
+     *
+     * @throws \OAuth2\MissingParametersException
+     * It might throw the MissingParametersException if any required paramters are empty.
      *
      * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
      *
@@ -880,6 +949,18 @@ class OAuthManager implements IOAuthManager
      */
     public function invalidateUser($user_id, $client_id, $refresh_token)
     {
+        if (empty($user_id)) {
+            throw new MissingParametersException("The user id is not specified!");
+        }
+    
+        if (empty($client_id)) {
+            throw new MissingParametersException("The client id is not specified!");
+        }
+    
+        if (empty($client_id)) {
+            throw new MissingParametersException("The refresh token is not specified!");
+        }
+    
         if (!$this->token_storage->verifyRefreshToken($refresh_token, $user_id, $client_id)) {
             return false;
         }
@@ -908,11 +989,17 @@ class OAuthManager implements IOAuthManager
      * @return boolean
      * Returns true on successful invalidation, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
-     * It might throw an exception in the case of any errors:
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors:
      *
-     * - refresh_token_expired - if the refresh token is expired.
-     * - invalid_refresh_token - if the refresh token is invalid.
+     * - if the token storage fails to verify the token record.
+     * - if the token storage fails to delete the token record.
+     *
+     * @throws \OAuth2\InvalidTokenException
+     * It might throw the InvalidTokenException if the refresh token is invalid or expired.
+     *
+     * @throws \OAuth2\MissingParametersException
+     * It might throw the MissingParametersException if any required paramters are empty.
      *
      * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
      *
@@ -920,6 +1007,18 @@ class OAuthManager implements IOAuthManager
      */
     public function invalidateClient($user_id, $client_id, $refresh_token)
     {
+        if (empty($user_id)) {
+            throw new MissingParametersException("The user id is not specified!");
+        }
+    
+        if (empty($client_id)) {
+            throw new MissingParametersException("The client id is not specified!");
+        }
+    
+        if (empty($client_id)) {
+            throw new MissingParametersException("The refresh token is not specified!");
+        }
+
         if (!$this->token_storage->verifyRefreshToken($refresh_token, $user_id, $client_id)) {
             return false;
         }
@@ -940,16 +1039,19 @@ class OAuthManager implements IOAuthManager
      * @return boolean
      * Returns true on successful invalidation, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
+     * @throws \Exception
      * It might throw an exception in the case of any errors:
      *
-     * It might throw an exception in the case of any errors:
+     * - if any required initialization parameters are empty.
+     * - if any initialization parameters are invalid.
+     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
+     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
+     * - if the public key is invalid.
+     * - if the ssl verification cannot be performed due to system errors.
+     * - if the token storage fails to delete the token record.
      *
-     * - invalid_access_token - if the jwt access token is invalid.
-     * - missing_data_error - if the required parameters are empty.
-     * - invalid_data_error - if some parameters are invalid.
-     * - invalid_data_error - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - invalid_data_error - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
+     * @throws InvalidTokenException
+     * It might throw the InvalidTokenException if the jwt access token is invalid.
      *
      * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
      *
@@ -957,10 +1059,14 @@ class OAuthManager implements IOAuthManager
      */
     public function invalidateJwtAccessToken($jwt_access_token)
     {
-        $payload = $this->getJwtPayload($jwt_access_token, false);
-        
-        if (empty($payload) || empty($payload["access_token"])) {
-            throw new \SmartFactory\SmartException("The access token is invalid!", "invalid_access_token");
+        $payload = $this->getJwtPayload($jwt_access_token, true);
+    
+        if (empty($payload)) {
+            throw new InvalidTokenException("The jwt access token is invalid, the payload is empty!");
+        }
+    
+        if (empty($payload["access_token"])) {
+            throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'access_token'!");
         }
         
         return $this->token_storage->deleteTokenRecordByKey("access_token", $payload["access_token"]);
@@ -977,10 +1083,10 @@ class OAuthManager implements IOAuthManager
      * @return boolean
      * Returns true on successful invalidation, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
-     * It might throw an exception in the case of any errors:
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors:
      *
-     * - invalid_data_error - if some database parameters are invalid.
+     * - if the token storage fails to delete the token record.
      *
      * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
      *

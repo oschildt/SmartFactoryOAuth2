@@ -145,6 +145,9 @@ Oleg Schildt
 
 
 
+<h2>Package</h2>
+<a href="package-Default.html">Default</a>
+
 
 <h2>Source code</h2>
 <a href="source-OAuth2.Interfaces.ITokenStorage.html#15">OAuth2\Interfaces\ITokenStorage.php</a>
@@ -271,17 +274,10 @@ Oleg Schildt
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
-      <p>It might throw an exception in the case of any errors. Possible codes are:</p>
-<ul>
-<li>user_id_does_not_exist - no records found with this user id</li>
-<li>client_id_does_not_exist - no records found with this client id</li>
-<li>access_token_does_not_exist - no records found with this access token</li>
-<li>refresh_token_does_not_exist - no records found with this refresh</li>
-<li>ivalid_data_error - if some input data is ivalid</li>
-</ul><br>
+      <p>It might throw an exception in the case of any system errors.</p><br>
       
   
   </div>
@@ -297,7 +293,7 @@ Oleg Schildt
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.ITokenStorage.html#84">OAuth2\Interfaces\ITokenStorage.php</a>
+  <a href="source-OAuth2.Interfaces.ITokenStorage.html#78">OAuth2\Interfaces\ITokenStorage.php</a>
 
   
 
@@ -386,10 +382,10 @@ it should be overwritten.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
-      <p>It might throw an exception in the case of any errors.</p><br>
+      <p>It might throw an exception in the case of any system errors.</p><br>
       
   
   </div>
@@ -474,10 +470,22 @@ it should be overwritten.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
       <p>It might throw an exception in the case of any errors.</p><br>
+      
+  
+      <b><a href="class-OAuth2.InvalidTokenException.html">\OAuth2\InvalidTokenException</a></b><br>
+      
+      
+      <p>It should throw the InvalidTokenException if the access token is invalid.</p><br>
+      
+  
+      <b><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></b><br>
+      
+      
+      <p>It should throw the MissingParametersException if any required paramters are empty.</p><br>
       
   
   </div>
@@ -562,10 +570,22 @@ it should be overwritten.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
-      <p>It might throw an exception in the case of any errors.</p><br>
+      <p>It might throw an exception in the case of any system errors.</p><br>
+      
+  
+      <b><a href="class-OAuth2.InvalidTokenException.html">\OAuth2\InvalidTokenException</a></b><br>
+      
+      
+      <p>It should throw the InvalidTokenException if the refresh token is invalid.</p><br>
+      
+  
+      <b><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></b><br>
+      
+      
+      <p>It should throw the MissingParametersException if any required paramters are empty.</p><br>
       
   
   </div>
@@ -581,7 +601,7 @@ it should be overwritten.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.ITokenStorage.html#128">OAuth2\Interfaces\ITokenStorage.php</a>
+  <a href="source-OAuth2.Interfaces.ITokenStorage.html#134">OAuth2\Interfaces\ITokenStorage.php</a>
 
   
 
@@ -595,7 +615,7 @@ it should be overwritten.</p>
 
                     
                     <div id="footer">
-                        Generated on 2019-01-11 21:42
+                        Generated on 2019-01-13 20:28
                     </div>                    
                 </div>
             </div>

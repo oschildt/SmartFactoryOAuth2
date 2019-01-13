@@ -41,8 +41,8 @@ interface ITokenStorage extends IInitable
      * @return boolean
      * The method should return true upon successful save operation, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
-     * It might throw an exception in the case of any errors.
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors.
      *
      * @author Oleg Schildt
      */
@@ -68,14 +68,8 @@ interface ITokenStorage extends IInitable
      * @return boolean
      * The method should return true upon successful deletion, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
-     * It might throw an exception in the case of any errors. Possible codes are:
-     *
-     * - user_id_does_not_exist - no records found with this user id
-     * - client_id_does_not_exist - no records found with this client id
-     * - access_token_does_not_exist - no records found with this access token
-     * - refresh_token_does_not_exist - no records found with this refresh
-     * - ivalid_data_error - if some input data is ivalid
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors.
      *
      * @used_by IOAuthManager::invalidateUser()
      * @used_by IOAuthManager::invalidateClient()
@@ -101,8 +95,14 @@ interface ITokenStorage extends IInitable
      * @return boolean
      * The method should return true upon successful verification, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
+     * @throws \Exception
      * It might throw an exception in the case of any errors.
+     *
+     * @throws \OAuth2\InvalidTokenException
+     * It should throw the InvalidTokenException if the access token is invalid.
+     *
+     * @throws \OAuth2\MissingParametersException
+     * It should throw the MissingParametersException if any required paramters are empty.
      *
      * @author Oleg Schildt
      */
@@ -123,8 +123,14 @@ interface ITokenStorage extends IInitable
      * @return boolean
      * The method should return true upon successful verification, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
-     * It might throw an exception in the case of any errors.
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors.
+     *
+     * @throws \OAuth2\InvalidTokenException
+     * It should throw the InvalidTokenException if the refresh token is invalid.
+     *
+     * @throws \OAuth2\MissingParametersException
+     * It should throw the MissingParametersException if any required paramters are empty.
      *
      * @author Oleg Schildt
      */

@@ -27,8 +27,14 @@ interface IUserAuthenticator extends IInitable
      * @return boolean
      * The method should return the user id upon success, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
-     * It might throw an exception in the case of any errors.
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors.
+     *
+     * @throws \OAuth2\InvalidCredentialsException
+     * It should throw the InvalidCredentialsException if the authentication fails.
+     *
+     * @throws \OAuth2\MissingParametersException
+     * It should throw the MissingParametersException if any required paramters are empty.
      *
      * @author Oleg Schildt
      */
