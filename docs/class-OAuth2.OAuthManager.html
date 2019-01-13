@@ -984,16 +984,31 @@ token is the access token encoded and signed by the JWT standard approach.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
-      <p>It throws the following exception strings:</p>
+      <p>It might throw an exception in the case of any system errors:</p>
 <ul>
-<li>client_id_empty - if the client id is not specified.</li>
-<li>user_login_empty - if the user login is not specified.</li>
-<li>user_password_empty - if the use password is not specified.</li>
-<li>invalid_credentials - if the credentials are invalid.</li>
+<li>if any required initialization parameters are empty.</li>
+<li>if any initialization parameters are invalid.</li>
+<li>if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
+<li>if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
+<li>if the private key is invalid.</li>
+<li>if ssl signing fails due to system errors.</li>
+<li>if the token storage fails to save the token record.</li>
 </ul><br>
+      
+  
+      <b><a href="class-OAuth2.InvalidCredentialsException.html">\OAuth2\InvalidCredentialsException</a></b><br>
+      
+      
+      <p>It might throw the InvalidCredentialsException if the authentication fails.</p><br>
+      
+  
+      <b><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></b><br>
+      
+      
+      <p>It might throw the MissingParametersException if any required paramters are empty.</p><br>
       
   
   </div>
@@ -1014,7 +1029,7 @@ token is the access token encoded and signed by the JWT standard approach.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.OAuthManager.html#748">OAuth2\OAuthManager.php</a>
+  <a href="source-OAuth2.OAuthManager.html#764">OAuth2\OAuthManager.php</a>
 
   
 
@@ -1064,17 +1079,17 @@ token is the access token encoded and signed by the JWT standard approach.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
-      <p>It might throw an exception in the case of any errors:</p>
+      <p>It might throw an exception in the case of any system errors:</p>
 <ul>
-<li>missing_data_error - if the required parameters are empty.</li>
-<li>invalid_data_error - if some parameters are invalid.</li>
-<li>invalid_data_error - if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>invalid_data_error - if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
-<li>invalid_data_error - if the private key is invalid.</li>
-<li>system_error - if signing fails.</li>
+<li>if any required initialization parameters are empty.</li>
+<li>if any initialization parameters are invalid.</li>
+<li>if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
+<li>if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
+<li>if the private key is invalid.</li>
+<li>if ssl signing fails due to system errors.</li>
 </ul><br>
       
   
@@ -1162,12 +1177,18 @@ token is the access token encoded and signed by the JWT standard approach.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
       <p>It might throw an exception in the case of any errors:</p>
 <ul>
-<li>system_error - if the system funtions for generation fail.</li>
+<li>if any required initialization parameters are empty.</li>
+<li>if any initialization parameters are invalid.</li>
+<li>if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
+<li>if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
+<li>if the private key is invalid.</li>
+<li>if ssl signing fails due to system errors.</li>
+<li>if the token storage fails to save the token record.</li>
 </ul><br>
       
   
@@ -1186,7 +1207,7 @@ token is the access token encoded and signed by the JWT standard approach.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.OAuthManager.html#603">OAuth2\OAuthManager.php</a>
+  <a href="source-OAuth2.OAuthManager.html#610">OAuth2\OAuthManager.php</a>
 
   
 
@@ -1252,17 +1273,17 @@ token is the access token encoded and signed by the JWT standard approach.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
-      <p>It might throw an exception in the case of any errors:</p>
+      <p>It might throw an exception in the case of any system errors:</p>
 <ul>
-<li>missing_data_error - if the required parameters are empty.</li>
-<li>invalid_data_error - if some parameters are invalid.</li>
-<li>invalid_data_error - if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>invalid_data_error - if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
-<li>invalid_data_error - if the private key is invalid.</li>
-<li>system_error - if signing fails.</li>
+<li>if any required initialization parameters are empty.</li>
+<li>if any initialization parameters are invalid.</li>
+<li>if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
+<li>if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
+<li>if the private key is invalid.</li>
+<li>if ssl signing fails due to system errors.</li>
 </ul><br>
       
   
@@ -1347,17 +1368,17 @@ RS256, RS384, RS512.
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
-      <p>It might throw an exception in the case of any errors:</p>
+      <p>It might throw an exception in the case of any system errors:</p>
 <ul>
-<li>missing_data_error - if the required parameters are empty.</li>
-<li>invalid_data_error - if some parameters are invalid.</li>
-<li>invalid_data_error - if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>invalid_data_error - if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
-<li>invalid_data_error - if the private key is invalid.</li>
-<li>system_error - if signing fails.</li>
+<li>if any required initialization parameters are empty.</li>
+<li>if any initialization parameters are invalid.</li>
+<li>if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
+<li>if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
+<li>if the private key is invalid.</li>
+<li>if ssl signing fails due to system errors.</li>
 </ul><br>
       
   
@@ -1429,12 +1450,12 @@ RS256, RS384, RS512.
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
-      <p>It might throw an exception in the case of any errors:</p>
+      <p>It might throw an exception in the case of any system errors:</p>
 <ul>
-<li>system_error - if the system funtions for generation fail.</li>
+<li>if ssl funtions fail due to system errors.</li>
 </ul><br>
       
   
@@ -1511,19 +1532,24 @@ RS256, RS384, RS512.
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
       <p>It might throw an exception in the case of any errors:</p>
 <ul>
-<li>invalid_access_token - if the jwt access token is invalid.</li>
-<li>missing_data_error - if the required parameters are empty.</li>
-<li>invalid_data_error - if some parameters are invalid.</li>
-<li>invalid_data_error - if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>invalid_data_error - if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
-<li>invalid_data_error - if the public key is invalid.</li>
-<li>system_error - if the ssl verification cannot be performed due to errors.</li>
+<li>if any required initialization parameters are empty.</li>
+<li>if any initialization parameters are invalid.</li>
+<li>if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
+<li>if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
+<li>if the public key is invalid.</li>
+<li>if the ssl verification cannot be performed due to system errors.</li>
 </ul><br>
+      
+  
+      <b><a href="class-OAuth2.InvalidTokenException.html">\OAuth2\InvalidTokenException</a></b><br>
+      
+      
+      <p>It might throw the InvalidTokenException if the jwt access token is invalid.</p><br>
       
   
   </div>
@@ -1541,7 +1567,7 @@ RS256, RS384, RS512.
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.OAuthManager.html#459">OAuth2\OAuthManager.php</a>
+  <a href="source-OAuth2.OAuthManager.html#461">OAuth2\OAuthManager.php</a>
 
   
 
@@ -1620,15 +1646,15 @@ of the user upon his credentials before generation of the tokens.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
-      <p>It might throw an exception in the case of any errors:</p>
+      <p>It might throw an exception in the case of any system errors:</p>
 <ul>
-<li>missing_data_error - if the required parameters are empty.</li>
-<li>invalid_data_error - if some parameters are invalid.</li>
-<li>invalid_data_error - if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>invalid_data_error - if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
+<li>if any required initialization parameters are empty.</li>
+<li>if any initialization parameters are invalid.</li>
+<li>if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
+<li>if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
 </ul><br>
       
   
@@ -1650,7 +1676,7 @@ of the user upon his credentials before generation of the tokens.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.OAuthManager.html#668">OAuth2\OAuthManager.php</a>
+  <a href="source-OAuth2.OAuthManager.html#675">OAuth2\OAuthManager.php</a>
 
   
   <h2>See also</h2>
@@ -1736,14 +1762,26 @@ can be done only after authentication.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
-      <p>It might throw an exception in the case of any errors:</p>
+      <p>It might throw an exception in the case of any system errors:</p>
 <ul>
-<li>refresh_token_expired - if the refresh token is expired.</li>
-<li>invalid_refresh_token - if the refresh token is invalid.</li>
+<li>if the token storage fails to verify the token record.</li>
+<li>if the token storage fails to delete the token record.</li>
 </ul><br>
+      
+  
+      <b><a href="class-OAuth2.InvalidTokenException.html">\OAuth2\InvalidTokenException</a></b><br>
+      
+      
+      <p>It might throw the InvalidTokenException if the refresh token is invalid or expired.</p><br>
+      
+  
+      <b><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></b><br>
+      
+      
+      <p>It might throw the MissingParametersException if any required paramters are empty.</p><br>
       
   
   </div>
@@ -1764,7 +1802,7 @@ can be done only after authentication.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.OAuthManager.html#918">OAuth2\OAuthManager.php</a>
+  <a href="source-OAuth2.OAuthManager.html#1005">OAuth2\OAuthManager.php</a>
 
   
 
@@ -1827,18 +1865,25 @@ can be done only after authentication.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
       <p>It might throw an exception in the case of any errors:</p>
-<p>It might throw an exception in the case of any errors:</p>
 <ul>
-<li>invalid_access_token - if the jwt access token is invalid.</li>
-<li>missing_data_error - if the required parameters are empty.</li>
-<li>invalid_data_error - if some parameters are invalid.</li>
-<li>invalid_data_error - if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>invalid_data_error - if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
+<li>if any required initialization parameters are empty.</li>
+<li>if any initialization parameters are invalid.</li>
+<li>if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
+<li>if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
+<li>if the public key is invalid.</li>
+<li>if the ssl verification cannot be performed due to system errors.</li>
+<li>if the token storage fails to delete the token record.</li>
 </ul><br>
+      
+  
+      <b><a href="class-OAuth2.InvalidTokenException.html">\OAuth2\InvalidTokenException</a></b><br>
+      
+      
+      <p>It might throw the InvalidTokenException if the jwt access token is invalid.</p><br>
       
   
   </div>
@@ -1859,7 +1904,7 @@ can be done only after authentication.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.OAuthManager.html#955">OAuth2\OAuthManager.php</a>
+  <a href="source-OAuth2.OAuthManager.html#1057">OAuth2\OAuthManager.php</a>
 
   
 
@@ -1921,12 +1966,12 @@ can be done only after authentication.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
-      <p>It might throw an exception in the case of any errors:</p>
+      <p>It might throw an exception in the case of any system errors:</p>
 <ul>
-<li>invalid_data_error - if some database parameters are invalid.</li>
+<li>if the token storage fails to delete the token record.</li>
 </ul><br>
       
   
@@ -1948,7 +1993,7 @@ can be done only after authentication.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.OAuthManager.html#986">OAuth2\OAuthManager.php</a>
+  <a href="source-OAuth2.OAuthManager.html#1092">OAuth2\OAuthManager.php</a>
 
   
 
@@ -2032,14 +2077,26 @@ can be done only after authentication.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
-      <p>It might throw an exception in the case of any errors:</p>
+      <p>It might throw an exception in the case of any system errors:</p>
 <ul>
-<li>refresh_token_expired - if the refresh token is expired.</li>
-<li>invalid_refresh_token - if the refresh token is invalid.</li>
+<li>if the token storage fails to verify the token record.</li>
+<li>if the token storage fails to delete the token record.</li>
 </ul><br>
+      
+  
+      <b><a href="class-OAuth2.InvalidTokenException.html">\OAuth2\InvalidTokenException</a></b><br>
+      
+      
+      <p>It might throw the InvalidTokenException if the refresh token is invalid or expired.</p><br>
+      
+  
+      <b><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></b><br>
+      
+      
+      <p>It might throw the MissingParametersException if any required paramters are empty.</p><br>
       
   
   </div>
@@ -2060,7 +2117,7 @@ can be done only after authentication.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.OAuthManager.html#878">OAuth2\OAuthManager.php</a>
+  <a href="source-OAuth2.OAuthManager.html#947">OAuth2\OAuthManager.php</a>
 
   
 
@@ -2163,14 +2220,32 @@ token is the access token encoded and signed by the JWT standard approach.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
-      <p>It throws the following exception strings:</p>
+      <p>It might throw an exception in the case of any system errors:</p>
 <ul>
-<li>invalid_refresh_token - if the refresh token is invalid (does not exist).</li>
-<li>refresh_token_expired - if the refresh token is expired.</li>
+<li>if any required initialization parameters are empty.</li>
+<li>if any initialization parameters are invalid.</li>
+<li>if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
+<li>if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
+<li>if the private key is invalid.</li>
+<li>if ssl signing fails due to system errors.</li>
+<li>if the token storage fails to verify the token record.</li>
+<li>if the token storage fails to save the token record.</li>
 </ul><br>
+      
+  
+      <b><a href="class-OAuth2.InvalidTokenException.html">\OAuth2\InvalidTokenException</a></b><br>
+      
+      
+      <p>It might throw the InvalidTokenException if the refresh token is invalid or expired.</p><br>
+      
+  
+      <b><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></b><br>
+      
+      
+      <p>It might throw the MissingParametersException if any required paramters are empty.</p><br>
       
   
   </div>
@@ -2191,7 +2266,7 @@ token is the access token encoded and signed by the JWT standard approach.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.OAuthManager.html#796">OAuth2\OAuthManager.php</a>
+  <a href="source-OAuth2.OAuthManager.html#824">OAuth2\OAuthManager.php</a>
 
   
 
@@ -2371,15 +2446,15 @@ token is the access token encoded and signed by the JWT standard approach.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
-      <p>It might throw an exception in the case of any errors:</p>
+      <p>It might throw an exception in the case of any system errors:</p>
 <ul>
-<li>missing_data_error - if the required parameters are empty.</li>
-<li>invalid_data_error - if some parameters are invalid.</li>
-<li>invalid_data_error - if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>invalid_data_error - if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
+<li>if any required initialization parameters are empty.</li>
+<li>if any initialization parameters are invalid.</li>
+<li>if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
+<li>if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
 </ul><br>
       
   
@@ -2398,7 +2473,7 @@ token is the access token encoded and signed by the JWT standard approach.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.OAuthManager.html#523">OAuth2\OAuthManager.php</a>
+  <a href="source-OAuth2.OAuthManager.html#524">OAuth2\OAuthManager.php</a>
 
   
 
@@ -2468,14 +2543,31 @@ authentication server should be asked.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
-      <p>It throws the following exception strings:</p>
+      <p>It might throw an exception in the case of any system errors:</p>
 <ul>
-<li>invalid_access_token - if the access token is invalid (does not exist).</li>
-<li>access_token_expired - if the access token is expired.</li>
+<li>if any required initialization parameters are empty.</li>
+<li>if any initialization parameters are invalid.</li>
+<li>if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
+<li>if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
+<li>if the public key is invalid.</li>
+<li>if the ssl verification cannot be performed due to system errors.</li>
+<li>if the token storage fails to verify the token record.</li>
 </ul><br>
+      
+  
+      <b><a href="class-OAuth2.InvalidTokenException.html">\OAuth2\InvalidTokenException</a></b><br>
+      
+      
+      <p>It might throw the InvalidTokenException if the jwt access token is invalid.</p><br>
+      
+  
+      <b><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></b><br>
+      
+      
+      <p>It might throw the MissingParametersException if any required paramters are empty.</p><br>
       
   
   </div>
@@ -2496,7 +2588,7 @@ authentication server should be asked.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.OAuthManager.html#828">OAuth2\OAuthManager.php</a>
+  <a href="source-OAuth2.OAuthManager.html#879">OAuth2\OAuthManager.php</a>
 
   
 
@@ -2561,17 +2653,17 @@ authentication server should be asked.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
       <p>It might throw an exception in the case of any errors:</p>
 <ul>
-<li>missing_data_error - if the required parameters are empty.</li>
-<li>invalid_data_error - if some parameters are invalid.</li>
-<li>invalid_data_error - if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>invalid_data_error - if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
-<li>invalid_data_error - if the public key is invalid.</li>
-<li>system_error - if the ssl verification cannot be performed due to errors.</li>
+<li>if any required initialization parameters are empty.</li>
+<li>if any initialization parameters are invalid.</li>
+<li>if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
+<li>if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
+<li>if the public key is invalid.</li>
+<li>if the ssl verification cannot be performed due to system errors.</li>
 </ul><br>
       
   
@@ -2667,17 +2759,17 @@ RS256, RS384, RS512.
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
-      <p>It might throw an exception in the case of any errors:</p>
+      <p>It might throw an exception in the case of any system errors:</p>
 <ul>
-<li>missing_data_error - if the required parameters are empty.</li>
-<li>invalid_data_error - if some parameters are invalid.</li>
-<li>invalid_data_error - if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>invalid_data_error - if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
-<li>invalid_data_error - if the public key is invalid.</li>
-<li>system_error - if the ssl verification cannot be performed due to errors.</li>
+<li>if any required initialization parameters are empty.</li>
+<li>if any initialization parameters are invalid.</li>
+<li>if token_storage does not implement <a href="interface-OAuth2.Interfaces.ITokenStorage.html">\OAuth2\Interfaces\ITokenStorage</a>.</li>
+<li>if user_authenticator does not implement <a href="interface-OAuth2.Interfaces.IUserAuthenticator.html">\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
+<li>if the public key is invalid.</li>
+<li>if the ssl verification cannot be performed due to system errors.</li>
 </ul><br>
       
   
@@ -2731,7 +2823,7 @@ RS256, RS384, RS512.
 
                     
                     <div id="footer">
-                        Generated on 2019-01-11 21:42
+                        Generated on 2019-01-13 20:39
                     </div>                    
                 </div>
             </div>

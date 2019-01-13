@@ -103,19 +103,25 @@
 </span><span class="line" id="27">27: </span><span class="php-comment">     * @return boolean
 </span><span class="line" id="28">28: </span><span class="php-comment">     * The method should return the user id upon success, otherwise false.
 </span><span class="line" id="29">29: </span><span class="php-comment">     *
-</span><span class="line" id="30">30: </span><span class="php-comment">     * @throws \SmartFactory\SmartException
-</span><span class="line" id="31">31: </span><span class="php-comment">     * It might throw an exception in the case of any errors.
+</span><span class="line" id="30">30: </span><span class="php-comment">     * @throws \Exception
+</span><span class="line" id="31">31: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
 </span><span class="line" id="32">32: </span><span class="php-comment">     *
-</span><span class="line" id="33">33: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="34">34: </span><span class="php-comment">     */</span>
-<span class="line" id="35">35: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> authenticateUser(<span class="php-var">$credentials</span>);
-<span class="line" id="36">36: </span>}
+</span><span class="line" id="33">33: </span><span class="php-comment">     * @throws \OAuth2\InvalidCredentialsException
+</span><span class="line" id="34">34: </span><span class="php-comment">     * It should throw the InvalidCredentialsException if the authentication fails.
+</span><span class="line" id="35">35: </span><span class="php-comment">     *
+</span><span class="line" id="36">36: </span><span class="php-comment">     * @throws \OAuth2\MissingParametersException
+</span><span class="line" id="37">37: </span><span class="php-comment">     * It should throw the MissingParametersException if any required paramters are empty.
+</span><span class="line" id="38">38: </span><span class="php-comment">     *
+</span><span class="line" id="39">39: </span><span class="php-comment">     * @author Oleg Schildt
+</span><span class="line" id="40">40: </span><span class="php-comment">     */</span>
+<span class="line" id="41">41: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> authenticateUser(<span class="php-var">$credentials</span>);
+<span class="line" id="42">42: </span>}
 </code>
 </pre>
 </div>
                     
                     <div id="footer">
-                        Generated on 2019-01-11 21:42
+                        Generated on 2019-01-13 20:39
                     </div>                    
                 </div>
             </div>

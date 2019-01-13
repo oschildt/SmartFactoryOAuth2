@@ -54,8 +54,14 @@ interface IOAuthManager extends IInitable
      * @return boolean
      * The method should return true upon success, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
-     * It might throw an exception in the case of any errors.
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors.
+     *
+     * @throws \OAuth2\InvalidCredentialsException
+     * It should throw the InvalidCredentialsException if the authentication fails.
+     *
+     * @throws \OAuth2\MissingParametersException
+     * It should throw the MissingParametersException if any required paramters are empty.
      *
      * @author Oleg Schildt
      */
@@ -90,8 +96,14 @@ interface IOAuthManager extends IInitable
      * @return boolean
      * The method should return true upon success, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
-     * It might throw an exception in the case of any errors.
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors.
+     *
+     * @throws \OAuth2\InvalidTokenException
+     * It should throw the InvalidTokenException if the refresh token is invalid.
+     *
+     * @throws \OAuth2\MissingParametersException
+     * It should throw the MissingParametersException if some required paramters are empty.
      *
      * @author Oleg Schildt
      */
@@ -110,8 +122,11 @@ interface IOAuthManager extends IInitable
      * @return array|false
      * The method should return the payload array on successful verification, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
-     * It might throw an exception in the case of any errors.
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors.
+     *
+     * @throws \OAuth2\InvalidTokenException
+     * It should throw the InvalidTokenException if the access token is invalid.
      *
      * @author Oleg Schildt
      */
@@ -138,8 +153,14 @@ interface IOAuthManager extends IInitable
      * @return boolean
      * The method should return true on successful invalidation, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
-     * It might throw an exception in the case of any errors.
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors.
+     *
+     * @throws \OAuth2\InvalidTokenException
+     * It should throw the InvalidTokenException if the refresh token is invalid.
+     *
+     * @throws \OAuth2\MissingParametersException
+     * It should throw the MissingParametersException if some required paramters are empty.
      *
      * @author Oleg Schildt
      */
@@ -166,8 +187,14 @@ interface IOAuthManager extends IInitable
      * @return boolean
      * The method should return true on successful invalidation, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
+     * @throws \Exception
      * It might throw an exception in the case of any errors.
+     *
+     * @throws \OAuth2\InvalidTokenException
+     * It should throw the InvalidTokenException if the refresh token is invalid.
+     *
+     * @throws \OAuth2\MissingParametersException
+     * It should throw the MissingParametersException if some required paramters are empty.
      *
      * @author Oleg Schildt
      */
@@ -186,8 +213,11 @@ interface IOAuthManager extends IInitable
      * @return boolean
      * The method should return true on successful invalidation, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
-     * It might throw an exception in the case of any errors.
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors.
+     *
+     * @throws \OAuth2\InvalidTokenException
+     * It should throw the InvalidTokenException if the access token is invalid.
      *
      * @author Oleg Schildt
      */
@@ -204,8 +234,11 @@ interface IOAuthManager extends IInitable
      * @return boolean
      * The method should return true on successful invalidation, otherwise false.
      *
-     * @throws \SmartFactory\SmartException
-     * It might throw an exception in the case of any errors.
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors.
+     *
+     * @throws \OAuth2\InvalidTokenException
+     * It should throw the InvalidTokenException if the refresh token is invalid.
      *
      * @author Oleg Schildt
      */

@@ -222,10 +222,22 @@ Oleg Schildt
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\SmartFactory\SmartException</b><br>
+      <b>\Exception</b><br>
       
       
-      <p>It might throw an exception in the case of any errors.</p><br>
+      <p>It might throw an exception in the case of any system errors.</p><br>
+      
+  
+      <b><a href="class-OAuth2.InvalidCredentialsException.html">\OAuth2\InvalidCredentialsException</a></b><br>
+      
+      
+      <p>It should throw the InvalidCredentialsException if the authentication fails.</p><br>
+      
+  
+      <b><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></b><br>
+      
+      
+      <p>It should throw the MissingParametersException if any required paramters are empty.</p><br>
       
   
   </div>
@@ -241,7 +253,7 @@ Oleg Schildt
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.IUserAuthenticator.html#32">OAuth2\Interfaces\IUserAuthenticator.php</a>
+  <a href="source-OAuth2.Interfaces.IUserAuthenticator.html#38">OAuth2\Interfaces\IUserAuthenticator.php</a>
 
   
 
@@ -255,7 +267,7 @@ Oleg Schildt
 
                     
                     <div id="footer">
-                        Generated on 2019-01-11 21:42
+                        Generated on 2019-01-13 20:39
                     </div>                    
                 </div>
             </div>
