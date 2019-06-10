@@ -1,5 +1,6 @@
 {
   "name": "smartfactory/oauth2",
+  "type": "library",
   "description": "Implementation of the OAuth2 and JWT.",
   "keywords": ["OAuth2", "library", "JWT"],
   "license": "MIT",
@@ -19,6 +20,6 @@
   
   "require": {
     "php": ">=7.2.0",
-    "smartfactory/smartfactory": ">=2.0.6"
+    "smartfactory/smartfactory": ">=2.0.7"
   }
 }
