@@ -27,7 +27,7 @@ composer require smartfactory/oauth2"
   "require": {
     "php": ">=7.2",
     "smartfactory/smartfactory": ">=2.1.0",
-    "smartfactory/oauth2": ">=1.2.0"
+    "smartfactory/oauth2": ">=1.2.1"
   }
   
   ...
