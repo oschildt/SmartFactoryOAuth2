@@ -26,8 +26,8 @@ composer require smartfactory/oauth2"
 
   "require": {
     "php": ">=7.2",
-    "smartfactory/smartfactory": ">=2.0.8",
-    "smartfactory/oauth2": ">=1.1.9"
+    "smartfactory/smartfactory": ">=2.0.9",
+    "smartfactory/oauth2": ">=1.2.0"
   }
   
   ...
@@ -37,10 +37,10 @@ composer require smartfactory/oauth2"
 ### To get familiar with the SmartFactory Core and OAuth2 Server do the following:
 
 - Git-clone the demo application [SmartFactoryDemo](https://github.com/oschildt/SmartFactoryDemo) and run 'composer update'.
-- Use the script database/create_database_mysql.sql (create_database_mssql.sql) to create a demo database necessary for some examples.
+- Use the script *database/create_database_mysql.sql* (*create_database_mssql.sql*) to create a demo database necessary for some examples.
 - View and study the API documentation in the folder docs or here [OAuth2 API documentation](http://php-smart-factory.org/oauth2/).
 - Study the core code of the library SmartFactory and SmartFactory OAuth2 Server.
-- The example 18.oauth.php demonstrates usage of the SmartFactory OAuth2 Server.
+- The example *18.oauth.php* demonstrates usage of the SmartFactory OAuth2 Server.
 
 ### To start writing own application using SmartFactory OAuth2 Server
 
@@ -50,11 +50,11 @@ composer require smartfactory/oauth2"
 
 3. Implement the interfaces IUserAuthenticator and IUserAuthenticator. 
 
-4. Bind you classes to the interfaces in the file factory_init_inc.php to be able to use the IoC approach for creating objects offered by the library SmartFactory.
+4. Bind you classes to the interfaces in the file *initialization_inc.php* to be able to use the IoC approach for creating objects offered by the library SmartFactory.
 
 7. Implement the JSON API request handlers.
 
-8. Add translation texts for your application over the localization/edit.php or directly into the XML file localization/texts.xml.  Use the script localization/check.php to check your translations for duplicates and missing translations.
+8. Add translation texts for your application over the *localization/edit.php* or directly into the JSON file *localization/texts.json*. Use the script *localization/check.php* to check your translations for missing translations.
 
 ## Directory Structure 
 
