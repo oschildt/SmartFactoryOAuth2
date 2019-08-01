@@ -13,14 +13,6 @@
 <path fill="none" stroke="gray" d="M20,-8C20,-8 597.593,-8 597.593,-8 603.593,-8 609.593,-14 609.593,-20 609.593,-20 609.593,-310 609.593,-310 609.593,-316 603.593,-322 597.593,-322 597.593,-322 20,-322 20,-322 14,-322 8,-316 8,-310 8,-310 8,-20 8,-20 8,-14 14,-8 20,-8"/>
 <text text-anchor="middle" x="308.796" y="-309.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">Global</text>
 </g>
-<g id="clust4" class="cluster"><title>cluster_Global\SmartFactory</title>
-<path fill="none" stroke="gray" d="M28,-70C28,-70 116.593,-70 116.593,-70 122.593,-70 128.593,-76 128.593,-82 128.593,-82 128.593,-166 128.593,-166 128.593,-172 122.593,-178 116.593,-178 116.593,-178 28,-178 28,-178 22,-178 16,-172 16,-166 16,-166 16,-82 16,-82 16,-76 22,-70 28,-70"/>
-<text text-anchor="middle" x="72.2964" y="-165.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">SmartFactory</text>
-</g>
-<g id="clust5" class="cluster"><title>cluster_Global\SmartFactory\Interfaces</title>
-<path fill="none" stroke="gray" d="M36,-78C36,-78 108.593,-78 108.593,-78 114.593,-78 120.593,-84 120.593,-90 120.593,-90 120.593,-138 120.593,-138 120.593,-144 114.593,-150 108.593,-150 108.593,-150 36,-150 36,-150 30,-150 24,-144 24,-138 24,-138 24,-90 24,-90 24,-84 30,-78 36,-78"/>
-<text text-anchor="middle" x="72.2964" y="-137.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">Interfaces</text>
-</g>
 <g id="clust2" class="cluster"><title>cluster_\OAuth2</title>
 <path fill="none" stroke="gray" d="M180.593,-16C180.593,-16 589.593,-16 589.593,-16 595.593,-16 601.593,-22 601.593,-28 601.593,-28 601.593,-238 601.593,-238 601.593,-244 595.593,-250 589.593,-250 589.593,-250 180.593,-250 180.593,-250 174.593,-250 168.593,-244 168.593,-238 168.593,-238 168.593,-28 168.593,-28 168.593,-22 174.593,-16 180.593,-16"/>
 <text text-anchor="middle" x="385.093" y="-237.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">OAuth2</text>
@@ -28,6 +20,14 @@
 <g id="clust3" class="cluster"><title>cluster_\OAuth2\Interfaces</title>
 <path fill="none" stroke="gray" d="M188.593,-24C188.593,-24 318.593,-24 318.593,-24 324.593,-24 330.593,-30 330.593,-36 330.593,-36 330.593,-192 330.593,-192 330.593,-198 324.593,-204 318.593,-204 318.593,-204 188.593,-204 188.593,-204 182.593,-204 176.593,-198 176.593,-192 176.593,-192 176.593,-36 176.593,-36 176.593,-30 182.593,-24 188.593,-24"/>
 <text text-anchor="middle" x="253.593" y="-191.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">Interfaces</text>
+</g>
+<g id="clust4" class="cluster"><title>cluster_Global\SmartFactory</title>
+<path fill="none" stroke="gray" d="M28,-70C28,-70 116.593,-70 116.593,-70 122.593,-70 128.593,-76 128.593,-82 128.593,-82 128.593,-166 128.593,-166 128.593,-172 122.593,-178 116.593,-178 116.593,-178 28,-178 28,-178 22,-178 16,-172 16,-166 16,-166 16,-82 16,-82 16,-76 22,-70 28,-70"/>
+<text text-anchor="middle" x="72.2964" y="-165.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">SmartFactory</text>
+</g>
+<g id="clust5" class="cluster"><title>cluster_Global\SmartFactory\Interfaces</title>
+<path fill="none" stroke="gray" d="M36,-78C36,-78 108.593,-78 108.593,-78 114.593,-78 120.593,-84 120.593,-90 120.593,-90 120.593,-138 120.593,-138 120.593,-144 114.593,-150 108.593,-150 108.593,-150 36,-150 36,-150 30,-150 24,-144 24,-138 24,-138 24,-90 24,-90 24,-84 30,-78 36,-78"/>
+<text text-anchor="middle" x="72.2964" y="-137.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">Interfaces</text>
 </g>
 <!-- \\OAuth2\\Interfaces\\IOAuthManager -->
 <g id="node1" class="node"><title>\\OAuth2\\Interfaces\\IOAuthManager</title>
