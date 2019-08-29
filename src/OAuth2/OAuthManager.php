@@ -606,7 +606,7 @@ class OAuthManager implements IOAuthManager
      * @uses ITokenStorage::saveTokenRecord()
      *
      * @used_by authenticateUser()
-     * @used_by refreshAccessToken()
+     * @used_by refreshTokens()
      *
      * @author Oleg Schildt
      */
