@@ -956,7 +956,7 @@ class OAuthManager implements IOAuthManager
             throw new MissingParametersException("The client id is not specified!");
         }
         
-        if (empty($client_id)) {
+        if (empty($refresh_token)) {
             throw new MissingParametersException("The refresh token is not specified!");
         }
         
@@ -1014,7 +1014,7 @@ class OAuthManager implements IOAuthManager
             throw new MissingParametersException("The client id is not specified!");
         }
         
-        if (empty($client_id)) {
+        if (empty($refresh_token)) {
             throw new MissingParametersException("The refresh token is not specified!");
         }
         
