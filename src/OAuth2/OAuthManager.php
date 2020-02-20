@@ -619,11 +619,11 @@ class OAuthManager implements IOAuthManager
         $response["refresh_token_expire"] = time() + $this->refresh_token_ttl;
         
         $response["access_token"] = $this->generateToken();
+        $response["access_token_expire"] = time() + $this->access_token_ttl;
         
-        $payload = ["access_token" => $response["access_token"], "user_id" => $user_id, "client_id" => $client_id];
+        $payload = ["access_token" => $response["access_token"], "access_token_expire" => $response["access_token_expire"], "user_id" => $user_id, "client_id" => $client_id];
         
         $response["jwt_access_token"] = $this->createJwtToken($payload);
-        $response["access_token_expire"] = time() + $this->access_token_ttl;
         
         $this->token_storage->saveTokenRecord($response);
         
@@ -872,7 +872,10 @@ class OAuthManager implements IOAuthManager
      * @throws InvalidTokenException
      * It might throw the InvalidTokenException if the jwt access token is invalid.
      *
-     * @throws \OAuth2\MissingParametersException
+     * @throws TokenExpiredException
+     * It might throw the TokenExpiredException if the jwt access token is expired.
+     *
+     * @throws MissingParametersException
      * It might throw the MissingParametersException if any required paramters are empty.
      * @uses ITokenStorage::verifyAccessToken()
      *
@@ -897,7 +900,15 @@ class OAuthManager implements IOAuthManager
         if (empty($payload["client_id"])) {
             throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'client_id'!");
         }
-        
+    
+        if (empty($payload["access_token_expire"])) {
+            throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'access_token_expire'!");
+        }
+    
+        if (time() > $payload["access_token_expire"]) {
+            throw new TokenExpiredException("The access token is expired!");
+        }
+
         if (!$check_on_server) {
             return $payload;
         }

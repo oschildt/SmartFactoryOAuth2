@@ -51,5 +51,6 @@ ApiGen.elements = [
 {"file":"class-OAuth2.OAuthManager.html#validateParameters","label":"OAuthManager::validateParameters()"},
 {"file":"class-OAuth2.OAuthManager.html#verifyJwtAccessToken","label":"OAuthManager::verifyJwtAccessToken()"},
 {"file":"class-OAuth2.OAuthManager.html#verifyJwtSignature","label":"OAuthManager::verifyJwtSignature()"},
-{"file":"class-OAuth2.OAuthManager.html#verifyRSASignature","label":"OAuthManager::verifyRSASignature()"}
+{"file":"class-OAuth2.OAuthManager.html#verifyRSASignature","label":"OAuthManager::verifyRSASignature()"},
+{"file":"class-OAuth2.TokenExpiredException.html","label":"TokenExpiredException - Class"}
 ];
