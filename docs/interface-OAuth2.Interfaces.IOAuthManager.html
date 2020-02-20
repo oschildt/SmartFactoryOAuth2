@@ -519,7 +519,7 @@ can be done only after authentication.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.IOAuthManager.html#198">OAuth2\Interfaces\IOAuthManager.php</a>
+  <a href="source-OAuth2.Interfaces.IOAuthManager.html#201">OAuth2\Interfaces\IOAuthManager.php</a>
 
   
 
@@ -600,7 +600,7 @@ can be done only after authentication.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.IOAuthManager.html#221">OAuth2\Interfaces\IOAuthManager.php</a>
+  <a href="source-OAuth2.Interfaces.IOAuthManager.html#224">OAuth2\Interfaces\IOAuthManager.php</a>
 
   
 
@@ -680,7 +680,7 @@ can be done only after authentication.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.IOAuthManager.html#242">OAuth2\Interfaces\IOAuthManager.php</a>
+  <a href="source-OAuth2.Interfaces.IOAuthManager.html#245">OAuth2\Interfaces\IOAuthManager.php</a>
 
   
 
@@ -788,7 +788,7 @@ can be done only after authentication.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.IOAuthManager.html#164">OAuth2\Interfaces\IOAuthManager.php</a>
+  <a href="source-OAuth2.Interfaces.IOAuthManager.html#167">OAuth2\Interfaces\IOAuthManager.php</a>
 
   
 
@@ -980,10 +980,16 @@ authentication server should be asked.</p>
       <p>It might throw an exception in the case of any system errors.</p><br>
       
   
-      <b><a href="class-OAuth2.InvalidTokenException.html">\OAuth2\InvalidTokenException</a></b><br>
+      <b>\OAuth2\Interfaces\InvalidTokenException</b><br>
       
       
       <p>It should throw the InvalidTokenException if the access token is invalid.</p><br>
+      
+  
+      <b>\OAuth2\Interfaces\TokenExpiredException</b><br>
+      
+      
+      <p>It might throw the TokenExpiredException if the jwt access token is expired.</p><br>
       
   
   </div>
@@ -999,7 +1005,7 @@ authentication server should be asked.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.IOAuthManager.html#130">OAuth2\Interfaces\IOAuthManager.php</a>
+  <a href="source-OAuth2.Interfaces.IOAuthManager.html#133">OAuth2\Interfaces\IOAuthManager.php</a>
 
   
 
@@ -1013,7 +1019,7 @@ authentication server should be asked.</p>
 
                     
                     <div id="footer">
-                        Generated on 2020-02-20 09:07
+                        Generated on 2020-02-20 09:43
                     </div>                    
                 </div>
             </div>

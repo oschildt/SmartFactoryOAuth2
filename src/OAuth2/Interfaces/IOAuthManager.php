@@ -125,8 +125,11 @@ interface IOAuthManager extends IInitable
      * @throws \Exception
      * It might throw an exception in the case of any system errors.
      *
-     * @throws \OAuth2\InvalidTokenException
+     * @throws InvalidTokenException
      * It should throw the InvalidTokenException if the access token is invalid.
+     *
+     * @throws TokenExpiredException
+     * It might throw the TokenExpiredException if the jwt access token is expired.
      *
      * @author Oleg Schildt
      */
