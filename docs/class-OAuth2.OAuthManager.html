@@ -491,6 +491,18 @@ RS256, RS384, RS512.
       
       <tr>
           <td>
+              <a href="#verifyJwtRefreshToken">verifyJwtRefreshToken</a>
+          </td>
+          <td>
+              <span class='public'>public</span>
+          </td>
+          <td class="description_column">
+              Verifies the refresh token.
+          </td>
+      </tr>
+      
+      <tr>
+          <td>
               <a href="#verifyJwtSignature">verifyJwtSignature</a>
           </td>
           <td>
@@ -1802,7 +1814,7 @@ can be done only after authentication.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.OAuthManager.html#1015">OAuth2\OAuthManager.php</a>
+  <a href="source-OAuth2.OAuthManager.html#1049">OAuth2\OAuthManager.php</a>
 
   
 
@@ -1904,7 +1916,7 @@ can be done only after authentication.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.OAuthManager.html#1067">OAuth2\OAuthManager.php</a>
+  <a href="source-OAuth2.OAuthManager.html#1101">OAuth2\OAuthManager.php</a>
 
   
 
@@ -1993,7 +2005,7 @@ can be done only after authentication.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.OAuthManager.html#1102">OAuth2\OAuthManager.php</a>
+  <a href="source-OAuth2.OAuthManager.html#1136">OAuth2\OAuthManager.php</a>
 
   
 
@@ -2117,7 +2129,7 @@ can be done only after authentication.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.OAuthManager.html#957">OAuth2\OAuthManager.php</a>
+  <a href="source-OAuth2.OAuthManager.html#991">OAuth2\OAuthManager.php</a>
 
   
 
@@ -2594,7 +2606,7 @@ authentication server should be asked.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.OAuthManager.html#881">OAuth2\OAuthManager.php</a>
+  <a href="source-OAuth2.OAuthManager.html#882">OAuth2\OAuthManager.php</a>
 
   
 
@@ -2603,6 +2615,115 @@ authentication server should be asked.</p>
   <div class="item_list">
   
   <a href="interface-OAuth2.Interfaces.ITokenStorage.html#verifyAccessToken">\OAuth2\Interfaces\ITokenStorage::verifyAccessToken()</a><br>
+  
+  </div>
+  
+
+  
+  
+  
+  <hr id="verifyJwtRefreshToken">
+  
+  <h1>Method: verifyJwtRefreshToken</h1>
+
+  <div class="definition"><span class="php-keyword1">public</span> <b>verifyJwtRefreshToken</b>(string <span class="php-var">$refresh_token</span>,
+                             string <span class="php-var">$user_id</span>,
+                             string <span class="php-var">$client_id</span>
+                            ) : boolean</div>
+
+  
+  <div class="short-description">
+  Verifies the refresh token.
+  </div>
+  
+
+  
+
+  
+  <h2>Parameters</h2>
+  
+      <h3>$refresh_token</h3>
+      <span class="type_label">Type:</span> string
+      
+      <div class="param-description">
+      <p>The refresh token to be verified.</p>
+      </div>
+      
+  
+      <h3>$user_id</h3>
+      <span class="type_label">Type:</span> string
+      
+      <div class="param-description">
+      <p>The user id for which the refresh token was issued.</p>
+      </div>
+      
+  
+      <h3>$client_id</h3>
+      <span class="type_label">Type:</span> string
+      
+      <div class="param-description">
+      <p>The client id for which the refresh token was issued.</p>
+      </div>
+      
+  
+  
+
+  
+  <h2>Returns</h2>
+  <span class="type_label">Type:</span> boolean
+  
+  <div class="param-description">
+  <p>The method returns true upon successful verification, otherwise false.</p>
+  </div>
+  
+  
+
+  
+  <h2>Throws</h2>
+  <div class="item_list">
+  
+      <b>\Exception</b><br>
+      
+      
+      <p>It might throw an exception in the case of any system errors.</p><br>
+      
+  
+      <b><a href="class-OAuth2.InvalidTokenException.html">\OAuth2\InvalidTokenException</a></b><br>
+      
+      
+      <p>It should throw the InvalidTokenException if the refresh token is invalid.</p><br>
+      
+  
+      <b><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></b><br>
+      
+      
+      <p>It should throw the MissingParametersException if any required paramters are empty.</p><br>
+      
+  
+  </div>
+  
+
+  
+  
+  
+  
+  
+  
+  
+  <h2>Author</h2>
+  Oleg Schildt
+  
+
+  <h2>Source code</h2>
+  <a href="source-OAuth2.OAuthManager.html#949">OAuth2\OAuthManager.php</a>
+
+  
+
+  
+  <h2>Uses</h2>
+  <div class="item_list">
+  
+  <a href="interface-OAuth2.Interfaces.ITokenStorage.html#verifyRefreshToken">\OAuth2\Interfaces\ITokenStorage::verifyRefreshToken()</a><br>
   
   </div>
   
@@ -2829,7 +2950,7 @@ RS256, RS384, RS512.
 
                     
                     <div id="footer">
-                        Generated on 2020-02-20 09:43
+                        Generated on 2020-09-03 13:56
                     </div>                    
                 </div>
             </div>

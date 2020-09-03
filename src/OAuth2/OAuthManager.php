@@ -877,6 +877,7 @@ class OAuthManager implements IOAuthManager
      *
      * @throws MissingParametersException
      * It might throw the MissingParametersException if any required paramters are empty.
+     *
      * @uses ITokenStorage::verifyAccessToken()
      *
      * @author Oleg Schildt
@@ -900,15 +901,15 @@ class OAuthManager implements IOAuthManager
         if (empty($payload["client_id"])) {
             throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'client_id'!");
         }
-    
+        
         if (empty($payload["access_token_expire"])) {
             throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'access_token_expire'!");
         }
-    
+        
         if (time() > $payload["access_token_expire"]) {
             throw new TokenExpiredException("The access token is expired!");
         }
-
+        
         if (!$check_on_server) {
             return $payload;
         }
@@ -918,6 +919,39 @@ class OAuthManager implements IOAuthManager
         }
         
         return false;
+    }
+    
+    /**
+     * Verifies the refresh token.
+     *
+     * @param string $refresh_token
+     * The refresh token to be verified.
+     *
+     * @param string $user_id
+     * The user id for which the refresh token was issued.
+     *
+     * @param string $client_id
+     * The client id for which the refresh token was issued.
+     *
+     * @return boolean
+     * The method returns true upon successful verification, otherwise false.
+     *
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors.
+     *
+     * @throws \OAuth2\InvalidTokenException
+     * It should throw the InvalidTokenException if the refresh token is invalid.
+     *
+     * @throws \OAuth2\MissingParametersException
+     * It should throw the MissingParametersException if any required paramters are empty.
+     *
+     * @uses ITokenStorage::verifyRefreshToken()
+     *
+     * @author Oleg Schildt
+     */
+    public function verifyJwtRefreshToken($refresh_token, $user_id, $client_id)
+    {
+        return $this->token_storage->verifyRefreshToken($refresh_token, $user_id, $client_id);
     }
     
     /**
