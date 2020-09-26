@@ -870,7 +870,7 @@ class OAuthManager implements IOAuthManager
         if (empty($client_id)) {
             throw new MissingParametersException("The refresh token is not specified!");
         }
-    
+        
         if (!$this->verifyRefreshToken($refresh_token, $user_id, $client_id)) {
             return false;
         }
@@ -946,12 +946,13 @@ class OAuthManager implements IOAuthManager
         if (!$check_on_server) {
             return $payload;
         }
-    
-        $token_record = array();
-        $token_record["user_id"] = $payload["user_id"];
-        $token_record["client_id"] = $payload["client_id"];
-        $token_record["access_token"] = $payload["access_token"];
-
+        
+        $token_record = [
+            "user_id" => $payload["user_id"],
+            "client_id" => $payload["client_id"],
+            "access_token" => $payload["access_token"]
+        ];
+        
         try {
             $this->token_storage->loadTokenRecord($token_record);
         } catch (\OAuth2\InvalidTokenException $ex) {
@@ -965,7 +966,7 @@ class OAuthManager implements IOAuthManager
         if (time() > $token_record["last_activity"] + $this->max_token_inactivity_days * 24 * 3600) {
             throw new \OAuth2\TokenExpiredException("The access token is expired!");
         }
-    
+        
         $token_record["last_activity"] = time();
         $this->token_storage->saveTokenRecord($token_record);
         
@@ -1026,7 +1027,7 @@ class OAuthManager implements IOAuthManager
         if (time() > $token_record["last_activity"] + $this->max_token_inactivity_days * 24 * 3600) {
             throw new \OAuth2\TokenExpiredException("The refresh token is expired!");
         }
-    
+        
         $token_record["last_activity"] = time();
         $this->token_storage->saveTokenRecord($token_record);
         
