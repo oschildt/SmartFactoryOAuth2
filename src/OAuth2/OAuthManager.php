@@ -859,18 +859,6 @@ class OAuthManager implements IOAuthManager
      */
     public function refreshTokens($refresh_token, $user_id, $client_id, &$response)
     {
-        if (empty($user_id)) {
-            throw new MissingParametersException("The user id is not specified!");
-        }
-        
-        if (empty($client_id)) {
-            throw new MissingParametersException("The client id is not specified!");
-        }
-        
-        if (empty($client_id)) {
-            throw new MissingParametersException("The refresh token is not specified!");
-        }
-        
         if (!$this->verifyRefreshToken($refresh_token, $user_id, $client_id)) {
             return false;
         }
@@ -917,6 +905,10 @@ class OAuthManager implements IOAuthManager
      */
     public function verifyJwtAccessToken($jwt_access_token, $check_on_server = true)
     {
+        if (empty($jwt_access_token)) {
+            throw new MissingParametersException("The access token is not specified!");
+        }
+
         $payload = $this->getJwtPayload($jwt_access_token);
         
         if (empty($payload)) {
@@ -956,7 +948,7 @@ class OAuthManager implements IOAuthManager
         try {
             $this->token_storage->loadTokenRecord($token_record);
         } catch (\OAuth2\InvalidTokenException $ex) {
-            throw new \OAuth2\InvalidTokenException("The access token is invalid!");
+            throw new \OAuth2\InvalidTokenException("The access token is invalid, the token is not found in the storage!");
         }
         
         if (time() > $token_record["access_token_expire"]) {
@@ -1010,6 +1002,18 @@ class OAuthManager implements IOAuthManager
      */
     public function verifyRefreshToken($refresh_token, $user_id, $client_id)
     {
+        if (empty($user_id)) {
+            throw new MissingParametersException("The user id is not specified!");
+        }
+    
+        if (empty($client_id)) {
+            throw new MissingParametersException("The client id is not specified!");
+        }
+    
+        if (empty($refresh_token)) {
+            throw new MissingParametersException("The refresh token is not specified!");
+        }
+
         $token_record["user_id"] = $user_id;
         $token_record["client_id"] = $client_id;
         $token_record["refresh_token"] = $refresh_token;
