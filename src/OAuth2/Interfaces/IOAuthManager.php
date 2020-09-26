@@ -42,14 +42,20 @@ interface IOAuthManager extends IInitable
      *
      * - $response["user_id"] - id of the user.
      *
-     * - $response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
-     * token is the access token encoded and signed by the JWT standard approach.
+     * - $response["client_id"] - id of the client (device token etc.).
+     *
+     * - $response["access_token"] - access token generated upon successful authentication.
+     *
+     * - $response["access_token_expire"] - expiration time of the access token.
      *
      * - $response["refresh_token"] - refresh token generated upon successful authentication.
      *
-     * - $response["access_token_ttl"] - time to live in seconds for the access token.
+     * - $response["refresh_token_expire"] - expiration time of the refresh token.
      *
-     * - $response["refresh_token_ttl"] - time to live in seconds for the refresh token.
+     * - $response["last_activity"] - last activity time of the user of this token.
+     *
+     * - $response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
+     * token is the access token encoded and signed by the JWT standard approach.
      *
      * @return boolean
      * The method should return true upon success, otherwise false.
@@ -84,14 +90,20 @@ interface IOAuthManager extends IInitable
      *
      * - $response["user_id"] - id of the user.
      *
+     * - $response["client_id"] - id of the client (device token etc.).
+     *
+     * - $response["access_token"] - access token generated upon successful authentication.
+     *
+     * - $response["access_token_expire"] - expiration time of the access token.
+     *
+     * - $response["refresh_token"] - refresh token generated upon successful authentication.
+     *
+     * - $response["refresh_token_expire"] - expiration time of the refresh token.
+     *
+     * - $response["last_activity"] - last activity time of the user of this token.
+     *
      * - $response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
      * token is the access token encoded and signed by the JWT standard approach.
-     *
-     * - $response["refresh_token"] - refresh token generated upon successful refresh. The refresh token is also renewed!
-     *
-     * - $response["access_token_ttl"] - time to live in seconds for the access token.
-     *
-     * - $response["refresh_token_ttl"] - time to live in seconds for the refresh token.
      *
      * @return boolean
      * The method should return true upon success, otherwise false.
@@ -101,6 +113,9 @@ interface IOAuthManager extends IInitable
      *
      * @throws \OAuth2\InvalidTokenException
      * It should throw the InvalidTokenException if the refresh token is invalid.
+     *
+     * @throws \OAuth2\TokenExpiredException
+     * It might throw the TokenExpiredException if the refresh token is expired.
      *
      * @throws \OAuth2\MissingParametersException
      * It should throw the MissingParametersException if some required paramters are empty.
@@ -125,15 +140,49 @@ interface IOAuthManager extends IInitable
      * @throws \Exception
      * It might throw an exception in the case of any system errors.
      *
-     * @throws InvalidTokenException
+     * @throws \OAuth2\InvalidTokenException
      * It should throw the InvalidTokenException if the access token is invalid.
      *
-     * @throws TokenExpiredException
+     * @throws \OAuth2\TokenExpiredException
+     * It might throw the TokenExpiredException if the jwt access token is expired.
+     *
+     * @throws \OAuth2\TokenExpiredException
      * It might throw the TokenExpiredException if the jwt access token is expired.
      *
      * @author Oleg Schildt
      */
     public function verifyJwtAccessToken($jwt_access_token, $check_on_server = true);
+    
+    /**
+     * Verifies the refresh token.
+     *
+     * @param string $refresh_token
+     * The refresh token to be verified.
+     *
+     * @param string $user_id
+     * The user id for which the refresh token was issued.
+     *
+     * @param string $client_id
+     * The client id for which the refresh token was issued.
+     *
+     * @return boolean
+     * The method returns true upon successful verification, otherwise false.
+     *
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors.
+     *
+     * @throws \OAuth2\InvalidTokenException
+     * It should throw the InvalidTokenException if the refresh token is invalid.
+     *
+     * @throws \OAuth2\TokenExpiredException
+     * It might throw the TokenExpiredException if the refresh token is expired.
+     *
+     * @throws \OAuth2\MissingParametersException
+     * It should throw the MissingParametersException if any required paramters are empty.
+     *
+     * @author Oleg Schildt
+     */
+    public function verifyRefreshToken($refresh_token, $user_id, $client_id);
     
     /**
      * Invalidates all token records for the user.
@@ -161,6 +210,9 @@ interface IOAuthManager extends IInitable
      *
      * @throws \OAuth2\InvalidTokenException
      * It should throw the InvalidTokenException if the refresh token is invalid.
+     *
+     * @throws \OAuth2\TokenExpiredException
+     * It might throw the TokenExpiredException if the jwt refresh token is expired.
      *
      * @throws \OAuth2\MissingParametersException
      * It should throw the MissingParametersException if some required paramters are empty.

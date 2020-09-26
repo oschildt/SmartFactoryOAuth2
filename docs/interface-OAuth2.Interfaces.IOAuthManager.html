@@ -242,6 +242,15 @@ Oleg Schildt
           </td>
       </tr>
       
+      <tr>
+          <td>
+              <a href="#verifyRefreshToken">verifyRefreshToken</a>
+          </td>
+          <td class="description_column">
+              Verifies the refresh token.
+          </td>
+      </tr>
+      
       
   </table>
 
@@ -290,17 +299,26 @@ Oleg Schildt
 <p>$response["user_id"] - id of the user.</p>
 </li>
 <li>
-<p>$response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
-token is the access token encoded and signed by the JWT standard approach.</p>
+<p>$response["client_id"] - id of the client (device token etc.).</p>
+</li>
+<li>
+<p>$response["access_token"] - access token generated upon successful authentication.</p>
+</li>
+<li>
+<p>$response["access_token_expire"] - expiration time of the access token.</p>
 </li>
 <li>
 <p>$response["refresh_token"] - refresh token generated upon successful authentication.</p>
 </li>
 <li>
-<p>$response["access_token_ttl"] - time to live in seconds for the access token.</p>
+<p>$response["refresh_token_expire"] - expiration time of the refresh token.</p>
 </li>
 <li>
-<p>$response["refresh_token_ttl"] - time to live in seconds for the refresh token.</p>
+<p>$response["last_activity"] - last activity time of the user of this token.</p>
+</li>
+<li>
+<p>$response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
+token is the access token encoded and signed by the JWT standard approach.</p>
 </li>
 </ul>
       </div>
@@ -353,7 +371,7 @@ token is the access token encoded and signed by the JWT standard approach.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.IOAuthManager.html#65">OAuth2\Interfaces\IOAuthManager.php</a>
+  <a href="source-OAuth2.Interfaces.IOAuthManager.html#71">OAuth2\Interfaces\IOAuthManager.php</a>
 
   
 
@@ -519,7 +537,7 @@ can be done only after authentication.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.IOAuthManager.html#201">OAuth2\Interfaces\IOAuthManager.php</a>
+  <a href="source-OAuth2.Interfaces.IOAuthManager.html#253">OAuth2\Interfaces\IOAuthManager.php</a>
 
   
 
@@ -600,7 +618,7 @@ can be done only after authentication.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.IOAuthManager.html#224">OAuth2\Interfaces\IOAuthManager.php</a>
+  <a href="source-OAuth2.Interfaces.IOAuthManager.html#276">OAuth2\Interfaces\IOAuthManager.php</a>
 
   
 
@@ -680,7 +698,7 @@ can be done only after authentication.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.IOAuthManager.html#245">OAuth2\Interfaces\IOAuthManager.php</a>
+  <a href="source-OAuth2.Interfaces.IOAuthManager.html#297">OAuth2\Interfaces\IOAuthManager.php</a>
 
   
 
@@ -769,6 +787,12 @@ can be done only after authentication.</p>
       <p>It should throw the InvalidTokenException if the refresh token is invalid.</p><br>
       
   
+      <b><a href="class-OAuth2.TokenExpiredException.html">\OAuth2\TokenExpiredException</a></b><br>
+      
+      
+      <p>It might throw the TokenExpiredException if the jwt refresh token is expired.</p><br>
+      
+  
       <b><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></b><br>
       
       
@@ -788,7 +812,7 @@ can be done only after authentication.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.IOAuthManager.html#167">OAuth2\Interfaces\IOAuthManager.php</a>
+  <a href="source-OAuth2.Interfaces.IOAuthManager.html#219">OAuth2\Interfaces\IOAuthManager.php</a>
 
   
 
@@ -852,17 +876,26 @@ can be done only after authentication.</p>
 <p>$response["user_id"] - id of the user.</p>
 </li>
 <li>
+<p>$response["client_id"] - id of the client (device token etc.).</p>
+</li>
+<li>
+<p>$response["access_token"] - access token generated upon successful authentication.</p>
+</li>
+<li>
+<p>$response["access_token_expire"] - expiration time of the access token.</p>
+</li>
+<li>
+<p>$response["refresh_token"] - refresh token generated upon successful authentication.</p>
+</li>
+<li>
+<p>$response["refresh_token_expire"] - expiration time of the refresh token.</p>
+</li>
+<li>
+<p>$response["last_activity"] - last activity time of the user of this token.</p>
+</li>
+<li>
 <p>$response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
 token is the access token encoded and signed by the JWT standard approach.</p>
-</li>
-<li>
-<p>$response["refresh_token"] - refresh token generated upon successful refresh. The refresh token is also renewed!</p>
-</li>
-<li>
-<p>$response["access_token_ttl"] - time to live in seconds for the access token.</p>
-</li>
-<li>
-<p>$response["refresh_token_ttl"] - time to live in seconds for the refresh token.</p>
 </li>
 </ul>
       </div>
@@ -896,6 +929,12 @@ token is the access token encoded and signed by the JWT standard approach.</p>
       <p>It should throw the InvalidTokenException if the refresh token is invalid.</p><br>
       
   
+      <b><a href="class-OAuth2.TokenExpiredException.html">\OAuth2\TokenExpiredException</a></b><br>
+      
+      
+      <p>It might throw the TokenExpiredException if the refresh token is expired.</p><br>
+      
+  
       <b><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></b><br>
       
       
@@ -915,7 +954,7 @@ token is the access token encoded and signed by the JWT standard approach.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.IOAuthManager.html#107">OAuth2\Interfaces\IOAuthManager.php</a>
+  <a href="source-OAuth2.Interfaces.IOAuthManager.html#122">OAuth2\Interfaces\IOAuthManager.php</a>
 
   
 
@@ -980,13 +1019,13 @@ authentication server should be asked.</p>
       <p>It might throw an exception in the case of any system errors.</p><br>
       
   
-      <b>\OAuth2\Interfaces\InvalidTokenException</b><br>
+      <b><a href="class-OAuth2.InvalidTokenException.html">\OAuth2\InvalidTokenException</a></b><br>
       
       
       <p>It should throw the InvalidTokenException if the access token is invalid.</p><br>
       
   
-      <b>\OAuth2\Interfaces\TokenExpiredException</b><br>
+      <b><a href="class-OAuth2.TokenExpiredException.html">\OAuth2\TokenExpiredException</a></b><br>
       
       
       <p>It might throw the TokenExpiredException if the jwt access token is expired.</p><br>
@@ -1005,7 +1044,113 @@ authentication server should be asked.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.IOAuthManager.html#133">OAuth2\Interfaces\IOAuthManager.php</a>
+  <a href="source-OAuth2.Interfaces.IOAuthManager.html#151">OAuth2\Interfaces\IOAuthManager.php</a>
+
+  
+
+  
+
+  
+  
+  
+  <hr id="verifyRefreshToken">
+  
+  <h1>Method: verifyRefreshToken</h1>
+
+  <div class="definition"><span class="php-keyword1">public</span> <b>verifyRefreshToken</b>(string <span class="php-var">$refresh_token</span>,
+                          string <span class="php-var">$user_id</span>,
+                          string <span class="php-var">$client_id</span>
+                         ) : boolean</div>
+
+  
+  <div class="short-description">
+  Verifies the refresh token.
+  </div>
+  
+
+  
+
+  
+  <h2>Parameters</h2>
+  
+      <h3>$refresh_token</h3>
+      <span class="type_label">Type:</span> string
+      
+      <div class="param-description">
+      <p>The refresh token to be verified.</p>
+      </div>
+      
+  
+      <h3>$user_id</h3>
+      <span class="type_label">Type:</span> string
+      
+      <div class="param-description">
+      <p>The user id for which the refresh token was issued.</p>
+      </div>
+      
+  
+      <h3>$client_id</h3>
+      <span class="type_label">Type:</span> string
+      
+      <div class="param-description">
+      <p>The client id for which the refresh token was issued.</p>
+      </div>
+      
+  
+  
+
+  
+  <h2>Returns</h2>
+  <span class="type_label">Type:</span> boolean
+  
+  <div class="param-description">
+  <p>The method returns true upon successful verification, otherwise false.</p>
+  </div>
+  
+  
+
+  
+  <h2>Throws</h2>
+  <div class="item_list">
+  
+      <b>\Exception</b><br>
+      
+      
+      <p>It might throw an exception in the case of any system errors.</p><br>
+      
+  
+      <b><a href="class-OAuth2.InvalidTokenException.html">\OAuth2\InvalidTokenException</a></b><br>
+      
+      
+      <p>It should throw the InvalidTokenException if the refresh token is invalid.</p><br>
+      
+  
+      <b><a href="class-OAuth2.TokenExpiredException.html">\OAuth2\TokenExpiredException</a></b><br>
+      
+      
+      <p>It might throw the TokenExpiredException if the refresh token is expired.</p><br>
+      
+  
+      <b><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></b><br>
+      
+      
+      <p>It should throw the MissingParametersException if any required paramters are empty.</p><br>
+      
+  
+  </div>
+  
+
+  
+  
+  
+  
+  
+  <h2>Author</h2>
+  Oleg Schildt
+  
+
+  <h2>Source code</h2>
+  <a href="source-OAuth2.Interfaces.IOAuthManager.html#182">OAuth2\Interfaces\IOAuthManager.php</a>
 
   
 
@@ -1019,7 +1164,7 @@ authentication server should be asked.</p>
 
                     
                     <div id="footer">
-                        Generated on 2020-09-03 13:56
+                        Generated on 2020-09-26 13:49
                     </div>                    
                 </div>
             </div>

@@ -175,28 +175,19 @@ Oleg Schildt
       
       <tr>
           <td>
+              <a href="#loadTokenRecord">loadTokenRecord</a>
+          </td>
+          <td class="description_column">
+              Load the token record by specified user_id, client_id and access_token or refresh_token.
+          </td>
+      </tr>
+      
+      <tr>
+          <td>
               <a href="#saveTokenRecord">saveTokenRecord</a>
           </td>
           <td class="description_column">
               Saves the token record.
-          </td>
-      </tr>
-      
-      <tr>
-          <td>
-              <a href="#verifyAccessToken">verifyAccessToken</a>
-          </td>
-          <td class="description_column">
-              Verifies the access token.
-          </td>
-      </tr>
-      
-      <tr>
-          <td>
-              <a href="#verifyRefreshToken">verifyRefreshToken</a>
-          </td>
-          <td class="description_column">
-              Verifies the refresh token.
           </td>
       </tr>
       
@@ -290,7 +281,7 @@ Oleg Schildt
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.ITokenStorage.html#78">OAuth2\Interfaces\ITokenStorage.php</a>
+  <a href="source-OAuth2.Interfaces.ITokenStorage.html#110">OAuth2\Interfaces\ITokenStorage.php</a>
 
   
 
@@ -309,6 +300,98 @@ Oleg Schildt
   <a href="interface-OAuth2.Interfaces.IOAuthManager.html#invalidateRefreshToken">\OAuth2\Interfaces\IOAuthManager::invalidateRefreshToken()</a><br>
   
   </div>
+  
+  
+  
+  <hr id="loadTokenRecord">
+  
+  <h1>Method: loadTokenRecord</h1>
+
+  <div class="definition"><span class="php-keyword1">public</span> <b>loadTokenRecord</b>(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>) : boolean</div>
+
+  
+  <div class="short-description">
+  Load the token record by specified user_id, client_id and access_token or refresh_token.
+  </div>
+  
+
+  
+
+  
+  <h2>Parameters</h2>
+  
+      <h3>$token_record</h3>
+      <span class="type_label">Type:</span> array
+      
+      <div class="param-description">
+      <p>The token record may vary depending on implementation. The expected parameters are:</p>
+<ul>
+<li>
+<p>$token_record["user_id"] - id of the user.</p>
+</li>
+<li>
+<p>$token_record["client_id"] - id of the client (device token etc.).</p>
+</li>
+<li>
+<p>$token_record["access_token"] - access token generated upon successful authentication.</p>
+</li>
+<li>
+<p>$token_record["access_token_expire"] - expiration time of the access token.</p>
+</li>
+<li>
+<p>$token_record["refresh_token"] - refresh token generated upon successful authentication.</p>
+</li>
+<li>
+<p>$token_record["refresh_token_expire"] - expiration time of the refresh token.</p>
+</li>
+<li>
+<p>$token_record["last_activity"] - last activity time of the user of this token.</p>
+</li>
+</ul>
+      </div>
+      
+  
+  
+
+  
+  <h2>Returns</h2>
+  <span class="type_label">Type:</span> boolean
+  
+  <div class="param-description">
+  <p>The method should return true upon successful save operation, otherwise false.</p>
+  </div>
+  
+  
+
+  
+  <h2>Throws</h2>
+  <div class="item_list">
+  
+      <b>\Exception</b><br>
+      
+      
+      <p>It might throw an exception in the case of any system errors.</p><br>
+      
+  
+  </div>
+  
+
+  
+  
+  
+  
+  
+  <h2>Author</h2>
+  Oleg Schildt
+  
+
+  <h2>Source code</h2>
+  <a href="source-OAuth2.Interfaces.ITokenStorage.html#45">OAuth2\Interfaces\ITokenStorage.php</a>
+
+  
+
+  
+
   
   
   
@@ -351,13 +434,16 @@ it should be overwritten.</p>
 <p>$token_record["access_token"] - access token generated upon successful authentication.</p>
 </li>
 <li>
+<p>$token_record["access_token_expire"] - expiration time of the access token.</p>
+</li>
+<li>
 <p>$token_record["refresh_token"] - refresh token generated upon successful authentication.</p>
 </li>
 <li>
-<p>$token_record["access_token_ttl"] - time to live in seconds for the access token.</p>
+<p>$token_record["refresh_token_expire"] - expiration time of the refresh token.</p>
 </li>
 <li>
-<p>$token_record["refresh_token_ttl"] - time to live in seconds for the refresh token.</p>
+<p>$token_record["last_activity"] - last activity time of the user of this token.</p>
 </li>
 </ul>
       </div>
@@ -398,207 +484,7 @@ it should be overwritten.</p>
   
 
   <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.ITokenStorage.html#46">OAuth2\Interfaces\ITokenStorage.php</a>
-
-  
-
-  
-
-  
-  
-  
-  <hr id="verifyAccessToken">
-  
-  <h1>Method: verifyAccessToken</h1>
-
-  <div class="definition"><span class="php-keyword1">public</span> <b>verifyAccessToken</b>(string <span class="php-var">$access_token</span>,
-                         string <span class="php-var">$user_id</span>,
-                         string <span class="php-var">$client_id</span>
-                        ) : boolean</div>
-
-  
-  <div class="short-description">
-  Verifies the access token.
-  </div>
-  
-
-  
-
-  
-  <h2>Parameters</h2>
-  
-      <h3>$access_token</h3>
-      <span class="type_label">Type:</span> string
-      
-      <div class="param-description">
-      <p>The access token to be verified.</p>
-      </div>
-      
-  
-      <h3>$user_id</h3>
-      <span class="type_label">Type:</span> string
-      
-      <div class="param-description">
-      <p>The user id for which the access token was issued.</p>
-      </div>
-      
-  
-      <h3>$client_id</h3>
-      <span class="type_label">Type:</span> string
-      
-      <div class="param-description">
-      <p>The client id for which the access token was issued.</p>
-      </div>
-      
-  
-  
-
-  
-  <h2>Returns</h2>
-  <span class="type_label">Type:</span> boolean
-  
-  <div class="param-description">
-  <p>The method should return true upon successful verification, otherwise false.</p>
-  </div>
-  
-  
-
-  
-  <h2>Throws</h2>
-  <div class="item_list">
-  
-      <b>\Exception</b><br>
-      
-      
-      <p>It might throw an exception in the case of any errors.</p><br>
-      
-  
-      <b><a href="class-OAuth2.InvalidTokenException.html">\OAuth2\InvalidTokenException</a></b><br>
-      
-      
-      <p>It should throw the InvalidTokenException if the access token is invalid.</p><br>
-      
-  
-      <b><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></b><br>
-      
-      
-      <p>It should throw the MissingParametersException if any required paramters are empty.</p><br>
-      
-  
-  </div>
-  
-
-  
-  
-  
-  
-  
-  <h2>Author</h2>
-  Oleg Schildt
-  
-
-  <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.ITokenStorage.html#106">OAuth2\Interfaces\ITokenStorage.php</a>
-
-  
-
-  
-
-  
-  
-  
-  <hr id="verifyRefreshToken">
-  
-  <h1>Method: verifyRefreshToken</h1>
-
-  <div class="definition"><span class="php-keyword1">public</span> <b>verifyRefreshToken</b>(string <span class="php-var">$refresh_token</span>,
-                          string <span class="php-var">$user_id</span>,
-                          string <span class="php-var">$client_id</span>
-                         ) : boolean</div>
-
-  
-  <div class="short-description">
-  Verifies the refresh token.
-  </div>
-  
-
-  
-
-  
-  <h2>Parameters</h2>
-  
-      <h3>$refresh_token</h3>
-      <span class="type_label">Type:</span> string
-      
-      <div class="param-description">
-      <p>The refresh token to be verified.</p>
-      </div>
-      
-  
-      <h3>$user_id</h3>
-      <span class="type_label">Type:</span> string
-      
-      <div class="param-description">
-      <p>The user id for which the refresh token was issued.</p>
-      </div>
-      
-  
-      <h3>$client_id</h3>
-      <span class="type_label">Type:</span> string
-      
-      <div class="param-description">
-      <p>The client id for which the refresh token was issued.</p>
-      </div>
-      
-  
-  
-
-  
-  <h2>Returns</h2>
-  <span class="type_label">Type:</span> boolean
-  
-  <div class="param-description">
-  <p>The method should return true upon successful verification, otherwise false.</p>
-  </div>
-  
-  
-
-  
-  <h2>Throws</h2>
-  <div class="item_list">
-  
-      <b>\Exception</b><br>
-      
-      
-      <p>It might throw an exception in the case of any system errors.</p><br>
-      
-  
-      <b><a href="class-OAuth2.InvalidTokenException.html">\OAuth2\InvalidTokenException</a></b><br>
-      
-      
-      <p>It should throw the InvalidTokenException if the refresh token is invalid.</p><br>
-      
-  
-      <b><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></b><br>
-      
-      
-      <p>It should throw the MissingParametersException if any required paramters are empty.</p><br>
-      
-  
-  </div>
-  
-
-  
-  
-  
-  
-  
-  <h2>Author</h2>
-  Oleg Schildt
-  
-
-  <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.ITokenStorage.html#134">OAuth2\Interfaces\ITokenStorage.php</a>
+  <a href="source-OAuth2.Interfaces.ITokenStorage.html#78">OAuth2\Interfaces\ITokenStorage.php</a>
 
   
 
@@ -612,7 +498,7 @@ it should be overwritten.</p>
 
                     
                     <div id="footer">
-                        Generated on 2020-09-03 13:56
+                        Generated on 2020-09-26 13:49
                     </div>                    
                 </div>
             </div>

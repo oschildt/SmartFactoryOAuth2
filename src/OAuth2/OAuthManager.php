@@ -82,6 +82,15 @@ class OAuthManager implements IOAuthManager
     protected $refresh_token_ttl = null;
     
     /**
+     * Internal property for storing the number of maximal inactivity days of the token.
+     *
+     * @var string
+     *
+     * @author Oleg Schildt
+     */
+    protected $max_token_inactivity_days = null;
+    
+    /**
      * Internal property for storing the path to the public key file.
      *
      * Required for the algorithms: RS256, RS384, RS512.
@@ -191,8 +200,6 @@ class OAuthManager implements IOAuthManager
      * - if the ssl verification cannot be performed due to system errors.
      *
      * @uses generateRSASignature()
-     *
-     * @see  generateRSASignature()
      *
      * @used_by verifyJwtSignature()
      *
@@ -456,7 +463,7 @@ class OAuthManager implements IOAuthManager
      * - if the public key is invalid.
      * - if the ssl verification cannot be performed due to system errors.
      *
-     * @throws InvalidTokenException
+     * @throws \OAuth2\InvalidTokenException
      * It might throw the InvalidTokenException if the jwt access token is invalid.
      *
      * @author Oleg Schildt
@@ -534,6 +541,10 @@ class OAuthManager implements IOAuthManager
             throw new \Exception("The 'refresh_token_ttl' is not specified or invalid!");
         }
         
+        if (empty($this->max_token_inactivity_days) || !is_numeric($this->max_token_inactivity_days) || $this->max_token_inactivity_days < 1) {
+            throw new \Exception("The 'max_token_inactivity_days' is not specified or invalid!");
+        }
+        
         if (empty($this->token_storage)) {
             throw new \Exception("The 'token_storage' is not specified!");
         }
@@ -603,7 +614,7 @@ class OAuthManager implements IOAuthManager
      * - if ssl signing fails due to system errors.
      * - if the token storage fails to save the token record.
      *
-     * @uses ITokenStorage::saveTokenRecord()
+     * @uses \OAuth2\Interfaces\ITokenStorage::saveTokenRecord()
      *
      * @used_by authenticateUser()
      * @used_by refreshTokens()
@@ -621,15 +632,13 @@ class OAuthManager implements IOAuthManager
         $response["access_token"] = $this->generateToken();
         $response["access_token_expire"] = time() + $this->access_token_ttl;
         
+        $response["last_activity"] = time();
+        
         $payload = ["access_token" => $response["access_token"], "access_token_expire" => $response["access_token_expire"], "user_id" => $user_id, "client_id" => $client_id];
         
         $response["jwt_access_token"] = $this->createJwtToken($payload);
         
         $this->token_storage->saveTokenRecord($response);
-        
-        // We do not want to send back the client id and access_token as plain text
-        unset($response["client_id"]);
-        unset($response["access_token"]);
         
         return true;
     }
@@ -643,6 +652,8 @@ class OAuthManager implements IOAuthManager
      * - $parameters["access_token_ttl"] - time to live in seconds for the access token.
      *
      * - $parameters["refresh_token_ttl"] - time to live in seconds for the refresh token.
+     *
+     * - $parameters["max_token_inactivity_days"] - maximal number of inactivity days for the token.
      *
      * - $parameters["encryption_algorithm"] - the encryption algorithm used for signing. The following
      * algorithms are supported: HS256, HS384, HS512, RS256, RS384, RS512.
@@ -670,8 +681,8 @@ class OAuthManager implements IOAuthManager
      * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
      * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
      *
-     * @see ITokenStorage
-     * @see IUserAuthenticator
+     * @see \OAuth2\Interfaces\ITokenStorage
+     * @see \OAuth2\Interfaces\IUserAuthenticator
      *
      * @author Oleg Schildt
      */
@@ -683,6 +694,10 @@ class OAuthManager implements IOAuthManager
         
         if (!empty($parameters["refresh_token_ttl"])) {
             $this->refresh_token_ttl = $parameters["refresh_token_ttl"];
+        }
+        
+        if (!empty($parameters["max_token_inactivity_days"])) {
+            $this->max_token_inactivity_days = $parameters["max_token_inactivity_days"];
         }
         
         if (!empty($parameters["token_storage"])) {
@@ -733,14 +748,20 @@ class OAuthManager implements IOAuthManager
      *
      * - $response["user_id"] - id of the user.
      *
-     * - $response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
-     * token is the access token encoded and signed by the JWT standard approach.
+     * - $response["client_id"] - id of the client (device token etc.).
+     *
+     * - $response["access_token"] - access token generated upon successful authentication.
+     *
+     * - $response["access_token_expire"] - expiration time of the access token.
      *
      * - $response["refresh_token"] - refresh token generated upon successful authentication.
      *
-     * - $response["access_token_ttl"] - time to live in seconds for the access token.
+     * - $response["refresh_token_expire"] - expiration time of the refresh token.
      *
-     * - $response["refresh_token_ttl"] - time to live in seconds for the refresh token.
+     * - $response["last_activity"] - last activity time of the user of this token.
+     *
+     * - $response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
+     * token is the access token encoded and signed by the JWT standard approach.
      *
      * @return boolean
      * Returns true upon success, otherwise false.
@@ -756,11 +777,13 @@ class OAuthManager implements IOAuthManager
      * - if ssl signing fails due to system errors.
      * - if the token storage fails to save the token record.
      *
-     * @throws InvalidCredentialsException
+     * @throws \OAuth2\InvalidCredentialsException
      * It might throw the InvalidCredentialsException if the authentication fails.
      *
      * @throws \OAuth2\MissingParametersException
      * It might throw the MissingParametersException if any required paramters are empty.
+     *
+     * @uses createTokenRecord()
      *
      * @author Oleg Schildt
      */
@@ -790,14 +813,20 @@ class OAuthManager implements IOAuthManager
      *
      * - $response["user_id"] - id of the user.
      *
+     * - $response["client_id"] - id of the client (device token etc.).
+     *
+     * - $response["access_token"] - access token generated upon successful authentication.
+     *
+     * - $response["access_token_expire"] - expiration time of the access token.
+     *
+     * - $response["refresh_token"] - refresh token generated upon successful authentication.
+     *
+     * - $response["refresh_token_expire"] - expiration time of the refresh token.
+     *
+     * - $response["last_activity"] - last activity time of the user of this token.
+     *
      * - $response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
      * token is the access token encoded and signed by the JWT standard approach.
-     *
-     * - $response["refresh_token"] - refresh token generated upon successful refresh. The refresh token is also renewed!
-     *
-     * - $response["access_token_ttl"] - time to live in seconds for the access token.
-     *
-     * - $response["refresh_token_ttl"] - time to live in seconds for the refresh token.
      *
      * @return boolean
      * Returns true upon success, otherwise false.
@@ -817,10 +846,14 @@ class OAuthManager implements IOAuthManager
      * @throws \OAuth2\InvalidTokenException
      * It might throw the InvalidTokenException if the refresh token is invalid or expired.
      *
+     * @throws \OAuth2\TokenExpiredException
+     * It might throw the TokenExpiredException if the refresh token is expired.
+     *
      * @throws \OAuth2\MissingParametersException
      * It might throw the MissingParametersException if any required paramters are empty.
      *
-     * @uses ITokenStorage::verifyRefreshToken()
+     * @uses createTokenRecord()
+     * @uses verifyRefreshToken()
      *
      * @author Oleg Schildt
      */
@@ -837,8 +870,8 @@ class OAuthManager implements IOAuthManager
         if (empty($client_id)) {
             throw new MissingParametersException("The refresh token is not specified!");
         }
-        
-        if (!$this->token_storage->verifyRefreshToken($refresh_token, $user_id, $client_id)) {
+    
+        if (!$this->verifyRefreshToken($refresh_token, $user_id, $client_id)) {
             return false;
         }
         
@@ -869,16 +902,16 @@ class OAuthManager implements IOAuthManager
      * - if the ssl verification cannot be performed due to system errors.
      * - if the token storage fails to verify the token record.
      *
-     * @throws InvalidTokenException
+     * @throws \OAuth2\InvalidTokenException
      * It might throw the InvalidTokenException if the jwt access token is invalid.
      *
-     * @throws TokenExpiredException
+     * @throws \OAuth2\TokenExpiredException
      * It might throw the TokenExpiredException if the jwt access token is expired.
      *
-     * @throws MissingParametersException
+     * @throws \OAuth2\MissingParametersException
      * It might throw the MissingParametersException if any required paramters are empty.
      *
-     * @uses ITokenStorage::verifyAccessToken()
+     * @uses \OAuth2\Interfaces\ITokenStorage::loadTokenRecord()
      *
      * @author Oleg Schildt
      */
@@ -913,12 +946,30 @@ class OAuthManager implements IOAuthManager
         if (!$check_on_server) {
             return $payload;
         }
-        
-        if ($this->token_storage->verifyAccessToken($payload["access_token"], $payload["user_id"], $payload["client_id"])) {
-            return $payload;
+    
+        $token_record = array();
+        $token_record["user_id"] = $payload["user_id"];
+        $token_record["client_id"] = $payload["client_id"];
+        $token_record["access_token"] = $payload["access_token"];
+
+        try {
+            $this->token_storage->loadTokenRecord($token_record);
+        } catch (\OAuth2\InvalidTokenException $ex) {
+            throw new \OAuth2\InvalidTokenException("The access token is invalid!");
         }
         
-        return false;
+        if (time() > $token_record["access_token_expire"]) {
+            throw new \OAuth2\TokenExpiredException("The access token is expired!");
+        }
+        
+        if (time() > $token_record["last_activity"] + $this->max_token_inactivity_days * 24 * 3600) {
+            throw new \OAuth2\TokenExpiredException("The access token is expired!");
+        }
+    
+        $token_record["last_activity"] = time();
+        $this->token_storage->saveTokenRecord($token_record);
+        
+        return $payload;
     }
     
     /**
@@ -942,16 +993,44 @@ class OAuthManager implements IOAuthManager
      * @throws \OAuth2\InvalidTokenException
      * It should throw the InvalidTokenException if the refresh token is invalid.
      *
+     * @throws \OAuth2\TokenExpiredException
+     * It might throw the TokenExpiredException if the jwt access token is expired.
+     *
      * @throws \OAuth2\MissingParametersException
      * It should throw the MissingParametersException if any required paramters are empty.
      *
-     * @uses ITokenStorage::verifyRefreshToken()
+     * @uses \OAuth2\Interfaces\ITokenStorage::loadTokenRecord()
+     *
+     * @used_by refreshTokens()
+     * @used_by invalidateUser()
+     * @used_by invalidateClient()
      *
      * @author Oleg Schildt
      */
-    public function verifyJwtRefreshToken($refresh_token, $user_id, $client_id)
+    public function verifyRefreshToken($refresh_token, $user_id, $client_id)
     {
-        return $this->token_storage->verifyRefreshToken($refresh_token, $user_id, $client_id);
+        $token_record["user_id"] = $user_id;
+        $token_record["client_id"] = $client_id;
+        $token_record["refresh_token"] = $refresh_token;
+        
+        try {
+            $this->token_storage->loadTokenRecord($token_record);
+        } catch (\OAuth2\InvalidTokenException $ex) {
+            throw new \OAuth2\InvalidTokenException("The refresh token is invalid!");
+        }
+        
+        if (time() > $token_record["access_token_expire"]) {
+            throw new \OAuth2\TokenExpiredException("The refresh token is expired!");
+        }
+        
+        if (time() > $token_record["last_activity"] + $this->max_token_inactivity_days * 24 * 3600) {
+            throw new \OAuth2\TokenExpiredException("The refresh token is expired!");
+        }
+    
+        $token_record["last_activity"] = time();
+        $this->token_storage->saveTokenRecord($token_record);
+        
+        return true;
     }
     
     /**
@@ -984,9 +1063,13 @@ class OAuthManager implements IOAuthManager
      * @throws \OAuth2\InvalidTokenException
      * It might throw the InvalidTokenException if the refresh token is invalid or expired.
      *
+     * @throws \OAuth2\TokenExpiredException
+     * It might throw the TokenExpiredException if the jwt refresh token is expired.
+     *
      * @throws \OAuth2\MissingParametersException
      * It might throw the MissingParametersException if any required paramters are empty.
      *
+     * @uses verifyRefreshToken()
      * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
      *
      * @author Oleg Schildt
@@ -1005,7 +1088,7 @@ class OAuthManager implements IOAuthManager
             throw new MissingParametersException("The refresh token is not specified!");
         }
         
-        if (!$this->token_storage->verifyRefreshToken($refresh_token, $user_id, $client_id)) {
+        if (!$this->verifyRefreshToken($refresh_token, $user_id, $client_id)) {
             return false;
         }
         
@@ -1042,9 +1125,13 @@ class OAuthManager implements IOAuthManager
      * @throws \OAuth2\InvalidTokenException
      * It might throw the InvalidTokenException if the refresh token is invalid or expired.
      *
+     * @throws \OAuth2\TokenExpiredException
+     * It might throw the TokenExpiredException if the jwt refresh token is expired.
+     *
      * @throws \OAuth2\MissingParametersException
      * It might throw the MissingParametersException if any required paramters are empty.
      *
+     * @uses verifyRefreshToken()
      * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
      *
      * @author Oleg Schildt
@@ -1063,7 +1150,7 @@ class OAuthManager implements IOAuthManager
             throw new MissingParametersException("The refresh token is not specified!");
         }
         
-        if (!$this->token_storage->verifyRefreshToken($refresh_token, $user_id, $client_id)) {
+        if (!$this->verifyRefreshToken($refresh_token, $user_id, $client_id)) {
             return false;
         }
         
@@ -1094,7 +1181,7 @@ class OAuthManager implements IOAuthManager
      * - if the ssl verification cannot be performed due to system errors.
      * - if the token storage fails to delete the token record.
      *
-     * @throws InvalidTokenException
+     * @throws \OAuth2\InvalidTokenException
      * It might throw the InvalidTokenException if the jwt access token is invalid.
      *
      * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
@@ -1131,6 +1218,9 @@ class OAuthManager implements IOAuthManager
      * It might throw an exception in the case of any system errors:
      *
      * - if the token storage fails to delete the token record.
+     *
+     * @throws \OAuth2\InvalidTokenException
+     * It should throw the InvalidTokenException if the refresh token is invalid.
      *
      * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
      *
