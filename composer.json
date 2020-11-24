@@ -15,11 +15,7 @@
   "autoload": {
     "psr-4": {
       "OAuth2\\": "src/OAuth2"
-    },
-
-    "files": [ 
-      "src/initialization_inc.php"
-    ]
+    }
   },
   
   "require": {
