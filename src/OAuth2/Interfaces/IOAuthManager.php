@@ -37,23 +37,16 @@ interface IOAuthManager extends IInitable
      * @param array $credentials
      * The credentials for the authentication. They may vary depending on implementation.
      *
-     * @param array $response
+     * @param array &$response
      * The response upon successful authentication. The expected properties are:
      *
      * - $response["user_id"] - id of the user.
-     *
      * - $response["client_id"] - id of the client (device token etc.).
-     *
      * - $response["access_token"] - access token generated upon successful authentication.
-     *
      * - $response["access_token_expire"] - expiration time of the access token.
-     *
      * - $response["refresh_token"] - refresh token generated upon successful authentication.
-     *
      * - $response["refresh_token_expire"] - expiration time of the refresh token.
-     *
      * - $response["last_activity"] - last activity time of the user of this token.
-     *
      * - $response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
      * token is the access token encoded and signed by the JWT standard approach.
      *
@@ -85,23 +78,16 @@ interface IOAuthManager extends IInitable
      * @param string $client_id
      * The client id for which the refresh token was issued.
      *
-     * @param array $response
+     * @param array &$response
      * The response upon successful refresh. The expected properties are:
      *
      * - $response["user_id"] - id of the user.
-     *
      * - $response["client_id"] - id of the client (device token etc.).
-     *
      * - $response["access_token"] - access token generated upon successful authentication.
-     *
      * - $response["access_token_expire"] - expiration time of the access token.
-     *
      * - $response["refresh_token"] - refresh token generated upon successful authentication.
-     *
      * - $response["refresh_token_expire"] - expiration time of the refresh token.
-     *
      * - $response["last_activity"] - last activity time of the user of this token.
-     *
      * - $response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
      * token is the access token encoded and signed by the JWT standard approach.
      *

@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="resources/jquery.iviewer.css">
 
         <title>
-            Interface: ITokenStorage - SmartFactory OAuth2 Server
+            Interface: ITokenStorage
         </title>
     </head>
 
@@ -39,12 +39,6 @@
                         <li>
                             <a href="interfaces.html" class="active">
                                 Interfaces
-                            </a>
-                        </li>
-                        
-                        <li>
-                            <a href="diagram.html" class="">
-                                Diagram
                             </a>
                         </li>
                         
@@ -118,10 +112,15 @@
                     <h1>Interface: ITokenStorage</h1>
 
 
+
+<div class="definition"></div>
+
+
 <div class="short-description">
-Interface for storing and validating of the stored tokens. It can be implemnted for a database or
-for a cache solution like Redis.
+<p>Interface for storing and validating of the stored tokens. It can be implemnted for a database or
+for a cache solution like Redis.</p>
 </div>
+
 
 
 
@@ -138,16 +137,35 @@ for a cache solution like Redis.
 
 
 
+<h2>Authors</h2>
+<div class="item_list">
+
+<div class='item'>Oleg Schildt</div>
+
+</div>
 
 
-<h2>Author</h2>
-Oleg Schildt
+
+
 
 
 
 
 <h2>Source code</h2>
-<a href="source-OAuth2.Interfaces.ITokenStorage.html#15">OAuth2\Interfaces\ITokenStorage.php</a>
+<div class="item_list">
+<a href='source-OAuth2.Interfaces.ITokenStorage.php.html#18'>OAuth2/Interfaces/ITokenStorage.php</a>
+</div>
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -159,256 +177,331 @@ Oleg Schildt
 
 
 
-
-  <table class="table table-responsive table-bordered table-striped class_multicolumn">
+<table class="table table-responsive table-bordered table-striped class_multicolumn">
       <tr><th colspan="2">Methods</th></tr>
       
-      
       <tr>
           <td>
-              <a href="#deleteTokenRecordByKey">deleteTokenRecordByKey</a>
+              <div style='float:left'><a href="#deleteTokenRecordByKey">deleteTokenRecordByKey()</a></div>
+
+              <div style='float:right'>
+              
+              <span class='label label-success'>public</span>
+              </div>
+              <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              Deletes the token record by a key.
+              <p>Deletes the token record by a key.</p>
           </td>
-      </tr>
-      
-      <tr>
+      </tr><tr>
           <td>
-              <a href="#loadTokenRecord">loadTokenRecord</a>
+              <div style='float:left'><a href="#loadTokenRecord">loadTokenRecord()</a></div>
+
+              <div style='float:right'>
+              
+              <span class='label label-success'>public</span>
+              </div>
+              <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              Load the token record by specified user_id, client_id and access_token or refresh_token.
+              <p>Load the token record by specified user_id, client_id and access_token or refresh_token.</p>
           </td>
-      </tr>
-      
-      <tr>
+      </tr><tr>
           <td>
-              <a href="#saveTokenRecord">saveTokenRecord</a>
+              <div style='float:left'><a href="#saveTokenRecord">saveTokenRecord()</a></div>
+
+              <div style='float:right'>
+              
+              <span class='label label-success'>public</span>
+              </div>
+              <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              Saves the token record.
+              <p>Saves the token record.</p>
           </td>
       </tr>
-      
       
   </table>
 
 
 
-
-
+<hr id="deleteTokenRecordByKey">
   
-  <hr id="deleteTokenRecordByKey">
-  
-  <h1>Method: deleteTokenRecordByKey</h1>
+  <h1>Method: ITokenStorage::deleteTokenRecordByKey()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <b>deleteTokenRecordByKey</b>(string <span class="php-var">$key</span>, string <span class="php-var">$value</span>) : boolean</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> deleteTokenRecordByKey(string <span class="php-var">$key</span>, string <span class="php-var">$value</span>) : bool;</div>
 
   
   <div class="short-description">
-  Deletes the token record by a key.
+  <p>Deletes the token record by a key.</p>
   </div>
   
 
   
 
   
+
   <h2>Parameters</h2>
-  
-      <h3>$key</h3>
-      <span class="type_label">Type:</span> string
-      
-      <div class="param-description">
-      <p>The name of the key, by which the record should be located and deleted. The possible keys are:</p>
+
+    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+        <tr>
+        <th>Name</th>
+        <th>Pass type</th>
+        <th>Value type</th>
+        <th>Default value</th>
+        <th>Description</th>
+        </tr>
+        
+        
+        <tr>
+            <td>
+                $key
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The name of the key, by which the record should be located and deleted. The possible keys are:</p>
 <ul>
-<li>
-<p>'user_id' - id of the user.</p>
-</li>
-<li>
-<p>'client_id' - id of the client (device token etc.).</p>
-</li>
-<li>
-<p>'access_token' - access token generated upon successful authentication.</p>
-</li>
-<li>
-<p>'refresh_token' - refresh token generated upon successful authentication.</p>
-</li>
+<li>'user_id' - id of the user.</li>
+<li>'client_id' - id of the client (device token etc.).</li>
+<li>'access_token' - access token generated upon successful authentication.</li>
+<li>'refresh_token' - refresh token generated upon successful authentication.</li>
 </ul>
-      </div>
-      
-  
-      <h3>$value</h3>
-      <span class="type_label">Type:</span> string
-      
-      <div class="param-description">
-      <p>The vale of the key, by which the record should be located and deleted.</p>
-      </div>
-      
-  
-  
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                $value
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The value of the key, by which the record should be located and deleted.</p>
+            </td>
+        </tr>
+        
+        
+    </table>
 
   
   <h2>Returns</h2>
-  <span class="type_label">Type:</span> boolean
+  <div class="item_list">
+  bool<br>
   
-  <div class="param-description">
-  <p>The method should return true upon successful deletion, otherwise false.</p>
+  <div class="item_description"><p>The method should return true upon successful deletion, otherwise false.</p></div>
+  
   </div>
   
-  
 
-  
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\Exception</b><br>
-      
-      
-      <p>It might throw an exception in the case of any system errors.</p><br>
-      
+  \Exception<br>
   
+  <div class="item_description"><p>It might throw an exception in the case of any system errors.</p></div>
+  
+  
+  </div>
+
+  
+
+  <h2>Authors</h2>
+  <div class="item_list">
+  
+  <div class='item'>Oleg Schildt</div>
+  
+  </div>
+
+  
+
+  
+
+  
+  <h2>Source code</h2>
+  <div class="item_list">
+  <a href='source-OAuth2.Interfaces.ITokenStorage.php.html#98'>OAuth2/Interfaces/ITokenStorage.php</a>
   </div>
   
 
   
-  
-  
-  
-  
-  <h2>Author</h2>
-  Oleg Schildt
-  
-
-  <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.ITokenStorage.html#110">OAuth2\Interfaces\ITokenStorage.php</a>
 
   
 
   
 
-  
   <h2>Used by</h2>
   <div class="item_list">
   
-  <a href="interface-OAuth2.Interfaces.IOAuthManager.html#invalidateUser">\OAuth2\Interfaces\IOAuthManager::invalidateUser()</a><br>
+  <a href='class-OAuth2.OAuthManager.html#invalidateUser'>\OAuth2\OAuthManager::invalidateUser()</a><br>
   
-  <a href="interface-OAuth2.Interfaces.IOAuthManager.html#invalidateClient">\OAuth2\Interfaces\IOAuthManager::invalidateClient()</a><br>
   
-  <a href="interface-OAuth2.Interfaces.IOAuthManager.html#invalidateJwtAccessToken">\OAuth2\Interfaces\IOAuthManager::invalidateJwtAccessToken()</a><br>
+  <a href='class-OAuth2.OAuthManager.html#invalidateClient'>\OAuth2\OAuthManager::invalidateClient()</a><br>
   
-  <a href="interface-OAuth2.Interfaces.IOAuthManager.html#invalidateRefreshToken">\OAuth2\Interfaces\IOAuthManager::invalidateRefreshToken()</a><br>
+  
+  <a href='class-OAuth2.OAuthManager.html#invalidateJwtAccessToken'>\OAuth2\OAuthManager::invalidateJwtAccessToken()</a><br>
+  
+  
+  <a href='class-OAuth2.OAuthManager.html#invalidateRefreshToken'>\OAuth2\OAuthManager::invalidateRefreshToken()</a><br>
+  
   
   </div>
+
   
+
   
+
   
+
   <hr id="loadTokenRecord">
   
-  <h1>Method: loadTokenRecord</h1>
+  <h1>Method: ITokenStorage::loadTokenRecord()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <b>loadTokenRecord</b>(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>) : boolean</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> loadTokenRecord(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>) : bool;</div>
 
   
   <div class="short-description">
-  Load the token record by specified user_id, client_id and access_token or refresh_token.
+  <p>Load the token record by specified user_id, client_id and access_token or refresh_token.</p>
   </div>
   
 
   
 
   
+
   <h2>Parameters</h2>
-  
-      <h3>$token_record</h3>
-      <span class="type_label">Type:</span> array
-      
-      <div class="param-description">
-      <p>The token record may vary depending on implementation. The expected parameters are:</p>
+
+    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+        <tr>
+        <th>Name</th>
+        <th>Pass type</th>
+        <th>Value type</th>
+        <th>Default value</th>
+        <th>Description</th>
+        </tr>
+        
+        
+        <tr>
+            <td>
+                $token_record
+            </td>
+            <td>
+                by reference
+            </td>
+            <td>
+                array
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The token record may vary depending on implementation. The expected parameters are:</p>
 <ul>
-<li>
-<p>$token_record["user_id"] - id of the user.</p>
-</li>
-<li>
-<p>$token_record["client_id"] - id of the client (device token etc.).</p>
-</li>
-<li>
-<p>$token_record["access_token"] - access token generated upon successful authentication.</p>
-</li>
-<li>
-<p>$token_record["access_token_expire"] - expiration time of the access token.</p>
-</li>
-<li>
-<p>$token_record["refresh_token"] - refresh token generated upon successful authentication.</p>
-</li>
-<li>
-<p>$token_record["refresh_token_expire"] - expiration time of the refresh token.</p>
-</li>
-<li>
-<p>$token_record["last_activity"] - last activity time of the user of this token.</p>
-</li>
+<li>$token_record[&quot;user_id&quot;] - id of the user.</li>
+<li>$token_record[&quot;client_id&quot;] - id of the client (device token etc.).</li>
+<li>$token_record[&quot;access_token&quot;] - access token generated upon successful authentication.</li>
+<li>$token_record[&quot;access_token_expire&quot;] - expiration time of the access token.</li>
+<li>$token_record[&quot;refresh_token&quot;] - refresh token generated upon successful authentication.</li>
+<li>$token_record[&quot;refresh_token_expire&quot;] - expiration time of the refresh token.</li>
+<li>$token_record[&quot;last_activity&quot;] - last activity time of the user of this token.</li>
 </ul>
-      </div>
-      
-  
-  
+            </td>
+        </tr>
+        
+        
+    </table>
 
   
   <h2>Returns</h2>
-  <span class="type_label">Type:</span> boolean
+  <div class="item_list">
+  bool<br>
   
-  <div class="param-description">
-  <p>The method should return true upon successful save operation, otherwise false.</p>
+  <div class="item_description"><p>The method should return true upon successful save operation, otherwise false.</p></div>
+  
   </div>
   
-  
 
-  
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\Exception</b><br>
-      
-      
-      <p>It might throw an exception in the case of any system errors.</p><br>
-      
+  \Exception<br>
   
+  <div class="item_description"><p>It might throw an exception in the case of any system errors.</p></div>
+  
+  
+  </div>
+
+  
+
+  <h2>Authors</h2>
+  <div class="item_list">
+  
+  <div class='item'>Oleg Schildt</div>
+  
+  </div>
+
+  
+
+  
+
+  
+  <h2>Source code</h2>
+  <div class="item_list">
+  <a href='source-OAuth2.Interfaces.ITokenStorage.php.html#42'>OAuth2/Interfaces/ITokenStorage.php</a>
   </div>
   
 
   
-  
-  
-  
-  
-  <h2>Author</h2>
-  Oleg Schildt
-  
-
-  <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.ITokenStorage.html#45">OAuth2\Interfaces\ITokenStorage.php</a>
 
   
 
   
 
+  <h2>Used by</h2>
+  <div class="item_list">
+  
+  <a href='class-OAuth2.OAuthManager.html#verifyJwtAccessToken'>\OAuth2\OAuthManager::verifyJwtAccessToken()</a><br>
   
   
+  <a href='class-OAuth2.OAuthManager.html#verifyRefreshToken'>\OAuth2\OAuthManager::verifyRefreshToken()</a><br>
   
+  
+  </div>
+
+  
+
+  
+
+  
+
   <hr id="saveTokenRecord">
   
-  <h1>Method: saveTokenRecord</h1>
+  <h1>Method: ITokenStorage::saveTokenRecord()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <b>saveTokenRecord</b>(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>) : boolean</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> saveTokenRecord(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>) : bool;</div>
 
   
   <div class="short-description">
-  Saves the token record.
+  <p>Saves the token record.</p>
   </div>
   
 
   
-  <div class="long-description">
+  <div class="long_description">
   <h2>Details</h2>
   <p>It is reccomnended to look for an existing record by user_id and client_id, and if it exists,
 it should be overwritten.</p>
@@ -416,89 +509,105 @@ it should be overwritten.</p>
   
 
   
+
   <h2>Parameters</h2>
-  
-      <h3>$token_record</h3>
-      <span class="type_label">Type:</span> array
-      
-      <div class="param-description">
-      <p>The token record may vary depending on implementation. The expected parameters are:</p>
+
+    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+        <tr>
+        <th>Name</th>
+        <th>Pass type</th>
+        <th>Value type</th>
+        <th>Default value</th>
+        <th>Description</th>
+        </tr>
+        
+        
+        <tr>
+            <td>
+                $token_record
+            </td>
+            <td>
+                by reference
+            </td>
+            <td>
+                array
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The token record may vary depending on implementation. The expected parameters are:</p>
 <ul>
-<li>
-<p>$token_record["user_id"] - id of the user.</p>
-</li>
-<li>
-<p>$token_record["client_id"] - id of the client (device token etc.).</p>
-</li>
-<li>
-<p>$token_record["access_token"] - access token generated upon successful authentication.</p>
-</li>
-<li>
-<p>$token_record["access_token_expire"] - expiration time of the access token.</p>
-</li>
-<li>
-<p>$token_record["refresh_token"] - refresh token generated upon successful authentication.</p>
-</li>
-<li>
-<p>$token_record["refresh_token_expire"] - expiration time of the refresh token.</p>
-</li>
-<li>
-<p>$token_record["last_activity"] - last activity time of the user of this token.</p>
-</li>
+<li>$token_record[&quot;user_id&quot;] - id of the user.</li>
+<li>$token_record[&quot;client_id&quot;] - id of the client (device token etc.).</li>
+<li>$token_record[&quot;access_token&quot;] - access token generated upon successful authentication.</li>
+<li>$token_record[&quot;access_token_expire&quot;] - expiration time of the access token.</li>
+<li>$token_record[&quot;refresh_token&quot;] - refresh token generated upon successful authentication.</li>
+<li>$token_record[&quot;refresh_token_expire&quot;] - expiration time of the refresh token.</li>
+<li>$token_record[&quot;last_activity&quot;] - last activity time of the user of this token.</li>
 </ul>
-      </div>
-      
-  
-  
+            </td>
+        </tr>
+        
+        
+    </table>
 
   
   <h2>Returns</h2>
-  <span class="type_label">Type:</span> boolean
+  <div class="item_list">
+  bool<br>
   
-  <div class="param-description">
-  <p>The method should return true upon successful save operation, otherwise false.</p>
+  <div class="item_description"><p>The method should return true upon successful save operation, otherwise false.</p></div>
+  
   </div>
   
-  
 
-  
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\Exception</b><br>
-      
-      
-      <p>It might throw an exception in the case of any system errors.</p><br>
-      
+  \Exception<br>
   
+  <div class="item_description"><p>It might throw an exception in the case of any system errors.</p></div>
+  
+  
+  </div>
+
+  
+
+  <h2>Authors</h2>
+  <div class="item_list">
+  
+  <div class='item'>Oleg Schildt</div>
+  
+  </div>
+
+  
+
+  
+
+  
+  <h2>Source code</h2>
+  <div class="item_list">
+  <a href='source-OAuth2.Interfaces.ITokenStorage.php.html#69'>OAuth2/Interfaces/ITokenStorage.php</a>
   </div>
   
 
   
-  
-  
-  
-  
-  <h2>Author</h2>
-  Oleg Schildt
-  
-
-  <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.ITokenStorage.html#78">OAuth2\Interfaces\ITokenStorage.php</a>
 
   
 
   
 
+  <h2>Used by</h2>
+  <div class="item_list">
+  
+  <a href='class-OAuth2.OAuthManager.html#createTokenRecord'>\OAuth2\OAuthManager::createTokenRecord()</a><br>
   
   
-  
-
-
-
+  </div>
                     
                     <div id="footer">
-                        Generated on 2020-11-24 18:11
+                        Generated on 2022-05-28 19:20 with <a href="http://www.google.com" target="_blank">DocGen</a>
                     </div>                    
                 </div>
             </div>

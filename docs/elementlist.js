@@ -1,8 +1,7 @@
 var ApiGen = ApiGen || {};
 ApiGen.elements = [
-{"file":"package-Default.html","label":"Default - Package"},
-{"file":"class-OAuth2.InvalidCredentialsException.html","label":"InvalidCredentialsException - Class"},
-{"file":"class-OAuth2.InvalidTokenException.html","label":"InvalidTokenException - Class"},
+{"file":"namespace-OAuth2.html","label":"OAuth2 - Namespace"},
+{"file":"namespace-OAuth2.Interfaces.html","label":"OAuth2\\Interfaces - Namespace"},
 {"file":"interface-OAuth2.Interfaces.IOAuthManager.html","label":"IOAuthManager - Interface"},
 {"file":"interface-OAuth2.Interfaces.IOAuthManager.html#authenticateUser","label":"IOAuthManager::authenticateUser()"},
 {"file":"interface-OAuth2.Interfaces.IOAuthManager.html#init","label":"IOAuthManager::init()"},
@@ -19,9 +18,9 @@ ApiGen.elements = [
 {"file":"interface-OAuth2.Interfaces.ITokenStorage.html#saveTokenRecord","label":"ITokenStorage::saveTokenRecord()"},
 {"file":"interface-OAuth2.Interfaces.IUserAuthenticator.html","label":"IUserAuthenticator - Interface"},
 {"file":"interface-OAuth2.Interfaces.IUserAuthenticator.html#authenticateUser","label":"IUserAuthenticator::authenticateUser()"},
+{"file":"class-OAuth2.InvalidCredentialsException.html","label":"InvalidCredentialsException - Class"},
+{"file":"class-OAuth2.InvalidTokenException.html","label":"InvalidTokenException - Class"},
 {"file":"class-OAuth2.MissingParametersException.html","label":"MissingParametersException - Class"},
-{"file":"namespace-OAuth2.html","label":"OAuth2 - Namespace"},
-{"file":"namespace-OAuth2.Interfaces.html","label":"OAuth2\\Interfaces - Namespace"},
 {"file":"class-OAuth2.OAuthManager.html","label":"OAuthManager - Class"},
 {"file":"class-OAuth2.OAuthManager.html#$access_token_ttl","label":"OAuthManager::$access_token_ttl"},
 {"file":"class-OAuth2.OAuthManager.html#$encryption_algorithm","label":"OAuthManager::$encryption_algorithm"},
@@ -52,7 +51,7 @@ ApiGen.elements = [
 {"file":"class-OAuth2.OAuthManager.html#validateParameters","label":"OAuthManager::validateParameters()"},
 {"file":"class-OAuth2.OAuthManager.html#verifyJwtAccessToken","label":"OAuthManager::verifyJwtAccessToken()"},
 {"file":"class-OAuth2.OAuthManager.html#verifyJwtSignature","label":"OAuthManager::verifyJwtSignature()"},
-{"file":"class-OAuth2.OAuthManager.html#verifyRefreshToken","label":"OAuthManager::verifyRefreshToken()"},
 {"file":"class-OAuth2.OAuthManager.html#verifyRSASignature","label":"OAuthManager::verifyRSASignature()"},
+{"file":"class-OAuth2.OAuthManager.html#verifyRefreshToken","label":"OAuthManager::verifyRefreshToken()"},
 {"file":"class-OAuth2.TokenExpiredException.html","label":"TokenExpiredException - Class"}
 ];

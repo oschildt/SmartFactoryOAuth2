@@ -141,7 +141,7 @@ class OAuthManager implements IOAuthManager
      * @return string
      * Returns the base64 encoded data string.
      *
-     * @see urlSafeB64Decode()
+     * @see OAuthManager::urlSafeB64Decode()
      *
      * @author Oleg Schildt
      */
@@ -162,7 +162,7 @@ class OAuthManager implements IOAuthManager
      * @return string
      * Returns the base64 decoded data string.
      *
-     * @see urlSafeB64Encode()
+     * @see OAuthManager::urlSafeB64Encode()
      *
      * @author Oleg Schildt
      */
@@ -199,9 +199,7 @@ class OAuthManager implements IOAuthManager
      * - if the public key is invalid.
      * - if the ssl verification cannot be performed due to system errors.
      *
-     * @uses generateRSASignature()
-     *
-     * @used_by verifyJwtSignature()
+     * @uses OAuthManager::generateRSASignature()
      *
      * @author Oleg Schildt
      */
@@ -246,9 +244,7 @@ class OAuthManager implements IOAuthManager
      * - if the private key is invalid.
      * - if ssl signing fails due to system errors.
      *
-     * @see verifyRSASignature()
-     *
-     * @used_by generateJwtSignature()
+     * @see OAuthManager::verifyRSASignature()
      *
      * @author Oleg Schildt
      */
@@ -288,7 +284,7 @@ class OAuthManager implements IOAuthManager
      * - if the private key is invalid.
      * - if ssl signing fails due to system errors.
      *
-     * @uses generateRSASignature()
+     * @uses OAuthManager::generateRSASignature()
      *
      * @author Oleg Schildt
      */
@@ -340,7 +336,7 @@ class OAuthManager implements IOAuthManager
      * - if the public key is invalid.
      * - if the ssl verification cannot be performed due to system errors.
      *
-     * @uses verifyRSASignature()
+     * @uses OAuthManager::verifyRSASignature()
      *
      * @author Oleg Schildt
      */
@@ -597,7 +593,7 @@ class OAuthManager implements IOAuthManager
      * @param string $client_id
      * The client id for which the tokens were issued.
      *
-     * @param array $response
+     * @param array &$response
      * The response to be filled with the user data and tokens.
      *
      * @return boolean
@@ -615,9 +611,6 @@ class OAuthManager implements IOAuthManager
      * - if the token storage fails to save the token record.
      *
      * @uses \OAuth2\Interfaces\ITokenStorage::saveTokenRecord()
-     *
-     * @used_by authenticateUser()
-     * @used_by refreshTokens()
      *
      * @author Oleg Schildt
      */
@@ -650,20 +643,13 @@ class OAuthManager implements IOAuthManager
      * The parameters are:
      *
      * - $parameters["access_token_ttl"] - time to live in seconds for the access token.
-     *
      * - $parameters["refresh_token_ttl"] - time to live in seconds for the refresh token.
-     *
      * - $parameters["max_token_inactivity_days"] - maximal number of inactivity days for the token.
-     *
      * - $parameters["encryption_algorithm"] - the encryption algorithm used for signing. The following
      * algorithms are supported: HS256, HS384, HS512, RS256, RS384, RS512.
-     *
      * - $parameters["public_key"] - location of the public key file. Required for the algorithms: RS256, RS384, RS512.
-     *
      * - $parameters["private_key"] - location of the private key file. Required for the algorithms: RS256, RS384, RS512.
-     *
      * - $parameters["pass_phrase"] - the pass phrase for the private key if necessary.
-     *
      * - $parameters["token_storage"] - the object implementing the interface {@see \OAuth2\Interfaces\ITokenStorage}. It is used for storing and
      * validating of the stored tokens.
      *
@@ -738,28 +724,19 @@ class OAuthManager implements IOAuthManager
      * The credentials for the authentication. The expected credentials are:
      *
      * - $credentials["client_id"] - id of the client (device token etc.).
-     *
      * - $credentials["user_login"] - the user login.
-     *
      * - $credentials["user_password"] - the user password.
      *
-     * @param array $response
+     * @param array &$response
      * The response upon successful authentication. The expected properties are:
      *
      * - $response["user_id"] - id of the user.
-     *
      * - $response["client_id"] - id of the client (device token etc.).
-     *
      * - $response["access_token"] - access token generated upon successful authentication.
-     *
      * - $response["access_token_expire"] - expiration time of the access token.
-     *
      * - $response["refresh_token"] - refresh token generated upon successful authentication.
-     *
      * - $response["refresh_token_expire"] - expiration time of the refresh token.
-     *
      * - $response["last_activity"] - last activity time of the user of this token.
-     *
      * - $response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
      * token is the access token encoded and signed by the JWT standard approach.
      *
@@ -783,7 +760,7 @@ class OAuthManager implements IOAuthManager
      * @throws \OAuth2\MissingParametersException
      * It might throw the MissingParametersException if any required paramters are empty.
      *
-     * @uses createTokenRecord()
+     * @uses OAuthManager::createTokenRecord()
      *
      * @author Oleg Schildt
      */
@@ -808,23 +785,16 @@ class OAuthManager implements IOAuthManager
      * @param string $client_id
      * The client id for which the refresh token was issued.
      *
-     * @param array $response
+     * @param array &$response
      * The response upon successful refresh. The expected properties are:
      *
      * - $response["user_id"] - id of the user.
-     *
      * - $response["client_id"] - id of the client (device token etc.).
-     *
      * - $response["access_token"] - access token generated upon successful authentication.
-     *
      * - $response["access_token_expire"] - expiration time of the access token.
-     *
      * - $response["refresh_token"] - refresh token generated upon successful authentication.
-     *
      * - $response["refresh_token_expire"] - expiration time of the refresh token.
-     *
      * - $response["last_activity"] - last activity time of the user of this token.
-     *
      * - $response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
      * token is the access token encoded and signed by the JWT standard approach.
      *
@@ -852,8 +822,8 @@ class OAuthManager implements IOAuthManager
      * @throws \OAuth2\MissingParametersException
      * It might throw the MissingParametersException if any required paramters are empty.
      *
-     * @uses createTokenRecord()
-     * @uses verifyRefreshToken()
+     * @uses OAuthManager::createTokenRecord()
+     * @uses OAuthManager::verifyRefreshToken()
      *
      * @author Oleg Schildt
      */
@@ -994,10 +964,6 @@ class OAuthManager implements IOAuthManager
      *
      * @uses \OAuth2\Interfaces\ITokenStorage::loadTokenRecord()
      *
-     * @used_by refreshTokens()
-     * @used_by invalidateUser()
-     * @used_by invalidateClient()
-     *
      * @author Oleg Schildt
      */
     public function verifyRefreshToken($refresh_token, $user_id, $client_id)
@@ -1074,7 +1040,7 @@ class OAuthManager implements IOAuthManager
      * @throws \OAuth2\MissingParametersException
      * It might throw the MissingParametersException if any required paramters are empty.
      *
-     * @uses verifyRefreshToken()
+     * @uses OAuthManager::verifyRefreshToken()
      * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
      *
      * @author Oleg Schildt
@@ -1136,7 +1102,7 @@ class OAuthManager implements IOAuthManager
      * @throws \OAuth2\MissingParametersException
      * It might throw the MissingParametersException if any required paramters are empty.
      *
-     * @uses verifyRefreshToken()
+     * @uses OAuthManager::verifyRefreshToken()
      * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
      *
      * @author Oleg Schildt

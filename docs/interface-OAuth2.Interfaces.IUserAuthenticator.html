@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="resources/jquery.iviewer.css">
 
         <title>
-            Interface: IUserAuthenticator - SmartFactory OAuth2 Server
+            Interface: IUserAuthenticator
         </title>
     </head>
 
@@ -39,12 +39,6 @@
                         <li>
                             <a href="interfaces.html" class="active">
                                 Interfaces
-                            </a>
-                        </li>
-                        
-                        <li>
-                            <a href="diagram.html" class="">
-                                Diagram
                             </a>
                         </li>
                         
@@ -118,10 +112,15 @@
                     <h1>Interface: IUserAuthenticator</h1>
 
 
+
+<div class="definition"></div>
+
+
 <div class="short-description">
-Interface for authentication
-of the user upon his credentials before generation of the tokens.
+<p>Interface for authentication
+of the user upon his credentials before generation of the tokens.</p>
 </div>
+
 
 
 
@@ -138,16 +137,35 @@ of the user upon his credentials before generation of the tokens.
 
 
 
+<h2>Authors</h2>
+<div class="item_list">
+
+<div class='item'>Oleg Schildt</div>
+
+</div>
 
 
-<h2>Author</h2>
-Oleg Schildt
+
+
 
 
 
 
 <h2>Source code</h2>
-<a href="source-OAuth2.Interfaces.IUserAuthenticator.html#16">OAuth2\Interfaces\IUserAuthenticator.php</a>
+<div class="item_list">
+<a href='source-OAuth2.Interfaces.IUserAuthenticator.php.html#19'>OAuth2/Interfaces/IUserAuthenticator.php</a>
+</div>
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -159,115 +177,128 @@ Oleg Schildt
 
 
 
-
-  <table class="table table-responsive table-bordered table-striped class_multicolumn">
+<table class="table table-responsive table-bordered table-striped class_multicolumn">
       <tr><th colspan="2">Methods</th></tr>
-      
       
       <tr>
           <td>
-              <a href="#authenticateUser">authenticateUser</a>
+              <div style='float:left'><a href="#authenticateUser">authenticateUser()</a></div>
+
+              <div style='float:right'>
+              
+              <span class='label label-success'>public</span>
+              </div>
+              <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              Authenticates the user based on the specified credentials.
+              <p>Authenticates the user based on the specified credentials.</p>
           </td>
       </tr>
-      
       
   </table>
 
 
 
-
-
+<hr id="authenticateUser">
   
-  <hr id="authenticateUser">
-  
-  <h1>Method: authenticateUser</h1>
+  <h1>Method: IUserAuthenticator::authenticateUser()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <b>authenticateUser</b>(<span class="php-keyword1">array</span> <span class="php-var">$credentials</span>) : boolean</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> authenticateUser(<span class="php-keyword1">array</span> <span class="php-var">$credentials</span>) : bool;</div>
 
   
   <div class="short-description">
-  Authenticates the user based on the specified credentials.
+  <p>Authenticates the user based on the specified credentials.</p>
   </div>
   
 
   
 
   
+
   <h2>Parameters</h2>
-  
-      <h3>$credentials</h3>
-      <span class="type_label">Type:</span> array
-      
-      <div class="param-description">
-      <p>The credentials may vary depending on implementation.</p>
-      </div>
-      
-  
-  
+
+    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+        <tr>
+        <th>Name</th>
+        <th>Pass type</th>
+        <th>Value type</th>
+        <th>Default value</th>
+        <th>Description</th>
+        </tr>
+        
+        
+        <tr>
+            <td>
+                $credentials
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                array
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The credentials may vary depending on implementation.</p>
+            </td>
+        </tr>
+        
+        
+    </table>
 
   
   <h2>Returns</h2>
-  <span class="type_label">Type:</span> boolean
+  <div class="item_list">
+  bool<br>
   
-  <div class="param-description">
-  <p>The method should return the user id upon success, otherwise false.</p>
+  <div class="item_description"><p>The method should return the user id upon success, otherwise false.</p></div>
+  
   </div>
   
-  
 
-  
   <h2>Throws</h2>
   <div class="item_list">
   
-      <b>\Exception</b><br>
-      
-      
-      <p>It might throw an exception in the case of any system errors.</p><br>
-      
+  \Exception<br>
   
-      <b><a href="class-OAuth2.InvalidCredentialsException.html">\OAuth2\InvalidCredentialsException</a></b><br>
-      
-      
-      <p>It should throw the InvalidCredentialsException if the authentication fails.</p><br>
-      
+  <div class="item_description"><p>It might throw an exception in the case of any system errors.</p></div>
   
-      <b><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></b><br>
-      
-      
-      <p>It should throw the MissingParametersException if any required paramters are empty.</p><br>
-      
+  
+  <a href='class-OAuth2.InvalidCredentialsException.html'>\OAuth2\InvalidCredentialsException</a><br>
+  
+  <div class="item_description"><p>It should throw the InvalidCredentialsException if the authentication fails.</p></div>
+  
+  
+  <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
+  
+  <div class="item_description"><p>It should throw the MissingParametersException if any required paramters are empty.</p></div>
+  
   
   </div>
+
+  
+
+  <h2>Authors</h2>
+  <div class="item_list">
+  
+  <div class='item'>Oleg Schildt</div>
+  
+  </div>
+
   
 
   
-  
-  
-  
-  
-  <h2>Author</h2>
-  Oleg Schildt
-  
 
+  
   <h2>Source code</h2>
-  <a href="source-OAuth2.Interfaces.IUserAuthenticator.html#38">OAuth2\Interfaces\IUserAuthenticator.php</a>
-
-  
-
-  
-
-  
-  
-  
-
-
-
+  <div class="item_list">
+  <a href='source-OAuth2.Interfaces.IUserAuthenticator.php.html#41'>OAuth2/Interfaces/IUserAuthenticator.php</a>
+  </div>
                     
                     <div id="footer">
-                        Generated on 2020-11-24 18:11
+                        Generated on 2022-05-28 19:20 with <a href="http://www.google.com" target="_blank">DocGen</a>
                     </div>                    
                 </div>
             </div>
