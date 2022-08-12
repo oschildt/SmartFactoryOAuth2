@@ -24,7 +24,7 @@ interface IUserAuthenticator extends IInitable
      * @param array $credentials
      * The credentials may vary depending on implementation.
      *
-     * @return boolean
+     * @return int|false
      * The method should return the user id upon success, otherwise false.
      *
      * @throws \Exception

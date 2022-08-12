@@ -229,7 +229,7 @@ for a cache solution like Redis.</p>
   
   <h1>Method: ITokenStorage::deleteTokenRecordByKey()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> deleteTokenRecordByKey(string <span class="php-var">$key</span>, string <span class="php-var">$value</span>) : bool;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> deleteTokenRecordByKey(string <span class="php-var">$key</span>, string <span class="php-var">$value</span>) : void;</div>
 
   
   <div class="short-description">
@@ -301,9 +301,7 @@ for a cache solution like Redis.</p>
   
   <h2>Returns</h2>
   <div class="item_list">
-  bool<br>
-  
-  <div class="item_description"><p>The method should return true upon successful deletion, otherwise false.</p></div>
+  void<br>
   
   </div>
   
@@ -334,7 +332,7 @@ for a cache solution like Redis.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.ITokenStorage.php.html#98'>OAuth2/Interfaces/ITokenStorage.php</a>
+  <a href='source-OAuth2.Interfaces.ITokenStorage.php.html#95'>OAuth2/Interfaces/ITokenStorage.php</a>
   </div>
   
 
@@ -371,7 +369,7 @@ for a cache solution like Redis.</p>
   
   <h1>Method: ITokenStorage::loadTokenRecord()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> loadTokenRecord(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>) : bool;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> loadTokenRecord(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>) : void;</div>
 
   
   <div class="short-description">
@@ -410,15 +408,6 @@ for a cache solution like Redis.</p>
             </td>
             <td class="description_column">
                 <p>The token record may vary depending on implementation. The expected parameters are:</p>
-<ul>
-<li>$token_record[&quot;user_id&quot;] - id of the user.</li>
-<li>$token_record[&quot;client_id&quot;] - id of the client (device token etc.).</li>
-<li>$token_record[&quot;access_token&quot;] - access token generated upon successful authentication.</li>
-<li>$token_record[&quot;access_token_expire&quot;] - expiration time of the access token.</li>
-<li>$token_record[&quot;refresh_token&quot;] - refresh token generated upon successful authentication.</li>
-<li>$token_record[&quot;refresh_token_expire&quot;] - expiration time of the refresh token.</li>
-<li>$token_record[&quot;last_activity&quot;] - last activity time of the user of this token.</li>
-</ul>
             </td>
         </tr>
         
@@ -428,9 +417,17 @@ for a cache solution like Redis.</p>
   
   <h2>Returns</h2>
   <div class="item_list">
-  bool<br>
+  void<br>
   
-  <div class="item_description"><p>The method should return true upon successful save operation, otherwise false.</p></div>
+  <div class="item_description"><ul>
+<li>$token_record[&quot;user_id&quot;] - id of the user.</li>
+<li>$token_record[&quot;client_id&quot;] - id of the client (device token etc.).</li>
+<li>$token_record[&quot;access_token&quot;] - access token generated upon successful authentication.</li>
+<li>$token_record[&quot;access_token_expire&quot;] - expiration time of the access token.</li>
+<li>$token_record[&quot;refresh_token&quot;] - refresh token generated upon successful authentication.</li>
+<li>$token_record[&quot;refresh_token_expire&quot;] - expiration time of the refresh token.</li>
+<li>$token_record[&quot;last_activity&quot;] - last activity time of the user of this token.</li>
+</ul></div>
   
   </div>
   
@@ -461,7 +458,7 @@ for a cache solution like Redis.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.ITokenStorage.php.html#42'>OAuth2/Interfaces/ITokenStorage.php</a>
+  <a href='source-OAuth2.Interfaces.ITokenStorage.php.html#41'>OAuth2/Interfaces/ITokenStorage.php</a>
   </div>
   
 
@@ -492,7 +489,7 @@ for a cache solution like Redis.</p>
   
   <h1>Method: ITokenStorage::saveTokenRecord()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> saveTokenRecord(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>) : bool;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> saveTokenRecord(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>) : void;</div>
 
   
   <div class="short-description">
@@ -555,9 +552,7 @@ it should be overwritten.</p>
   
   <h2>Returns</h2>
   <div class="item_list">
-  bool<br>
-  
-  <div class="item_description"><p>The method should return true upon successful save operation, otherwise false.</p></div>
+  void<br>
   
   </div>
   
@@ -588,7 +583,7 @@ it should be overwritten.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.ITokenStorage.php.html#69'>OAuth2/Interfaces/ITokenStorage.php</a>
+  <a href='source-OAuth2.Interfaces.ITokenStorage.php.html#67'>OAuth2/Interfaces/ITokenStorage.php</a>
   </div>
   
 
@@ -607,7 +602,7 @@ it should be overwritten.</p>
   </div>
                     
                     <div id="footer">
-                        Generated on 2022-05-28 19:42 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
+                        Generated on 2022-08-12 12:18 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
                     </div>                    
                 </div>
             </div>

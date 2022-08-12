@@ -111,77 +111,77 @@
 </span><span class="line" id="22"> 22: </span><span class="php-comment">     * @param array $parameters
 </span><span class="line" id="23"> 23: </span><span class="php-comment">     * The parameters may vary depending on implementation.
 </span><span class="line" id="24"> 24: </span><span class="php-comment">     *
-</span><span class="line" id="25"> 25: </span><span class="php-comment">     * @return boolean
-</span><span class="line" id="26"> 26: </span><span class="php-comment">     * The method should return true upon successful initialization, otherwise false.
-</span><span class="line" id="27"> 27: </span><span class="php-comment">     *
-</span><span class="line" id="28"> 28: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="29"> 29: </span><span class="php-comment">     */</span>
-<span class="line" id="30"> 30: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> init(<span class="php-var">$parameters</span>);
-<span class="line" id="31"> 31: </span>    
-<span class="line" id="32"> 32: </span>    <span class="php-comment">/**
-</span><span class="line" id="33"> 33: </span><span class="php-comment">     * Authenticates the user based on the specified credentials and writes the response.
-</span><span class="line" id="34"> 34: </span><span class="php-comment">     *
-</span><span class="line" id="35"> 35: </span><span class="php-comment">     * It should use {@see \OAuth2\Interfaces\IUserAuthenticator} for the authentication.
+</span><span class="line" id="25"> 25: </span><span class="php-comment">     * @return void
+</span><span class="line" id="26"> 26: </span><span class="php-comment">     *
+</span><span class="line" id="27"> 27: </span><span class="php-comment">     * @throws \Exception
+</span><span class="line" id="28"> 28: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
+</span><span class="line" id="29"> 29: </span><span class="php-comment">     *
+</span><span class="line" id="30"> 30: </span><span class="php-comment">     * @author Oleg Schildt
+</span><span class="line" id="31"> 31: </span><span class="php-comment">     */</span>
+<span class="line" id="32"> 32: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> init(<span class="php-var">$parameters</span>);
+<span class="line" id="33"> 33: </span>    
+<span class="line" id="34"> 34: </span>    <span class="php-comment">/**
+</span><span class="line" id="35"> 35: </span><span class="php-comment">     * Authenticates the user based on the specified credentials and writes the response.
 </span><span class="line" id="36"> 36: </span><span class="php-comment">     *
-</span><span class="line" id="37"> 37: </span><span class="php-comment">     * @param array $credentials
-</span><span class="line" id="38"> 38: </span><span class="php-comment">     * The credentials for the authentication. They may vary depending on implementation.
-</span><span class="line" id="39"> 39: </span><span class="php-comment">     *
-</span><span class="line" id="40"> 40: </span><span class="php-comment">     * @param array &amp;$response
-</span><span class="line" id="41"> 41: </span><span class="php-comment">     * The response upon successful authentication. The expected properties are:
-</span><span class="line" id="42"> 42: </span><span class="php-comment">     *
-</span><span class="line" id="43"> 43: </span><span class="php-comment">     * - $response[&quot;user_id&quot;] - id of the user.
-</span><span class="line" id="44"> 44: </span><span class="php-comment">     * - $response[&quot;client_id&quot;] - id of the client (device token etc.).
-</span><span class="line" id="45"> 45: </span><span class="php-comment">     * - $response[&quot;access_token&quot;] - access token generated upon successful authentication.
-</span><span class="line" id="46"> 46: </span><span class="php-comment">     * - $response[&quot;access_token_expire&quot;] - expiration time of the access token.
-</span><span class="line" id="47"> 47: </span><span class="php-comment">     * - $response[&quot;refresh_token&quot;] - refresh token generated upon successful authentication.
-</span><span class="line" id="48"> 48: </span><span class="php-comment">     * - $response[&quot;refresh_token_expire&quot;] - expiration time of the refresh token.
-</span><span class="line" id="49"> 49: </span><span class="php-comment">     * - $response[&quot;last_activity&quot;] - last activity time of the user of this token.
-</span><span class="line" id="50"> 50: </span><span class="php-comment">     * - $response[&quot;jwt_access_token&quot;] - jwt access token generated upon successful authentication. JWT access
-</span><span class="line" id="51"> 51: </span><span class="php-comment">     * token is the access token encoded and signed by the JWT standard approach.
-</span><span class="line" id="52"> 52: </span><span class="php-comment">     *
-</span><span class="line" id="53"> 53: </span><span class="php-comment">     * @return boolean
-</span><span class="line" id="54"> 54: </span><span class="php-comment">     * The method should return true upon success, otherwise false.
-</span><span class="line" id="55"> 55: </span><span class="php-comment">     *
-</span><span class="line" id="56"> 56: </span><span class="php-comment">     * @throws \Exception
-</span><span class="line" id="57"> 57: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
-</span><span class="line" id="58"> 58: </span><span class="php-comment">     *
-</span><span class="line" id="59"> 59: </span><span class="php-comment">     * @throws \OAuth2\InvalidCredentialsException
-</span><span class="line" id="60"> 60: </span><span class="php-comment">     * It should throw the InvalidCredentialsException if the authentication fails.
-</span><span class="line" id="61"> 61: </span><span class="php-comment">     *
-</span><span class="line" id="62"> 62: </span><span class="php-comment">     * @throws \OAuth2\MissingParametersException
-</span><span class="line" id="63"> 63: </span><span class="php-comment">     * It should throw the MissingParametersException if any required paramters are empty.
-</span><span class="line" id="64"> 64: </span><span class="php-comment">     *
-</span><span class="line" id="65"> 65: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="66"> 66: </span><span class="php-comment">     */</span>
-<span class="line" id="67"> 67: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> authenticateUser(<span class="php-var">$credentials</span>, &amp;<span class="php-var">$response</span>);
-<span class="line" id="68"> 68: </span>    
-<span class="line" id="69"> 69: </span>    <span class="php-comment">/**
-</span><span class="line" id="70"> 70: </span><span class="php-comment">     * Refreshes the access and refresh tokens by using the valid refresh token.
-</span><span class="line" id="71"> 71: </span><span class="php-comment">     *
-</span><span class="line" id="72"> 72: </span><span class="php-comment">     * @param string $refresh_token
-</span><span class="line" id="73"> 73: </span><span class="php-comment">     * The refresh token generated upon successful authentication.
-</span><span class="line" id="74"> 74: </span><span class="php-comment">     *
-</span><span class="line" id="75"> 75: </span><span class="php-comment">     * @param string $user_id
-</span><span class="line" id="76"> 76: </span><span class="php-comment">     * The user id for which the refresh token was issued.
-</span><span class="line" id="77"> 77: </span><span class="php-comment">     *
-</span><span class="line" id="78"> 78: </span><span class="php-comment">     * @param string $client_id
-</span><span class="line" id="79"> 79: </span><span class="php-comment">     * The client id for which the refresh token was issued.
-</span><span class="line" id="80"> 80: </span><span class="php-comment">     *
-</span><span class="line" id="81"> 81: </span><span class="php-comment">     * @param array &amp;$response
-</span><span class="line" id="82"> 82: </span><span class="php-comment">     * The response upon successful refresh. The expected properties are:
-</span><span class="line" id="83"> 83: </span><span class="php-comment">     *
-</span><span class="line" id="84"> 84: </span><span class="php-comment">     * - $response[&quot;user_id&quot;] - id of the user.
-</span><span class="line" id="85"> 85: </span><span class="php-comment">     * - $response[&quot;client_id&quot;] - id of the client (device token etc.).
-</span><span class="line" id="86"> 86: </span><span class="php-comment">     * - $response[&quot;access_token&quot;] - access token generated upon successful authentication.
-</span><span class="line" id="87"> 87: </span><span class="php-comment">     * - $response[&quot;access_token_expire&quot;] - expiration time of the access token.
-</span><span class="line" id="88"> 88: </span><span class="php-comment">     * - $response[&quot;refresh_token&quot;] - refresh token generated upon successful authentication.
-</span><span class="line" id="89"> 89: </span><span class="php-comment">     * - $response[&quot;refresh_token_expire&quot;] - expiration time of the refresh token.
-</span><span class="line" id="90"> 90: </span><span class="php-comment">     * - $response[&quot;last_activity&quot;] - last activity time of the user of this token.
-</span><span class="line" id="91"> 91: </span><span class="php-comment">     * - $response[&quot;jwt_access_token&quot;] - jwt access token generated upon successful authentication. JWT access
-</span><span class="line" id="92"> 92: </span><span class="php-comment">     * token is the access token encoded and signed by the JWT standard approach.
-</span><span class="line" id="93"> 93: </span><span class="php-comment">     *
-</span><span class="line" id="94"> 94: </span><span class="php-comment">     * @return boolean
-</span><span class="line" id="95"> 95: </span><span class="php-comment">     * The method should return true upon success, otherwise false.
+</span><span class="line" id="37"> 37: </span><span class="php-comment">     * It should use {@see \OAuth2\Interfaces\IUserAuthenticator} for the authentication.
+</span><span class="line" id="38"> 38: </span><span class="php-comment">     *
+</span><span class="line" id="39"> 39: </span><span class="php-comment">     * @param array $credentials
+</span><span class="line" id="40"> 40: </span><span class="php-comment">     * The credentials for the authentication. They may vary depending on implementation.
+</span><span class="line" id="41"> 41: </span><span class="php-comment">     *
+</span><span class="line" id="42"> 42: </span><span class="php-comment">     * @param array &amp;$response
+</span><span class="line" id="43"> 43: </span><span class="php-comment">     * The response upon successful authentication. The expected properties are:
+</span><span class="line" id="44"> 44: </span><span class="php-comment">     *
+</span><span class="line" id="45"> 45: </span><span class="php-comment">     * - $response[&quot;user_id&quot;] - id of the user.
+</span><span class="line" id="46"> 46: </span><span class="php-comment">     * - $response[&quot;client_id&quot;] - id of the client (device token etc.).
+</span><span class="line" id="47"> 47: </span><span class="php-comment">     * - $response[&quot;access_token&quot;] - access token generated upon successful authentication.
+</span><span class="line" id="48"> 48: </span><span class="php-comment">     * - $response[&quot;access_token_expire&quot;] - expiration time of the access token.
+</span><span class="line" id="49"> 49: </span><span class="php-comment">     * - $response[&quot;refresh_token&quot;] - refresh token generated upon successful authentication.
+</span><span class="line" id="50"> 50: </span><span class="php-comment">     * - $response[&quot;refresh_token_expire&quot;] - expiration time of the refresh token.
+</span><span class="line" id="51"> 51: </span><span class="php-comment">     * - $response[&quot;last_activity&quot;] - last activity time of the user of this token.
+</span><span class="line" id="52"> 52: </span><span class="php-comment">     * - $response[&quot;jwt_access_token&quot;] - jwt access token generated upon successful authentication. JWT access
+</span><span class="line" id="53"> 53: </span><span class="php-comment">     * token is the access token encoded and signed by the JWT standard approach.
+</span><span class="line" id="54"> 54: </span><span class="php-comment">     *
+</span><span class="line" id="55"> 55: </span><span class="php-comment">     * @return void
+</span><span class="line" id="56"> 56: </span><span class="php-comment">     *
+</span><span class="line" id="57"> 57: </span><span class="php-comment">     * @throws \Exception
+</span><span class="line" id="58"> 58: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
+</span><span class="line" id="59"> 59: </span><span class="php-comment">     *
+</span><span class="line" id="60"> 60: </span><span class="php-comment">     * @throws \OAuth2\InvalidCredentialsException
+</span><span class="line" id="61"> 61: </span><span class="php-comment">     * It should throw the InvalidCredentialsException if the authentication fails.
+</span><span class="line" id="62"> 62: </span><span class="php-comment">     *
+</span><span class="line" id="63"> 63: </span><span class="php-comment">     * @throws \OAuth2\MissingParametersException
+</span><span class="line" id="64"> 64: </span><span class="php-comment">     * It should throw the MissingParametersException if any required paramters are empty.
+</span><span class="line" id="65"> 65: </span><span class="php-comment">     *
+</span><span class="line" id="66"> 66: </span><span class="php-comment">     * @author Oleg Schildt
+</span><span class="line" id="67"> 67: </span><span class="php-comment">     */</span>
+<span class="line" id="68"> 68: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> authenticateUser(<span class="php-var">$credentials</span>, &amp;<span class="php-var">$response</span>);
+<span class="line" id="69"> 69: </span>    
+<span class="line" id="70"> 70: </span>    <span class="php-comment">/**
+</span><span class="line" id="71"> 71: </span><span class="php-comment">     * Refreshes the access and refresh tokens by using the valid refresh token.
+</span><span class="line" id="72"> 72: </span><span class="php-comment">     *
+</span><span class="line" id="73"> 73: </span><span class="php-comment">     * @param string $refresh_token
+</span><span class="line" id="74"> 74: </span><span class="php-comment">     * The refresh token generated upon successful authentication.
+</span><span class="line" id="75"> 75: </span><span class="php-comment">     *
+</span><span class="line" id="76"> 76: </span><span class="php-comment">     * @param string $user_id
+</span><span class="line" id="77"> 77: </span><span class="php-comment">     * The user id for which the refresh token was issued.
+</span><span class="line" id="78"> 78: </span><span class="php-comment">     *
+</span><span class="line" id="79"> 79: </span><span class="php-comment">     * @param string $client_id
+</span><span class="line" id="80"> 80: </span><span class="php-comment">     * The client id for which the refresh token was issued.
+</span><span class="line" id="81"> 81: </span><span class="php-comment">     *
+</span><span class="line" id="82"> 82: </span><span class="php-comment">     * @param array &amp;$response
+</span><span class="line" id="83"> 83: </span><span class="php-comment">     * The response upon successful refresh. The expected properties are:
+</span><span class="line" id="84"> 84: </span><span class="php-comment">     *
+</span><span class="line" id="85"> 85: </span><span class="php-comment">     * - $response[&quot;user_id&quot;] - id of the user.
+</span><span class="line" id="86"> 86: </span><span class="php-comment">     * - $response[&quot;client_id&quot;] - id of the client (device token etc.).
+</span><span class="line" id="87"> 87: </span><span class="php-comment">     * - $response[&quot;access_token&quot;] - access token generated upon successful authentication.
+</span><span class="line" id="88"> 88: </span><span class="php-comment">     * - $response[&quot;access_token_expire&quot;] - expiration time of the access token.
+</span><span class="line" id="89"> 89: </span><span class="php-comment">     * - $response[&quot;refresh_token&quot;] - refresh token generated upon successful authentication.
+</span><span class="line" id="90"> 90: </span><span class="php-comment">     * - $response[&quot;refresh_token_expire&quot;] - expiration time of the refresh token.
+</span><span class="line" id="91"> 91: </span><span class="php-comment">     * - $response[&quot;last_activity&quot;] - last activity time of the user of this token.
+</span><span class="line" id="92"> 92: </span><span class="php-comment">     * - $response[&quot;jwt_access_token&quot;] - jwt access token generated upon successful authentication. JWT access
+</span><span class="line" id="93"> 93: </span><span class="php-comment">     * token is the access token encoded and signed by the JWT standard approach.
+</span><span class="line" id="94"> 94: </span><span class="php-comment">     *
+</span><span class="line" id="95"> 95: </span><span class="php-comment">     * @return void
 </span><span class="line" id="96"> 96: </span><span class="php-comment">     *
 </span><span class="line" id="97"> 97: </span><span class="php-comment">     * @throws \Exception
 </span><span class="line" id="98"> 98: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
@@ -240,146 +240,141 @@
 </span><span class="line" id="151">151: </span><span class="php-comment">     * @param string $client_id
 </span><span class="line" id="152">152: </span><span class="php-comment">     * The client id for which the refresh token was issued.
 </span><span class="line" id="153">153: </span><span class="php-comment">     *
-</span><span class="line" id="154">154: </span><span class="php-comment">     * @return boolean
-</span><span class="line" id="155">155: </span><span class="php-comment">     * The method returns true upon successful verification, otherwise false.
-</span><span class="line" id="156">156: </span><span class="php-comment">     *
-</span><span class="line" id="157">157: </span><span class="php-comment">     * @throws \Exception
-</span><span class="line" id="158">158: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
-</span><span class="line" id="159">159: </span><span class="php-comment">     *
-</span><span class="line" id="160">160: </span><span class="php-comment">     * @throws \OAuth2\InvalidTokenException
-</span><span class="line" id="161">161: </span><span class="php-comment">     * It should throw the InvalidTokenException if the refresh token is invalid.
-</span><span class="line" id="162">162: </span><span class="php-comment">     *
-</span><span class="line" id="163">163: </span><span class="php-comment">     * @throws \OAuth2\TokenExpiredException
-</span><span class="line" id="164">164: </span><span class="php-comment">     * It might throw the TokenExpiredException if the refresh token is expired.
-</span><span class="line" id="165">165: </span><span class="php-comment">     *
-</span><span class="line" id="166">166: </span><span class="php-comment">     * @throws \OAuth2\MissingParametersException
-</span><span class="line" id="167">167: </span><span class="php-comment">     * It should throw the MissingParametersException if any required paramters are empty.
-</span><span class="line" id="168">168: </span><span class="php-comment">     *
-</span><span class="line" id="169">169: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="170">170: </span><span class="php-comment">     */</span>
-<span class="line" id="171">171: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyRefreshToken(<span class="php-var">$refresh_token</span>, <span class="php-var">$user_id</span>, <span class="php-var">$client_id</span>);
-<span class="line" id="172">172: </span>    
-<span class="line" id="173">173: </span>    <span class="php-comment">/**
-</span><span class="line" id="174">174: </span><span class="php-comment">     * Invalidates all token records for the user.
-</span><span class="line" id="175">175: </span><span class="php-comment">     *
-</span><span class="line" id="176">176: </span><span class="php-comment">     * The invalidation by the user id should be asserted by a valid client id and
-</span><span class="line" id="177">177: </span><span class="php-comment">     * a valid refresh token. If the refresh token is expired, the invalidation
-</span><span class="line" id="178">178: </span><span class="php-comment">     * can be done only after authentication.
-</span><span class="line" id="179">179: </span><span class="php-comment">     *
-</span><span class="line" id="180">180: </span><span class="php-comment">     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'user_id'.
-</span><span class="line" id="181">181: </span><span class="php-comment">     *
-</span><span class="line" id="182">182: </span><span class="php-comment">     * @param string $user_id
-</span><span class="line" id="183">183: </span><span class="php-comment">     * The user id for which the refresh token was issued.
-</span><span class="line" id="184">184: </span><span class="php-comment">     *
-</span><span class="line" id="185">185: </span><span class="php-comment">     * @param string $client_id
-</span><span class="line" id="186">186: </span><span class="php-comment">     * The client id for which the refresh token was issued.
-</span><span class="line" id="187">187: </span><span class="php-comment">     *
-</span><span class="line" id="188">188: </span><span class="php-comment">     * @param string $refresh_token
-</span><span class="line" id="189">189: </span><span class="php-comment">     * The refresh token generated upon successful authentication.
-</span><span class="line" id="190">190: </span><span class="php-comment">     *
-</span><span class="line" id="191">191: </span><span class="php-comment">     * @return boolean
-</span><span class="line" id="192">192: </span><span class="php-comment">     * The method should return true on successful invalidation, otherwise false.
-</span><span class="line" id="193">193: </span><span class="php-comment">     *
-</span><span class="line" id="194">194: </span><span class="php-comment">     * @throws \Exception
-</span><span class="line" id="195">195: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
-</span><span class="line" id="196">196: </span><span class="php-comment">     *
-</span><span class="line" id="197">197: </span><span class="php-comment">     * @throws \OAuth2\InvalidTokenException
-</span><span class="line" id="198">198: </span><span class="php-comment">     * It should throw the InvalidTokenException if the refresh token is invalid.
-</span><span class="line" id="199">199: </span><span class="php-comment">     *
-</span><span class="line" id="200">200: </span><span class="php-comment">     * @throws \OAuth2\TokenExpiredException
-</span><span class="line" id="201">201: </span><span class="php-comment">     * It might throw the TokenExpiredException if the jwt refresh token is expired.
-</span><span class="line" id="202">202: </span><span class="php-comment">     *
-</span><span class="line" id="203">203: </span><span class="php-comment">     * @throws \OAuth2\MissingParametersException
-</span><span class="line" id="204">204: </span><span class="php-comment">     * It should throw the MissingParametersException if some required paramters are empty.
-</span><span class="line" id="205">205: </span><span class="php-comment">     *
-</span><span class="line" id="206">206: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="207">207: </span><span class="php-comment">     */</span>
-<span class="line" id="208">208: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateUser(<span class="php-var">$user_id</span>, <span class="php-var">$client_id</span>, <span class="php-var">$refresh_token</span>);
-<span class="line" id="209">209: </span>    
-<span class="line" id="210">210: </span>    <span class="php-comment">/**
-</span><span class="line" id="211">211: </span><span class="php-comment">     * Invalidates all token records for the client.
-</span><span class="line" id="212">212: </span><span class="php-comment">     *
-</span><span class="line" id="213">213: </span><span class="php-comment">     * The invalidation by the client id should be asserted by a valid user id and
-</span><span class="line" id="214">214: </span><span class="php-comment">     * a valid refresh token. If the refresh token is expired, the invalidation
-</span><span class="line" id="215">215: </span><span class="php-comment">     * can be done only after authentication.
+</span><span class="line" id="154">154: </span><span class="php-comment">     * @return void
+</span><span class="line" id="155">155: </span><span class="php-comment">     *
+</span><span class="line" id="156">156: </span><span class="php-comment">     * @throws \Exception
+</span><span class="line" id="157">157: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
+</span><span class="line" id="158">158: </span><span class="php-comment">     *
+</span><span class="line" id="159">159: </span><span class="php-comment">     * @throws \OAuth2\InvalidTokenException
+</span><span class="line" id="160">160: </span><span class="php-comment">     * It should throw the InvalidTokenException if the refresh token is invalid.
+</span><span class="line" id="161">161: </span><span class="php-comment">     *
+</span><span class="line" id="162">162: </span><span class="php-comment">     * @throws \OAuth2\TokenExpiredException
+</span><span class="line" id="163">163: </span><span class="php-comment">     * It might throw the TokenExpiredException if the refresh token is expired.
+</span><span class="line" id="164">164: </span><span class="php-comment">     *
+</span><span class="line" id="165">165: </span><span class="php-comment">     * @throws \OAuth2\MissingParametersException
+</span><span class="line" id="166">166: </span><span class="php-comment">     * It should throw the MissingParametersException if any required paramters are empty.
+</span><span class="line" id="167">167: </span><span class="php-comment">     *
+</span><span class="line" id="168">168: </span><span class="php-comment">     * @author Oleg Schildt
+</span><span class="line" id="169">169: </span><span class="php-comment">     */</span>
+<span class="line" id="170">170: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyRefreshToken(<span class="php-var">$refresh_token</span>, <span class="php-var">$user_id</span>, <span class="php-var">$client_id</span>);
+<span class="line" id="171">171: </span>    
+<span class="line" id="172">172: </span>    <span class="php-comment">/**
+</span><span class="line" id="173">173: </span><span class="php-comment">     * Invalidates all token records for the user.
+</span><span class="line" id="174">174: </span><span class="php-comment">     *
+</span><span class="line" id="175">175: </span><span class="php-comment">     * The invalidation by the user id should be asserted by a valid client id and
+</span><span class="line" id="176">176: </span><span class="php-comment">     * a valid refresh token. If the refresh token is expired, the invalidation
+</span><span class="line" id="177">177: </span><span class="php-comment">     * can be done only after authentication.
+</span><span class="line" id="178">178: </span><span class="php-comment">     *
+</span><span class="line" id="179">179: </span><span class="php-comment">     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'user_id'.
+</span><span class="line" id="180">180: </span><span class="php-comment">     *
+</span><span class="line" id="181">181: </span><span class="php-comment">     * @param string $user_id
+</span><span class="line" id="182">182: </span><span class="php-comment">     * The user id for which the refresh token was issued.
+</span><span class="line" id="183">183: </span><span class="php-comment">     *
+</span><span class="line" id="184">184: </span><span class="php-comment">     * @param string $client_id
+</span><span class="line" id="185">185: </span><span class="php-comment">     * The client id for which the refresh token was issued.
+</span><span class="line" id="186">186: </span><span class="php-comment">     *
+</span><span class="line" id="187">187: </span><span class="php-comment">     * @param string $refresh_token
+</span><span class="line" id="188">188: </span><span class="php-comment">     * The refresh token generated upon successful authentication.
+</span><span class="line" id="189">189: </span><span class="php-comment">     *
+</span><span class="line" id="190">190: </span><span class="php-comment">     * @return void
+</span><span class="line" id="191">191: </span><span class="php-comment">     *
+</span><span class="line" id="192">192: </span><span class="php-comment">     * @throws \Exception
+</span><span class="line" id="193">193: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
+</span><span class="line" id="194">194: </span><span class="php-comment">     *
+</span><span class="line" id="195">195: </span><span class="php-comment">     * @throws \OAuth2\InvalidTokenException
+</span><span class="line" id="196">196: </span><span class="php-comment">     * It should throw the InvalidTokenException if the refresh token is invalid.
+</span><span class="line" id="197">197: </span><span class="php-comment">     *
+</span><span class="line" id="198">198: </span><span class="php-comment">     * @throws \OAuth2\TokenExpiredException
+</span><span class="line" id="199">199: </span><span class="php-comment">     * It might throw the TokenExpiredException if the jwt refresh token is expired.
+</span><span class="line" id="200">200: </span><span class="php-comment">     *
+</span><span class="line" id="201">201: </span><span class="php-comment">     * @throws \OAuth2\MissingParametersException
+</span><span class="line" id="202">202: </span><span class="php-comment">     * It should throw the MissingParametersException if some required paramters are empty.
+</span><span class="line" id="203">203: </span><span class="php-comment">     *
+</span><span class="line" id="204">204: </span><span class="php-comment">     * @author Oleg Schildt
+</span><span class="line" id="205">205: </span><span class="php-comment">     */</span>
+<span class="line" id="206">206: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateUser(<span class="php-var">$user_id</span>, <span class="php-var">$client_id</span>, <span class="php-var">$refresh_token</span>);
+<span class="line" id="207">207: </span>    
+<span class="line" id="208">208: </span>    <span class="php-comment">/**
+</span><span class="line" id="209">209: </span><span class="php-comment">     * Invalidates all token records for the client.
+</span><span class="line" id="210">210: </span><span class="php-comment">     *
+</span><span class="line" id="211">211: </span><span class="php-comment">     * The invalidation by the client id should be asserted by a valid user id and
+</span><span class="line" id="212">212: </span><span class="php-comment">     * a valid refresh token. If the refresh token is expired, the invalidation
+</span><span class="line" id="213">213: </span><span class="php-comment">     * can be done only after authentication.
+</span><span class="line" id="214">214: </span><span class="php-comment">     *
+</span><span class="line" id="215">215: </span><span class="php-comment">     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'client_id'.
 </span><span class="line" id="216">216: </span><span class="php-comment">     *
-</span><span class="line" id="217">217: </span><span class="php-comment">     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'client_id'.
-</span><span class="line" id="218">218: </span><span class="php-comment">     *
-</span><span class="line" id="219">219: </span><span class="php-comment">     * @param string $user_id
-</span><span class="line" id="220">220: </span><span class="php-comment">     * The user id for which the refresh token was issued.
-</span><span class="line" id="221">221: </span><span class="php-comment">     *
-</span><span class="line" id="222">222: </span><span class="php-comment">     * @param string $client_id
-</span><span class="line" id="223">223: </span><span class="php-comment">     * The client id for which the refresh token was issued.
-</span><span class="line" id="224">224: </span><span class="php-comment">     *
-</span><span class="line" id="225">225: </span><span class="php-comment">     * @param string $refresh_token
-</span><span class="line" id="226">226: </span><span class="php-comment">     * The refresh token generated upon successful authentication.
+</span><span class="line" id="217">217: </span><span class="php-comment">     * @param string $user_id
+</span><span class="line" id="218">218: </span><span class="php-comment">     * The user id for which the refresh token was issued.
+</span><span class="line" id="219">219: </span><span class="php-comment">     *
+</span><span class="line" id="220">220: </span><span class="php-comment">     * @param string $client_id
+</span><span class="line" id="221">221: </span><span class="php-comment">     * The client id for which the refresh token was issued.
+</span><span class="line" id="222">222: </span><span class="php-comment">     *
+</span><span class="line" id="223">223: </span><span class="php-comment">     * @param string $refresh_token
+</span><span class="line" id="224">224: </span><span class="php-comment">     * The refresh token generated upon successful authentication.
+</span><span class="line" id="225">225: </span><span class="php-comment">     *
+</span><span class="line" id="226">226: </span><span class="php-comment">     * @return void
 </span><span class="line" id="227">227: </span><span class="php-comment">     *
-</span><span class="line" id="228">228: </span><span class="php-comment">     * @return boolean
-</span><span class="line" id="229">229: </span><span class="php-comment">     * The method should return true on successful invalidation, otherwise false.
+</span><span class="line" id="228">228: </span><span class="php-comment">     * @throws \Exception
+</span><span class="line" id="229">229: </span><span class="php-comment">     * It might throw an exception in the case of any errors.
 </span><span class="line" id="230">230: </span><span class="php-comment">     *
-</span><span class="line" id="231">231: </span><span class="php-comment">     * @throws \Exception
-</span><span class="line" id="232">232: </span><span class="php-comment">     * It might throw an exception in the case of any errors.
+</span><span class="line" id="231">231: </span><span class="php-comment">     * @throws \OAuth2\InvalidTokenException
+</span><span class="line" id="232">232: </span><span class="php-comment">     * It should throw the InvalidTokenException if the refresh token is invalid.
 </span><span class="line" id="233">233: </span><span class="php-comment">     *
-</span><span class="line" id="234">234: </span><span class="php-comment">     * @throws \OAuth2\InvalidTokenException
-</span><span class="line" id="235">235: </span><span class="php-comment">     * It should throw the InvalidTokenException if the refresh token is invalid.
+</span><span class="line" id="234">234: </span><span class="php-comment">     * @throws \OAuth2\MissingParametersException
+</span><span class="line" id="235">235: </span><span class="php-comment">     * It should throw the MissingParametersException if some required paramters are empty.
 </span><span class="line" id="236">236: </span><span class="php-comment">     *
-</span><span class="line" id="237">237: </span><span class="php-comment">     * @throws \OAuth2\MissingParametersException
-</span><span class="line" id="238">238: </span><span class="php-comment">     * It should throw the MissingParametersException if some required paramters are empty.
-</span><span class="line" id="239">239: </span><span class="php-comment">     *
-</span><span class="line" id="240">240: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="241">241: </span><span class="php-comment">     */</span>
-<span class="line" id="242">242: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateClient(<span class="php-var">$user_id</span>, <span class="php-var">$client_id</span>, <span class="php-var">$refresh_token</span>);
-<span class="line" id="243">243: </span>    
-<span class="line" id="244">244: </span>    <span class="php-comment">/**
-</span><span class="line" id="245">245: </span><span class="php-comment">     * Invalidates the token record for the jwt access token.
-</span><span class="line" id="246">246: </span><span class="php-comment">     *
-</span><span class="line" id="247">247: </span><span class="php-comment">     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'access_token'.
-</span><span class="line" id="248">248: </span><span class="php-comment">     *
-</span><span class="line" id="249">249: </span><span class="php-comment">     * The origin access token is extracted from the jwt payload.
+</span><span class="line" id="237">237: </span><span class="php-comment">     * @author Oleg Schildt
+</span><span class="line" id="238">238: </span><span class="php-comment">     */</span>
+<span class="line" id="239">239: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateClient(<span class="php-var">$user_id</span>, <span class="php-var">$client_id</span>, <span class="php-var">$refresh_token</span>);
+<span class="line" id="240">240: </span>    
+<span class="line" id="241">241: </span>    <span class="php-comment">/**
+</span><span class="line" id="242">242: </span><span class="php-comment">     * Invalidates the token record for the jwt access token.
+</span><span class="line" id="243">243: </span><span class="php-comment">     *
+</span><span class="line" id="244">244: </span><span class="php-comment">     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'access_token'.
+</span><span class="line" id="245">245: </span><span class="php-comment">     *
+</span><span class="line" id="246">246: </span><span class="php-comment">     * The origin access token is extracted from the jwt payload.
+</span><span class="line" id="247">247: </span><span class="php-comment">     *
+</span><span class="line" id="248">248: </span><span class="php-comment">     * @param string $jwt_access_token
+</span><span class="line" id="249">249: </span><span class="php-comment">     * The jwt access token generated upon successful authentication.
 </span><span class="line" id="250">250: </span><span class="php-comment">     *
-</span><span class="line" id="251">251: </span><span class="php-comment">     * @param string $jwt_access_token
-</span><span class="line" id="252">252: </span><span class="php-comment">     * The jwt access token generated upon successful authentication.
-</span><span class="line" id="253">253: </span><span class="php-comment">     *
-</span><span class="line" id="254">254: </span><span class="php-comment">     * @return boolean
-</span><span class="line" id="255">255: </span><span class="php-comment">     * The method should return true on successful invalidation, otherwise false.
-</span><span class="line" id="256">256: </span><span class="php-comment">     *
-</span><span class="line" id="257">257: </span><span class="php-comment">     * @throws \Exception
-</span><span class="line" id="258">258: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
-</span><span class="line" id="259">259: </span><span class="php-comment">     *
-</span><span class="line" id="260">260: </span><span class="php-comment">     * @throws \OAuth2\InvalidTokenException
-</span><span class="line" id="261">261: </span><span class="php-comment">     * It should throw the InvalidTokenException if the access token is invalid.
-</span><span class="line" id="262">262: </span><span class="php-comment">     *
-</span><span class="line" id="263">263: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="264">264: </span><span class="php-comment">     */</span>
-<span class="line" id="265">265: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateJwtAccessToken(<span class="php-var">$jwt_access_token</span>);
-<span class="line" id="266">266: </span>    
-<span class="line" id="267">267: </span>    <span class="php-comment">/**
-</span><span class="line" id="268">268: </span><span class="php-comment">     * Invalidates all token records for the refresh token.
-</span><span class="line" id="269">269: </span><span class="php-comment">     *
-</span><span class="line" id="270">270: </span><span class="php-comment">     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'refresh_token'.
-</span><span class="line" id="271">271: </span><span class="php-comment">     *
-</span><span class="line" id="272">272: </span><span class="php-comment">     * @param string $refresh_token
-</span><span class="line" id="273">273: </span><span class="php-comment">     * The refresh token generated upon successful authentication.
-</span><span class="line" id="274">274: </span><span class="php-comment">     *
-</span><span class="line" id="275">275: </span><span class="php-comment">     * @return boolean
-</span><span class="line" id="276">276: </span><span class="php-comment">     * The method should return true on successful invalidation, otherwise false.
-</span><span class="line" id="277">277: </span><span class="php-comment">     *
-</span><span class="line" id="278">278: </span><span class="php-comment">     * @throws \Exception
-</span><span class="line" id="279">279: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
-</span><span class="line" id="280">280: </span><span class="php-comment">     *
-</span><span class="line" id="281">281: </span><span class="php-comment">     * @throws \OAuth2\InvalidTokenException
-</span><span class="line" id="282">282: </span><span class="php-comment">     * It should throw the InvalidTokenException if the refresh token is invalid.
-</span><span class="line" id="283">283: </span><span class="php-comment">     *
-</span><span class="line" id="284">284: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="285">285: </span><span class="php-comment">     */</span>
-<span class="line" id="286">286: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateRefreshToken(<span class="php-var">$refresh_token</span>);
-<span class="line" id="287">287: </span>} <span class="php-comment">// IOAuthManager</span>
+</span><span class="line" id="251">251: </span><span class="php-comment">     * @return void
+</span><span class="line" id="252">252: </span><span class="php-comment">     *
+</span><span class="line" id="253">253: </span><span class="php-comment">     * @throws \Exception
+</span><span class="line" id="254">254: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
+</span><span class="line" id="255">255: </span><span class="php-comment">     *
+</span><span class="line" id="256">256: </span><span class="php-comment">     * @throws \OAuth2\InvalidTokenException
+</span><span class="line" id="257">257: </span><span class="php-comment">     * It should throw the InvalidTokenException if the access token is invalid.
+</span><span class="line" id="258">258: </span><span class="php-comment">     *
+</span><span class="line" id="259">259: </span><span class="php-comment">     * @author Oleg Schildt
+</span><span class="line" id="260">260: </span><span class="php-comment">     */</span>
+<span class="line" id="261">261: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateJwtAccessToken(<span class="php-var">$jwt_access_token</span>);
+<span class="line" id="262">262: </span>    
+<span class="line" id="263">263: </span>    <span class="php-comment">/**
+</span><span class="line" id="264">264: </span><span class="php-comment">     * Invalidates all token records for the refresh token.
+</span><span class="line" id="265">265: </span><span class="php-comment">     *
+</span><span class="line" id="266">266: </span><span class="php-comment">     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'refresh_token'.
+</span><span class="line" id="267">267: </span><span class="php-comment">     *
+</span><span class="line" id="268">268: </span><span class="php-comment">     * @param string $refresh_token
+</span><span class="line" id="269">269: </span><span class="php-comment">     * The refresh token generated upon successful authentication.
+</span><span class="line" id="270">270: </span><span class="php-comment">     *
+</span><span class="line" id="271">271: </span><span class="php-comment">     * @return void
+</span><span class="line" id="272">272: </span><span class="php-comment">     *
+</span><span class="line" id="273">273: </span><span class="php-comment">     * @throws \Exception
+</span><span class="line" id="274">274: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
+</span><span class="line" id="275">275: </span><span class="php-comment">     *
+</span><span class="line" id="276">276: </span><span class="php-comment">     * @throws \OAuth2\InvalidTokenException
+</span><span class="line" id="277">277: </span><span class="php-comment">     * It should throw the InvalidTokenException if the refresh token is invalid.
+</span><span class="line" id="278">278: </span><span class="php-comment">     *
+</span><span class="line" id="279">279: </span><span class="php-comment">     * @author Oleg Schildt
+</span><span class="line" id="280">280: </span><span class="php-comment">     */</span>
+<span class="line" id="281">281: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateRefreshToken(<span class="php-var">$refresh_token</span>);
+<span class="line" id="282">282: </span>} <span class="php-comment">// IOAuthManager</span>
 </code>
 </pre>
 </div>
                     
                     <div id="footer">
-                        Generated on 2022-05-28 19:42 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
+                        Generated on 2022-08-12 12:18 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
                     </div>                    
                 </div>
             </div>

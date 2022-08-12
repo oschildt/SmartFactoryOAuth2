@@ -311,7 +311,7 @@
   
   <h1>Method: IOAuthManager::authenticateUser()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> authenticateUser(<span class="php-keyword1">array</span> <span class="php-var">$credentials</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>) : bool;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> authenticateUser(<span class="php-keyword1">array</span> <span class="php-var">$credentials</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>) : void;</div>
 
   
   <div class="short-description">
@@ -393,9 +393,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h2>Returns</h2>
   <div class="item_list">
-  bool<br>
-  
-  <div class="item_description"><p>The method should return true upon success, otherwise false.</p></div>
+  void<br>
   
   </div>
   
@@ -436,7 +434,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#67'>OAuth2/Interfaces/IOAuthManager.php</a>
+  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#68'>OAuth2/Interfaces/IOAuthManager.php</a>
   </div>
   
 
@@ -458,7 +456,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h1>Method: IOAuthManager::init()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> init(<span class="php-keyword1">array</span> <span class="php-var">$parameters</span>) : bool;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> init(<span class="php-keyword1">array</span> <span class="php-var">$parameters</span>) : void;</div>
 
   
   <div class="short-description">
@@ -506,14 +504,20 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h2>Returns</h2>
   <div class="item_list">
-  bool<br>
-  
-  <div class="item_description"><p>The method should return true upon successful initialization, otherwise false.</p></div>
+  void<br>
   
   </div>
   
 
+  <h2>Throws</h2>
+  <div class="item_list">
   
+  \Exception<br>
+  
+  <div class="item_description"><p>It might throw an exception in the case of any system errors.</p></div>
+  
+  
+  </div>
 
   
 
@@ -531,7 +535,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#30'>OAuth2/Interfaces/IOAuthManager.php</a>
+  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#32'>OAuth2/Interfaces/IOAuthManager.php</a>
   </div>
   
 
@@ -553,7 +557,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h1>Method: IOAuthManager::invalidateClient()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateClient(string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>, string <span class="php-var">$refresh_token</span>) : bool;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateClient(string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>, string <span class="php-var">$refresh_token</span>) : void;</div>
 
   
   <div class="short-description">
@@ -645,9 +649,7 @@ can be done only after authentication.</p>
   
   <h2>Returns</h2>
   <div class="item_list">
-  bool<br>
-  
-  <div class="item_description"><p>The method should return true on successful invalidation, otherwise false.</p></div>
+  void<br>
   
   </div>
   
@@ -688,7 +690,7 @@ can be done only after authentication.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#242'>OAuth2/Interfaces/IOAuthManager.php</a>
+  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#239'>OAuth2/Interfaces/IOAuthManager.php</a>
   </div>
   
 
@@ -710,7 +712,7 @@ can be done only after authentication.</p>
   
   <h1>Method: IOAuthManager::invalidateJwtAccessToken()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateJwtAccessToken(string <span class="php-var">$jwt_access_token</span>) : bool;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateJwtAccessToken(string <span class="php-var">$jwt_access_token</span>) : void;</div>
 
   
   <div class="short-description">
@@ -764,9 +766,7 @@ can be done only after authentication.</p>
   
   <h2>Returns</h2>
   <div class="item_list">
-  bool<br>
-  
-  <div class="item_description"><p>The method should return true on successful invalidation, otherwise false.</p></div>
+  void<br>
   
   </div>
   
@@ -802,7 +802,7 @@ can be done only after authentication.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#265'>OAuth2/Interfaces/IOAuthManager.php</a>
+  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#261'>OAuth2/Interfaces/IOAuthManager.php</a>
   </div>
   
 
@@ -824,7 +824,7 @@ can be done only after authentication.</p>
   
   <h1>Method: IOAuthManager::invalidateRefreshToken()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateRefreshToken(string <span class="php-var">$refresh_token</span>) : bool;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateRefreshToken(string <span class="php-var">$refresh_token</span>) : void;</div>
 
   
   <div class="short-description">
@@ -877,9 +877,7 @@ can be done only after authentication.</p>
   
   <h2>Returns</h2>
   <div class="item_list">
-  bool<br>
-  
-  <div class="item_description"><p>The method should return true on successful invalidation, otherwise false.</p></div>
+  void<br>
   
   </div>
   
@@ -915,7 +913,7 @@ can be done only after authentication.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#286'>OAuth2/Interfaces/IOAuthManager.php</a>
+  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#281'>OAuth2/Interfaces/IOAuthManager.php</a>
   </div>
   
 
@@ -937,7 +935,7 @@ can be done only after authentication.</p>
   
   <h1>Method: IOAuthManager::invalidateUser()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateUser(string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>, string <span class="php-var">$refresh_token</span>) : bool;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateUser(string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>, string <span class="php-var">$refresh_token</span>) : void;</div>
 
   
   <div class="short-description">
@@ -1029,9 +1027,7 @@ can be done only after authentication.</p>
   
   <h2>Returns</h2>
   <div class="item_list">
-  bool<br>
-  
-  <div class="item_description"><p>The method should return true on successful invalidation, otherwise false.</p></div>
+  void<br>
   
   </div>
   
@@ -1077,7 +1073,7 @@ can be done only after authentication.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#208'>OAuth2/Interfaces/IOAuthManager.php</a>
+  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#206'>OAuth2/Interfaces/IOAuthManager.php</a>
   </div>
   
 
@@ -1099,7 +1095,7 @@ can be done only after authentication.</p>
   
   <h1>Method: IOAuthManager::refreshTokens()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> refreshTokens(string <span class="php-var">$refresh_token</span>, string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>) : bool;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> refreshTokens(string <span class="php-var">$refresh_token</span>, string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>) : void;</div>
 
   
   <div class="short-description">
@@ -1212,9 +1208,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h2>Returns</h2>
   <div class="item_list">
-  bool<br>
-  
-  <div class="item_description"><p>The method should return true upon success, otherwise false.</p></div>
+  void<br>
   
   </div>
   
@@ -1419,7 +1413,7 @@ authentication server should be asked.</p>
   
   <h1>Method: IOAuthManager::verifyRefreshToken()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyRefreshToken(string <span class="php-var">$refresh_token</span>, string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>) : bool;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyRefreshToken(string <span class="php-var">$refresh_token</span>, string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>) : void;</div>
 
   
   <div class="short-description">
@@ -1503,9 +1497,7 @@ authentication server should be asked.</p>
   
   <h2>Returns</h2>
   <div class="item_list">
-  bool<br>
-  
-  <div class="item_description"><p>The method returns true upon successful verification, otherwise false.</p></div>
+  void<br>
   
   </div>
   
@@ -1551,11 +1543,11 @@ authentication server should be asked.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#171'>OAuth2/Interfaces/IOAuthManager.php</a>
+  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#170'>OAuth2/Interfaces/IOAuthManager.php</a>
   </div>
                     
                     <div id="footer">
-                        Generated on 2022-05-28 19:42 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
+                        Generated on 2022-08-12 12:18 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
                     </div>                    
                 </div>
             </div>

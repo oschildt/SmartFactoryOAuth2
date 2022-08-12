@@ -22,8 +22,10 @@ interface IOAuthManager extends IInitable
      * @param array $parameters
      * The parameters may vary depending on implementation.
      *
-     * @return boolean
-     * The method should return true upon successful initialization, otherwise false.
+     * @return void
+     *
+     * @throws \Exception
+     * It might throw an exception in the case of any system errors.
      *
      * @author Oleg Schildt
      */
@@ -50,8 +52,7 @@ interface IOAuthManager extends IInitable
      * - $response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
      * token is the access token encoded and signed by the JWT standard approach.
      *
-     * @return boolean
-     * The method should return true upon success, otherwise false.
+     * @return void
      *
      * @throws \Exception
      * It might throw an exception in the case of any system errors.
@@ -91,8 +92,7 @@ interface IOAuthManager extends IInitable
      * - $response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
      * token is the access token encoded and signed by the JWT standard approach.
      *
-     * @return boolean
-     * The method should return true upon success, otherwise false.
+     * @return void
      *
      * @throws \Exception
      * It might throw an exception in the case of any system errors.
@@ -151,8 +151,7 @@ interface IOAuthManager extends IInitable
      * @param string $client_id
      * The client id for which the refresh token was issued.
      *
-     * @return boolean
-     * The method returns true upon successful verification, otherwise false.
+     * @return void
      *
      * @throws \Exception
      * It might throw an exception in the case of any system errors.
@@ -188,8 +187,7 @@ interface IOAuthManager extends IInitable
      * @param string $refresh_token
      * The refresh token generated upon successful authentication.
      *
-     * @return boolean
-     * The method should return true on successful invalidation, otherwise false.
+     * @return void
      *
      * @throws \Exception
      * It might throw an exception in the case of any system errors.
@@ -225,8 +223,7 @@ interface IOAuthManager extends IInitable
      * @param string $refresh_token
      * The refresh token generated upon successful authentication.
      *
-     * @return boolean
-     * The method should return true on successful invalidation, otherwise false.
+     * @return void
      *
      * @throws \Exception
      * It might throw an exception in the case of any errors.
@@ -251,8 +248,7 @@ interface IOAuthManager extends IInitable
      * @param string $jwt_access_token
      * The jwt access token generated upon successful authentication.
      *
-     * @return boolean
-     * The method should return true on successful invalidation, otherwise false.
+     * @return void
      *
      * @throws \Exception
      * It might throw an exception in the case of any system errors.
@@ -272,8 +268,7 @@ interface IOAuthManager extends IInitable
      * @param string $refresh_token
      * The refresh token generated upon successful authentication.
      *
-     * @return boolean
-     * The method should return true on successful invalidation, otherwise false.
+     * @return void
      *
      * @throws \Exception
      * It might throw an exception in the case of any system errors.

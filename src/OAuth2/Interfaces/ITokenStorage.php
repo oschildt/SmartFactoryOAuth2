@@ -23,6 +23,8 @@ interface ITokenStorage extends IInitable
      * @param array &$token_record
      * The token record may vary depending on implementation. The expected parameters are:
      *
+     * @return void
+     *
      * - $token_record["user_id"] - id of the user.
      * - $token_record["client_id"] - id of the client (device token etc.).
      * - $token_record["access_token"] - access token generated upon successful authentication.
@@ -30,9 +32,6 @@ interface ITokenStorage extends IInitable
      * - $token_record["refresh_token"] - refresh token generated upon successful authentication.
      * - $token_record["refresh_token_expire"] - expiration time of the refresh token.
      * - $token_record["last_activity"] - last activity time of the user of this token.
-     *
-     * @return boolean
-     * The method should return true upon successful save operation, otherwise false.
      *
      * @throws \Exception
      * It might throw an exception in the case of any system errors.
@@ -58,8 +57,7 @@ interface ITokenStorage extends IInitable
      * - $token_record["refresh_token_expire"] - expiration time of the refresh token.
      * - $token_record["last_activity"] - last activity time of the user of this token.
      *
-     * @return boolean
-     * The method should return true upon successful save operation, otherwise false.
+     * @return void
      *
      * @throws \Exception
      * It might throw an exception in the case of any system errors.
@@ -82,8 +80,7 @@ interface ITokenStorage extends IInitable
      * @param string $value
      * The value of the key, by which the record should be located and deleted.
      *
-     * @return boolean
-     * The method should return true upon successful deletion, otherwise false.
+     * @return void
      *
      * @throws \Exception
      * It might throw an exception in the case of any system errors.

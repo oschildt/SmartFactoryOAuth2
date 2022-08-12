@@ -112,86 +112,83 @@
 </span><span class="line" id="23">23: </span><span class="php-comment">     * @param array &amp;$token_record
 </span><span class="line" id="24">24: </span><span class="php-comment">     * The token record may vary depending on implementation. The expected parameters are:
 </span><span class="line" id="25">25: </span><span class="php-comment">     *
-</span><span class="line" id="26">26: </span><span class="php-comment">     * - $token_record[&quot;user_id&quot;] - id of the user.
-</span><span class="line" id="27">27: </span><span class="php-comment">     * - $token_record[&quot;client_id&quot;] - id of the client (device token etc.).
-</span><span class="line" id="28">28: </span><span class="php-comment">     * - $token_record[&quot;access_token&quot;] - access token generated upon successful authentication.
-</span><span class="line" id="29">29: </span><span class="php-comment">     * - $token_record[&quot;access_token_expire&quot;] - expiration time of the access token.
-</span><span class="line" id="30">30: </span><span class="php-comment">     * - $token_record[&quot;refresh_token&quot;] - refresh token generated upon successful authentication.
-</span><span class="line" id="31">31: </span><span class="php-comment">     * - $token_record[&quot;refresh_token_expire&quot;] - expiration time of the refresh token.
-</span><span class="line" id="32">32: </span><span class="php-comment">     * - $token_record[&quot;last_activity&quot;] - last activity time of the user of this token.
-</span><span class="line" id="33">33: </span><span class="php-comment">     *
-</span><span class="line" id="34">34: </span><span class="php-comment">     * @return boolean
-</span><span class="line" id="35">35: </span><span class="php-comment">     * The method should return true upon successful save operation, otherwise false.
-</span><span class="line" id="36">36: </span><span class="php-comment">     *
-</span><span class="line" id="37">37: </span><span class="php-comment">     * @throws \Exception
-</span><span class="line" id="38">38: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
-</span><span class="line" id="39">39: </span><span class="php-comment">     *
-</span><span class="line" id="40">40: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="41">41: </span><span class="php-comment">     */</span>
-<span class="line" id="42">42: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> loadTokenRecord(&amp;<span class="php-var">$token_record</span>);
-<span class="line" id="43">43: </span>    
-<span class="line" id="44">44: </span>    <span class="php-comment">/**
-</span><span class="line" id="45">45: </span><span class="php-comment">     * Saves the token record.
-</span><span class="line" id="46">46: </span><span class="php-comment">     *
-</span><span class="line" id="47">47: </span><span class="php-comment">     * It is reccomnended to look for an existing record by user_id and client_id, and if it exists,
-</span><span class="line" id="48">48: </span><span class="php-comment">     * it should be overwritten.
-</span><span class="line" id="49">49: </span><span class="php-comment">     *
-</span><span class="line" id="50">50: </span><span class="php-comment">     * @param array &amp;$token_record
-</span><span class="line" id="51">51: </span><span class="php-comment">     * The token record may vary depending on implementation. The expected parameters are:
-</span><span class="line" id="52">52: </span><span class="php-comment">     *
-</span><span class="line" id="53">53: </span><span class="php-comment">     * - $token_record[&quot;user_id&quot;] - id of the user.
-</span><span class="line" id="54">54: </span><span class="php-comment">     * - $token_record[&quot;client_id&quot;] - id of the client (device token etc.).
-</span><span class="line" id="55">55: </span><span class="php-comment">     * - $token_record[&quot;access_token&quot;] - access token generated upon successful authentication.
-</span><span class="line" id="56">56: </span><span class="php-comment">     * - $token_record[&quot;access_token_expire&quot;] - expiration time of the access token.
-</span><span class="line" id="57">57: </span><span class="php-comment">     * - $token_record[&quot;refresh_token&quot;] - refresh token generated upon successful authentication.
-</span><span class="line" id="58">58: </span><span class="php-comment">     * - $token_record[&quot;refresh_token_expire&quot;] - expiration time of the refresh token.
-</span><span class="line" id="59">59: </span><span class="php-comment">     * - $token_record[&quot;last_activity&quot;] - last activity time of the user of this token.
-</span><span class="line" id="60">60: </span><span class="php-comment">     *
-</span><span class="line" id="61">61: </span><span class="php-comment">     * @return boolean
-</span><span class="line" id="62">62: </span><span class="php-comment">     * The method should return true upon successful save operation, otherwise false.
-</span><span class="line" id="63">63: </span><span class="php-comment">     *
-</span><span class="line" id="64">64: </span><span class="php-comment">     * @throws \Exception
-</span><span class="line" id="65">65: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
-</span><span class="line" id="66">66: </span><span class="php-comment">     *
-</span><span class="line" id="67">67: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="68">68: </span><span class="php-comment">     */</span>
-<span class="line" id="69">69: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> saveTokenRecord(&amp;<span class="php-var">$token_record</span>);
-<span class="line" id="70">70: </span>    
-<span class="line" id="71">71: </span>    <span class="php-comment">/**
-</span><span class="line" id="72">72: </span><span class="php-comment">     * Deletes the token record by a key.
-</span><span class="line" id="73">73: </span><span class="php-comment">     *
-</span><span class="line" id="74">74: </span><span class="php-comment">     * @param string $key
-</span><span class="line" id="75">75: </span><span class="php-comment">     * The name of the key, by which the record should be located and deleted. The possible keys are:
-</span><span class="line" id="76">76: </span><span class="php-comment">     *
-</span><span class="line" id="77">77: </span><span class="php-comment">     * - 'user_id' - id of the user.
-</span><span class="line" id="78">78: </span><span class="php-comment">     * - 'client_id' - id of the client (device token etc.).
-</span><span class="line" id="79">79: </span><span class="php-comment">     * - 'access_token' - access token generated upon successful authentication.
-</span><span class="line" id="80">80: </span><span class="php-comment">     * - 'refresh_token' - refresh token generated upon successful authentication.
-</span><span class="line" id="81">81: </span><span class="php-comment">     *
-</span><span class="line" id="82">82: </span><span class="php-comment">     * @param string $value
-</span><span class="line" id="83">83: </span><span class="php-comment">     * The value of the key, by which the record should be located and deleted.
+</span><span class="line" id="26">26: </span><span class="php-comment">     * @return void
+</span><span class="line" id="27">27: </span><span class="php-comment">     *
+</span><span class="line" id="28">28: </span><span class="php-comment">     * - $token_record[&quot;user_id&quot;] - id of the user.
+</span><span class="line" id="29">29: </span><span class="php-comment">     * - $token_record[&quot;client_id&quot;] - id of the client (device token etc.).
+</span><span class="line" id="30">30: </span><span class="php-comment">     * - $token_record[&quot;access_token&quot;] - access token generated upon successful authentication.
+</span><span class="line" id="31">31: </span><span class="php-comment">     * - $token_record[&quot;access_token_expire&quot;] - expiration time of the access token.
+</span><span class="line" id="32">32: </span><span class="php-comment">     * - $token_record[&quot;refresh_token&quot;] - refresh token generated upon successful authentication.
+</span><span class="line" id="33">33: </span><span class="php-comment">     * - $token_record[&quot;refresh_token_expire&quot;] - expiration time of the refresh token.
+</span><span class="line" id="34">34: </span><span class="php-comment">     * - $token_record[&quot;last_activity&quot;] - last activity time of the user of this token.
+</span><span class="line" id="35">35: </span><span class="php-comment">     *
+</span><span class="line" id="36">36: </span><span class="php-comment">     * @throws \Exception
+</span><span class="line" id="37">37: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
+</span><span class="line" id="38">38: </span><span class="php-comment">     *
+</span><span class="line" id="39">39: </span><span class="php-comment">     * @author Oleg Schildt
+</span><span class="line" id="40">40: </span><span class="php-comment">     */</span>
+<span class="line" id="41">41: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> loadTokenRecord(&amp;<span class="php-var">$token_record</span>);
+<span class="line" id="42">42: </span>    
+<span class="line" id="43">43: </span>    <span class="php-comment">/**
+</span><span class="line" id="44">44: </span><span class="php-comment">     * Saves the token record.
+</span><span class="line" id="45">45: </span><span class="php-comment">     *
+</span><span class="line" id="46">46: </span><span class="php-comment">     * It is reccomnended to look for an existing record by user_id and client_id, and if it exists,
+</span><span class="line" id="47">47: </span><span class="php-comment">     * it should be overwritten.
+</span><span class="line" id="48">48: </span><span class="php-comment">     *
+</span><span class="line" id="49">49: </span><span class="php-comment">     * @param array &amp;$token_record
+</span><span class="line" id="50">50: </span><span class="php-comment">     * The token record may vary depending on implementation. The expected parameters are:
+</span><span class="line" id="51">51: </span><span class="php-comment">     *
+</span><span class="line" id="52">52: </span><span class="php-comment">     * - $token_record[&quot;user_id&quot;] - id of the user.
+</span><span class="line" id="53">53: </span><span class="php-comment">     * - $token_record[&quot;client_id&quot;] - id of the client (device token etc.).
+</span><span class="line" id="54">54: </span><span class="php-comment">     * - $token_record[&quot;access_token&quot;] - access token generated upon successful authentication.
+</span><span class="line" id="55">55: </span><span class="php-comment">     * - $token_record[&quot;access_token_expire&quot;] - expiration time of the access token.
+</span><span class="line" id="56">56: </span><span class="php-comment">     * - $token_record[&quot;refresh_token&quot;] - refresh token generated upon successful authentication.
+</span><span class="line" id="57">57: </span><span class="php-comment">     * - $token_record[&quot;refresh_token_expire&quot;] - expiration time of the refresh token.
+</span><span class="line" id="58">58: </span><span class="php-comment">     * - $token_record[&quot;last_activity&quot;] - last activity time of the user of this token.
+</span><span class="line" id="59">59: </span><span class="php-comment">     *
+</span><span class="line" id="60">60: </span><span class="php-comment">     * @return void
+</span><span class="line" id="61">61: </span><span class="php-comment">     *
+</span><span class="line" id="62">62: </span><span class="php-comment">     * @throws \Exception
+</span><span class="line" id="63">63: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
+</span><span class="line" id="64">64: </span><span class="php-comment">     *
+</span><span class="line" id="65">65: </span><span class="php-comment">     * @author Oleg Schildt
+</span><span class="line" id="66">66: </span><span class="php-comment">     */</span>
+<span class="line" id="67">67: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> saveTokenRecord(&amp;<span class="php-var">$token_record</span>);
+<span class="line" id="68">68: </span>    
+<span class="line" id="69">69: </span>    <span class="php-comment">/**
+</span><span class="line" id="70">70: </span><span class="php-comment">     * Deletes the token record by a key.
+</span><span class="line" id="71">71: </span><span class="php-comment">     *
+</span><span class="line" id="72">72: </span><span class="php-comment">     * @param string $key
+</span><span class="line" id="73">73: </span><span class="php-comment">     * The name of the key, by which the record should be located and deleted. The possible keys are:
+</span><span class="line" id="74">74: </span><span class="php-comment">     *
+</span><span class="line" id="75">75: </span><span class="php-comment">     * - 'user_id' - id of the user.
+</span><span class="line" id="76">76: </span><span class="php-comment">     * - 'client_id' - id of the client (device token etc.).
+</span><span class="line" id="77">77: </span><span class="php-comment">     * - 'access_token' - access token generated upon successful authentication.
+</span><span class="line" id="78">78: </span><span class="php-comment">     * - 'refresh_token' - refresh token generated upon successful authentication.
+</span><span class="line" id="79">79: </span><span class="php-comment">     *
+</span><span class="line" id="80">80: </span><span class="php-comment">     * @param string $value
+</span><span class="line" id="81">81: </span><span class="php-comment">     * The value of the key, by which the record should be located and deleted.
+</span><span class="line" id="82">82: </span><span class="php-comment">     *
+</span><span class="line" id="83">83: </span><span class="php-comment">     * @return void
 </span><span class="line" id="84">84: </span><span class="php-comment">     *
-</span><span class="line" id="85">85: </span><span class="php-comment">     * @return boolean
-</span><span class="line" id="86">86: </span><span class="php-comment">     * The method should return true upon successful deletion, otherwise false.
+</span><span class="line" id="85">85: </span><span class="php-comment">     * @throws \Exception
+</span><span class="line" id="86">86: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
 </span><span class="line" id="87">87: </span><span class="php-comment">     *
-</span><span class="line" id="88">88: </span><span class="php-comment">     * @throws \Exception
-</span><span class="line" id="89">89: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
-</span><span class="line" id="90">90: </span><span class="php-comment">     *
-</span><span class="line" id="91">91: </span><span class="php-comment">     * @used_by IOAuthManager::invalidateUser()
-</span><span class="line" id="92">92: </span><span class="php-comment">     * @used_by IOAuthManager::invalidateClient()
-</span><span class="line" id="93">93: </span><span class="php-comment">     * @used_by IOAuthManager::invalidateJwtAccessToken()
-</span><span class="line" id="94">94: </span><span class="php-comment">     * @used_by IOAuthManager::invalidateRefreshToken()
-</span><span class="line" id="95">95: </span><span class="php-comment">     *
-</span><span class="line" id="96">96: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="97">97: </span><span class="php-comment">     */</span>
-<span class="line" id="98">98: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> deleteTokenRecordByKey(<span class="php-var">$key</span>, <span class="php-var">$value</span>);
-<span class="line" id="99">99: </span>} <span class="php-comment">// ITokenStorage</span>
+</span><span class="line" id="88">88: </span><span class="php-comment">     * @used_by IOAuthManager::invalidateUser()
+</span><span class="line" id="89">89: </span><span class="php-comment">     * @used_by IOAuthManager::invalidateClient()
+</span><span class="line" id="90">90: </span><span class="php-comment">     * @used_by IOAuthManager::invalidateJwtAccessToken()
+</span><span class="line" id="91">91: </span><span class="php-comment">     * @used_by IOAuthManager::invalidateRefreshToken()
+</span><span class="line" id="92">92: </span><span class="php-comment">     *
+</span><span class="line" id="93">93: </span><span class="php-comment">     * @author Oleg Schildt
+</span><span class="line" id="94">94: </span><span class="php-comment">     */</span>
+<span class="line" id="95">95: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> deleteTokenRecordByKey(<span class="php-var">$key</span>, <span class="php-var">$value</span>);
+<span class="line" id="96">96: </span>} <span class="php-comment">// ITokenStorage</span>
 </code>
 </pre>
 </div>
                     
                     <div id="footer">
-                        Generated on 2022-05-28 19:42 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
+                        Generated on 2022-08-12 12:18 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
                     </div>                    
                 </div>
             </div>
