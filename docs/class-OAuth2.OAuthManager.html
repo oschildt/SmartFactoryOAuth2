@@ -144,7 +144,7 @@
 
 <h2>Source code</h2>
 <div class="item_list">
-<a href='source-OAuth2.OAuthManager.php.html#20'>OAuth2/OAuthManager.php</a>
+<a href='source-OAuth2.OAuthManager.php.html#21'>OAuth2/OAuthManager.php</a>
 </div>
 
 
@@ -173,7 +173,7 @@
       
       <tr>
           <td>
-              <div style='float:left'><a href="#$access_token_ttl">$access_token_ttl</a></div>
+              <div style='float:left'><a href="#$access_token_ttl_minutes">$access_token_ttl_minutes</a></div>
 
               <div style='float:right'>
               
@@ -196,19 +196,6 @@
           </td>
           <td class="description_column">
               <p>Internal property for storing the encryption algorithm.</p>
-          </td>
-      </tr><tr>
-          <td>
-              <div style='float:left'><a href="#$max_token_inactivity_days">$max_token_inactivity_days</a></div>
-
-              <div style='float:right'>
-              
-              <span class='label label-warning'>protected</span>
-              </div>
-              <div style="clear:both"></div>
-          </td>
-          <td class="description_column">
-              <p>Internal property for storing the number of maximal inactivity days of the token.</p>
           </td>
       </tr><tr>
           <td>
@@ -251,7 +238,7 @@
           </td>
       </tr><tr>
           <td>
-              <div style='float:left'><a href="#$refresh_token_ttl">$refresh_token_ttl</a></div>
+              <div style='float:left'><a href="#$refresh_token_ttl_days">$refresh_token_ttl_days</a></div>
 
               <div style='float:right'>
               
@@ -589,11 +576,11 @@ RS256, RS384, RS512.</p>
 
 
 
-<hr id="$access_token_ttl">
+<hr id="$access_token_ttl_minutes">
   
-  <h1>Property: OAuthManager::$access_token_ttl</h1>
+  <h1>Property: OAuthManager::$access_token_ttl_minutes</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> string <span class="php-var">$access_token_ttl</span> = <span class="php-keyword1">null</span>;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> string <span class="php-var">$access_token_ttl_minutes</span> = <span class="php-keyword1">null</span>;</div>
 
   
   <div class="short-description">
@@ -626,7 +613,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#73'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#74'>OAuth2/OAuthManager.php</a>
   </div><hr id="$encryption_algorithm">
   
   <h1>Property: OAuthManager::$encryption_algorithm</h1>
@@ -669,45 +656,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#64'>OAuth2/OAuthManager.php</a>
-  </div><hr id="$max_token_inactivity_days">
-  
-  <h1>Property: OAuthManager::$max_token_inactivity_days</h1>
-
-  <div class="definition"><span class="php-keyword1">protected</span> string <span class="php-var">$max_token_inactivity_days</span> = <span class="php-keyword1">null</span>;</div>
-
-  
-  <div class="short-description">
-  <p>Internal property for storing the number of maximal inactivity days of the token.</p>
-  </div>
-  
-
-  
-
-  
-  <h2>Type</h2>
-  <div class="item_list">
-  string
-  </div>
-  
-
-  
-
-  <h2>Authors</h2>
-  <div class="item_list">
-  
-  <div class='item'>Oleg Schildt</div>
-  
-  </div>
-
-  
-
-  
-
-  
-  <h2>Source code</h2>
-  <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#91'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#65'>OAuth2/OAuthManager.php</a>
   </div><hr id="$pass_phrase">
   
   <h1>Property: OAuthManager::$pass_phrase</h1>
@@ -750,7 +699,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#124'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#116'>OAuth2/OAuthManager.php</a>
   </div><hr id="$private_key">
   
   <h1>Property: OAuthManager::$private_key</h1>
@@ -793,7 +742,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#113'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#105'>OAuth2/OAuthManager.php</a>
   </div><hr id="$public_key">
   
   <h1>Property: OAuthManager::$public_key</h1>
@@ -836,12 +785,12 @@ RS256, RS384, RS512.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#102'>OAuth2/OAuthManager.php</a>
-  </div><hr id="$refresh_token_ttl">
+  <a href='source-OAuth2.OAuthManager.php.html#94'>OAuth2/OAuthManager.php</a>
+  </div><hr id="$refresh_token_ttl_days">
   
-  <h1>Property: OAuthManager::$refresh_token_ttl</h1>
+  <h1>Property: OAuthManager::$refresh_token_ttl_days</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> string <span class="php-var">$refresh_token_ttl</span> = <span class="php-keyword1">null</span>;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> string <span class="php-var">$refresh_token_ttl_days</span> = <span class="php-keyword1">null</span>;</div>
 
   
   <div class="short-description">
@@ -874,7 +823,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#82'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#83'>OAuth2/OAuthManager.php</a>
   </div><hr id="$secret_key">
   
   <h1>Property: OAuthManager::$secret_key</h1>
@@ -917,7 +866,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#53'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#54'>OAuth2/OAuthManager.php</a>
   </div><hr id="$supported_algorithms">
   
   <h1>Property: OAuthManager::$supported_algorithms</h1>
@@ -955,7 +904,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#133'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#125'>OAuth2/OAuthManager.php</a>
   </div><hr id="$token_storage">
   
   <h1>Property: OAuthManager::$token_storage</h1>
@@ -998,7 +947,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#31'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#32'>OAuth2/OAuthManager.php</a>
   </div><hr id="$user_authenticator">
   
   <h1>Property: OAuthManager::$user_authenticator</h1>
@@ -1041,7 +990,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#42'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#43'>OAuth2/OAuthManager.php</a>
   </div>
 
 <hr id="authenticateUser">
@@ -1185,7 +1134,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#764'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#747'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -1302,7 +1251,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#431'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#419'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -1448,7 +1397,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#615'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#603'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -1574,7 +1523,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#292'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#284'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -1710,7 +1659,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#252'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#244'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -1800,7 +1749,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#384'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#376'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -1934,7 +1883,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#471'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#459'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -1997,13 +1946,10 @@ RS256, RS384, RS512.</p>
                 <p>The parameters are:</p>
 <ul>
 <li>
-<p>$parameters[&quot;access_token_ttl&quot;] - time to live in seconds for the access token.</p>
+<p>$parameters[&quot;access_token_ttl_minutes&quot;] - time to live in minutes for the access token.</p>
 </li>
 <li>
-<p>$parameters[&quot;refresh_token_ttl&quot;] - time to live in seconds for the refresh token.</p>
-</li>
-<li>
-<p>$parameters[&quot;max_token_inactivity_days&quot;] - maximal number of inactivity days for the token.</p>
+<p>$parameters[&quot;refresh_token_ttl_days&quot;] - time to live in days for the refresh token.</p>
 </li>
 <li>
 <p>$parameters[&quot;encryption_algorithm&quot;] - the encryption algorithm used for signing. The following
@@ -2078,7 +2024,7 @@ of the user upon his credentials before generation of the tokens.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#673'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#660'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -2256,7 +2202,7 @@ can be done only after authentication.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#1097'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#1040'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -2391,7 +2337,7 @@ can be done only after authentication.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#1146'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#1089'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -2516,7 +2462,7 @@ can be done only after authentication.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#1183'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#1126'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -2691,7 +2637,7 @@ can be done only after authentication.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#1038'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#981'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -2896,7 +2842,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#826'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#809'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -3000,7 +2946,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#169'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#161'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -3101,7 +3047,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#148'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#140'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -3183,7 +3129,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#531'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#519'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -3334,7 +3280,7 @@ authentication server should be asked.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#870'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#853'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -3467,7 +3413,7 @@ authentication server should be asked.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#343'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#335'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -3619,7 +3565,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#205'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#197'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -3762,7 +3708,7 @@ RS256, RS384, RS512.</p>
   
   <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
   
-  <div class="item_description"><p>It should throw the MissingParametersException if any required paramters are empty.</p></div>
+  <div class="item_description"><p>It should throw the MissingParametersException if any required parameters are empty.</p></div>
   
   
   </div>
@@ -3788,7 +3734,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#962'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#924'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -3819,7 +3765,7 @@ RS256, RS384, RS512.</p>
   </div>
                     
                     <div id="footer">
-                        Generated on 2022-08-12 12:18 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
+                        Generated on 2023-06-21 08:54 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
                     </div>                    
                 </div>
             </div>

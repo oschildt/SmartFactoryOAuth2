@@ -10,7 +10,7 @@ For more details see [Presentation](http://php-smart-factory.org/oauth2_presenta
 
 ### Requirements
 
-- PHP 7.2.x
+- PHP 8.0.x
 
 ### Installation
 
@@ -26,8 +26,8 @@ composer require smartfactory/oauth2"
 
   "require": {
     "php": ">=8.0",
-    "smartfactory/smartfactory": ">=2.1.18",
-    "smartfactory/oauth2": ">=1.2.18"
+    "smartfactory/smartfactory": ">=2.1.19",
+    "smartfactory/oauth2": ">=1.2.19"
   }
   
   ...

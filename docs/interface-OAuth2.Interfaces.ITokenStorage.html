@@ -219,6 +219,32 @@ for a cache solution like Redis.</p>
           <td class="description_column">
               <p>Saves the token record.</p>
           </td>
+      </tr><tr>
+          <td>
+              <div style='float:left'><a href="#verifyAccessToken">verifyAccessToken()</a></div>
+
+              <div style='float:right'>
+              
+              <span class='label label-success'>public</span>
+              </div>
+              <div style="clear:both"></div>
+          </td>
+          <td class="description_column">
+              <p>Verifies the access token.</p>
+          </td>
+      </tr><tr>
+          <td>
+              <div style='float:left'><a href="#verifyRefreshToken">verifyRefreshToken()</a></div>
+
+              <div style='float:right'>
+              
+              <span class='label label-success'>public</span>
+              </div>
+              <div style="clear:both"></div>
+          </td>
+          <td class="description_column">
+              <p>Verifies the refresh token.</p>
+          </td>
       </tr>
       
   </table>
@@ -600,9 +626,304 @@ it should be overwritten.</p>
   
   
   </div>
+
+  
+
+  
+
+  
+
+  <hr id="verifyAccessToken">
+  
+  <h1>Method: ITokenStorage::verifyAccessToken()</h1>
+
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyAccessToken(string <span class="php-var">$access_token</span>, string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>) : void;</div>
+
+  
+  <div class="short-description">
+  <p>Verifies the access token.</p>
+  </div>
+  
+
+  
+
+  
+
+  <h2>Parameters</h2>
+
+    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+        <tr>
+        <th>Name</th>
+        <th>Pass type</th>
+        <th>Value type</th>
+        <th>Default value</th>
+        <th>Description</th>
+        </tr>
+        
+        
+        <tr>
+            <td>
+                $access_token
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The access token to be verified.</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                $user_id
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The user id for which the refresh token was issued.</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                $client_id
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The client id for which the refresh token was issued.</p>
+            </td>
+        </tr>
+        
+        
+    </table>
+
+  
+  <h2>Returns</h2>
+  <div class="item_list">
+  void<br>
+  
+  </div>
+  
+
+  <h2>Throws</h2>
+  <div class="item_list">
+  
+  \Exception<br>
+  
+  <div class="item_description"><p>It might throw an exception in the case of any system errors.</p></div>
+  
+  
+  <a href='class-OAuth2.InvalidTokenException.html'>\OAuth2\InvalidTokenException</a><br>
+  
+  <div class="item_description"><p>It should throw the InvalidTokenException if the refresh token is invalid.</p></div>
+  
+  
+  <a href='class-OAuth2.TokenExpiredException.html'>\OAuth2\TokenExpiredException</a><br>
+  
+  <div class="item_description"><p>It might throw the TokenExpiredException if the refresh token is expired.</p></div>
+  
+  
+  <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
+  
+  <div class="item_description"><p>It should throw the MissingParametersException if any required paramters are empty.</p></div>
+  
+  
+  </div>
+
+  
+
+  <h2>Authors</h2>
+  <div class="item_list">
+  
+  <div class='item'>Oleg Schildt</div>
+  
+  </div>
+
+  
+
+  
+
+  
+  <h2>Source code</h2>
+  <div class="item_list">
+  <a href='source-OAuth2.Interfaces.ITokenStorage.php.html#125'>OAuth2/Interfaces/ITokenStorage.php</a>
+  </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <hr id="verifyRefreshToken">
+  
+  <h1>Method: ITokenStorage::verifyRefreshToken()</h1>
+
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyRefreshToken(string <span class="php-var">$refresh_token</span>, string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>) : void;</div>
+
+  
+  <div class="short-description">
+  <p>Verifies the refresh token.</p>
+  </div>
+  
+
+  
+
+  
+
+  <h2>Parameters</h2>
+
+    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+        <tr>
+        <th>Name</th>
+        <th>Pass type</th>
+        <th>Value type</th>
+        <th>Default value</th>
+        <th>Description</th>
+        </tr>
+        
+        
+        <tr>
+            <td>
+                $refresh_token
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The refresh token to be verified.</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                $user_id
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The user id for which the refresh token was issued.</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                $client_id
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The client id for which the refresh token was issued.</p>
+            </td>
+        </tr>
+        
+        
+    </table>
+
+  
+  <h2>Returns</h2>
+  <div class="item_list">
+  void<br>
+  
+  </div>
+  
+
+  <h2>Throws</h2>
+  <div class="item_list">
+  
+  \Exception<br>
+  
+  <div class="item_description"><p>It might throw an exception in the case of any system errors.</p></div>
+  
+  
+  <a href='class-OAuth2.InvalidTokenException.html'>\OAuth2\InvalidTokenException</a><br>
+  
+  <div class="item_description"><p>It should throw the InvalidTokenException if the refresh token is invalid.</p></div>
+  
+  
+  <a href='class-OAuth2.TokenExpiredException.html'>\OAuth2\TokenExpiredException</a><br>
+  
+  <div class="item_description"><p>It might throw the TokenExpiredException if the refresh token is expired.</p></div>
+  
+  
+  <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
+  
+  <div class="item_description"><p>It should throw the MissingParametersException if any required paramters are empty.</p></div>
+  
+  
+  </div>
+
+  
+
+  <h2>Authors</h2>
+  <div class="item_list">
+  
+  <div class='item'>Oleg Schildt</div>
+  
+  </div>
+
+  
+
+  
+
+  
+  <h2>Source code</h2>
+  <div class="item_list">
+  <a href='source-OAuth2.Interfaces.ITokenStorage.php.html#155'>OAuth2/Interfaces/ITokenStorage.php</a>
+  </div>
                     
                     <div id="footer">
-                        Generated on 2022-08-12 12:18 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
+                        Generated on 2023-06-21 08:54 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
                     </div>                    
                 </div>
             </div>

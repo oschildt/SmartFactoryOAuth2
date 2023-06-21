@@ -30,7 +30,7 @@ interface IOAuthManager extends IInitable
      * @author Oleg Schildt
      */
     public function init($parameters);
-    
+
     /**
      * Authenticates the user based on the specified credentials and writes the response.
      *

@@ -96,20 +96,52 @@
 <span class="line" id="7"> 7: </span>
 <span class="line" id="8"> 8: </span><span class="php-keyword1">namespace</span> OAuth2;
 <span class="line" id="9"> 9: </span>
-<span class="line" id="10">10: </span><span class="php-comment">/**
-</span><span class="line" id="11">11: </span><span class="php-comment"> * Class for the exception MissingParametersException.
-</span><span class="line" id="12">12: </span><span class="php-comment"> *
-</span><span class="line" id="13">13: </span><span class="php-comment"> * @author Oleg Schildt
-</span><span class="line" id="14">14: </span><span class="php-comment"> */</span>
-<span class="line" id="15">15: </span><span class="php-keyword1">class</span> MissingParametersException <span class="php-keyword1">extends</span> \Exception
-<span class="line" id="16">16: </span>{
-<span class="line" id="17">17: </span>}
+<span class="line" id="10">10: </span><span class="php-keyword1">use</span> SmartFactory\SmartException;
+<span class="line" id="11">11: </span>
+<span class="line" id="12">12: </span><span class="php-comment">/**
+</span><span class="line" id="13">13: </span><span class="php-comment"> * Class for the exception MissingParametersException.
+</span><span class="line" id="14">14: </span><span class="php-comment"> *
+</span><span class="line" id="15">15: </span><span class="php-comment"> * @author Oleg Schildt
+</span><span class="line" id="16">16: </span><span class="php-comment"> */</span>
+<span class="line" id="17">17: </span><span class="php-keyword1">class</span> MissingParametersException <span class="php-keyword1">extends</span> SmartException
+<span class="line" id="18">18: </span>{
+<span class="line" id="19">19: </span>    <span class="php-comment">/**
+</span><span class="line" id="20">20: </span><span class="php-comment">     * Constructor.
+</span><span class="line" id="21">21: </span><span class="php-comment">     *
+</span><span class="line" id="22">22: </span><span class="php-comment">     * @param string $message
+</span><span class="line" id="23">23: </span><span class="php-comment">     * Error message.
+</span><span class="line" id="24">24: </span><span class="php-comment">     *
+</span><span class="line" id="25">25: </span><span class="php-comment">     * @param string $error_code
+</span><span class="line" id="26">26: </span><span class="php-comment">     * Error code.
+</span><span class="line" id="27">27: </span><span class="php-comment">     *
+</span><span class="line" id="28">28: </span><span class="php-comment">     * Since the error texts can be localized, the unique code of the error might be important fo using
+</span><span class="line" id="29">29: </span><span class="php-comment">     * in comparison.
+</span><span class="line" id="30">30: </span><span class="php-comment">     *
+</span><span class="line" id="31">31: </span><span class="php-comment">     * @param string $error_element
+</span><span class="line" id="32">32: </span><span class="php-comment">     * Error element.
+</span><span class="line" id="33">33: </span><span class="php-comment">     *
+</span><span class="line" id="34">34: </span><span class="php-comment">     * @param array $error_details
+</span><span class="line" id="35">35: </span><span class="php-comment">     * The details might be useful if the message translations are provided on the client, not
+</span><span class="line" id="36">36: </span><span class="php-comment">     * on the server, and the message should contain some details that may vary from case to case.
+</span><span class="line" id="37">37: </span><span class="php-comment">     * In that case, the servers return the message id instead of final text and the details, the client
+</span><span class="line" id="38">38: </span><span class="php-comment">     * uses the message id, gets the final translated text and substitutes the parameters through the details.
+</span><span class="line" id="39">39: </span><span class="php-comment">     *
+</span><span class="line" id="40">40: </span><span class="php-comment">     * @param string $technical_info
+</span><span class="line" id="41">41: </span><span class="php-comment">     * Additional technical infromation. It can be used if it is a programming error and displayed only if the debug mode is active.
+</span><span class="line" id="42">42: </span><span class="php-comment">     *
+</span><span class="line" id="43">43: </span><span class="php-comment">     * @author Oleg Schildt
+</span><span class="line" id="44">44: </span><span class="php-comment">     */</span>
+<span class="line" id="45">45: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> __construct(<span class="php-var">$message</span>, <span class="php-var">$error_code</span> = SmartException::ERR_CODE_SYSTEM_ERROR, <span class="php-var">$error_element</span> = <span class="php-quote">&quot;&quot;</span>, <span class="php-var">$error_details</span> = [], <span class="php-var">$technical_info</span> = <span class="php-quote">&quot;&quot;</span>)
+<span class="line" id="46">46: </span>    {
+<span class="line" id="47">47: </span>        parent::__construct(<span class="php-var">$message</span>, <span class="php-var">$error_code</span>, <span class="php-var">$error_element</span>, <span class="php-var">$error_details</span>, <span class="php-var">$technical_info</span>);
+<span class="line" id="48">48: </span>    }
+<span class="line" id="49">49: </span>}
 </code>
 </pre>
 </div>
                     
                     <div id="footer">
-                        Generated on 2022-08-12 12:18 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
+                        Generated on 2023-06-21 08:54 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
                     </div>                    
                 </div>
             </div>

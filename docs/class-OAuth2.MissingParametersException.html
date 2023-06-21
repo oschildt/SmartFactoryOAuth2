@@ -118,7 +118,7 @@
 <h2>Extends</h2>
 <div class="item_list">
 
-\Exception<br>
+\SmartFactory\SmartException<br>
 
 </div>
 
@@ -144,7 +144,7 @@
 
 <h2>Source code</h2>
 <div class="item_list">
-<a href='source-OAuth2.MissingParametersException.php.html#15'>OAuth2/MissingParametersException.php</a>
+<a href='source-OAuth2.MissingParametersException.php.html#17'>OAuth2/MissingParametersException.php</a>
 </div>
 
 
@@ -170,16 +170,181 @@
 
 
 
+<table class="table table-responsive table-bordered table-striped class_multicolumn">
+      <tr><th colspan="2">Methods</th></tr>
+      
+      <tr>
+          <td>
+              <div style='float:left'><a href="#__construct">__construct()</a></div>
+
+              <div style='float:right'>
+              
+              <span class='label label-success'>public</span>
+              </div>
+              <div style="clear:both"></div>
+          </td>
+          <td class="description_column">
+              <p>Constructor.</p>
+          </td>
+      </tr>
+      
+  </table>
 
 
 
 
 
+<hr id="__construct">
+  
+  <h1>Method: MissingParametersException::__construct()</h1>
 
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> __construct(string <span class="php-var">$message</span>, string <span class="php-var">$error_code</span> = SmartException::ERR_CODE_SYSTEM_ERROR, string <span class="php-var">$error_element</span> = <span class="php-quote">&quot;&quot;</span>, <span class="php-keyword1">array</span> <span class="php-var">$error_details</span> = [], string <span class="php-var">$technical_info</span> = <span class="php-quote">&quot;&quot;</span>);</div>
 
+  
+  <div class="short-description">
+  <p>Constructor.</p>
+  </div>
+  
+
+  
+
+  
+
+  <h2>Parameters</h2>
+
+    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+        <tr>
+        <th>Name</th>
+        <th>Pass type</th>
+        <th>Value type</th>
+        <th>Default value</th>
+        <th>Description</th>
+        </tr>
+        
+        
+        <tr>
+            <td>
+                $message
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>Error message.</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                $error_code
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                SmartException::ERR_CODE_SYSTEM_ERROR
+            </td>
+            <td class="description_column">
+                <p>Error code.</p>
+<p>Since the error texts can be localized, the unique code of the error might be important fo using
+in comparison.</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                $error_element
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                &quot;&quot;
+            </td>
+            <td class="description_column">
+                <p>Error element.</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                $error_details
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                array
+            </td>
+            <td>
+                []
+            </td>
+            <td class="description_column">
+                <p>The details might be useful if the message translations are provided on the client, not
+on the server, and the message should contain some details that may vary from case to case.
+In that case, the servers return the message id instead of final text and the details, the client
+uses the message id, gets the final translated text and substitutes the parameters through the details.</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                $technical_info
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                string
+            </td>
+            <td>
+                &quot;&quot;
+            </td>
+            <td class="description_column">
+                <p>Additional technical infromation. It can be used if it is a programming error and displayed only if the debug mode is active.</p>
+            </td>
+        </tr>
+        
+        
+    </table>
+
+  
+
+  
+
+  
+
+  <h2>Authors</h2>
+  <div class="item_list">
+  
+  <div class='item'>Oleg Schildt</div>
+  
+  </div>
+
+  
+
+  
+
+  
+  <h2>Source code</h2>
+  <div class="item_list">
+  <a href='source-OAuth2.MissingParametersException.php.html#45'>OAuth2/MissingParametersException.php</a>
+  </div>
                     
                     <div id="footer">
-                        Generated on 2022-08-12 12:18 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
+                        Generated on 2023-06-21 08:54 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
                     </div>                    
                 </div>
             </div>

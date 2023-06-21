@@ -11,6 +11,7 @@ use OAuth2\Interfaces\IOAuthManager;
 use OAuth2\Interfaces\ITokenStorage;
 use OAuth2\Interfaces\IUserAuthenticator;
 
+use SmartFactory\SmartException;
 
 /**
  * Class for secure user authentication.
@@ -70,7 +71,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    protected $access_token_ttl = null;
+    protected $access_token_ttl_minutes = null;
 
     /**
      * Internal property for storing the time to live of the refresh token.
@@ -79,16 +80,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    protected $refresh_token_ttl = null;
-
-    /**
-     * Internal property for storing the number of maximal inactivity days of the token.
-     *
-     * @var string
-     *
-     * @author Oleg Schildt
-     */
-    protected $max_token_inactivity_days = null;
+    protected $refresh_token_ttl_days = null;
 
     /**
      * Internal property for storing the path to the public key file.
@@ -208,17 +200,17 @@ class OAuthManager implements IOAuthManager
 
         $public_key = openssl_pkey_get_public("file://" . $this->public_key);
         if ($public_key === false) {
-            throw new \Exception(sprintf("The public key file '%s' is not valid! Error: %s", $this->public_key, openssl_error_string()));
+            throw new SmartException(sprintf("The public key file '%s' is not valid! Error: %s", $this->public_key, openssl_error_string()), SmartException::ERR_CODE_SYSTEM_ERROR);
         }
 
         $result = @openssl_verify($input, $signature, $public_key, $algorithm_id);
 
         if ($result === -1 || $result === false) {
-            throw new \Exception(sprintf("Error by data verification: %s", openssl_error_string()));
+            throw new SmartException(sprintf("Error by data verification: %s", openssl_error_string()), SmartException::ERR_CODE_SYSTEM_ERROR);
         }
 
         if ($result === 0) {
-            throw new InvalidTokenException("The signature of the JWT access token is invalid!");
+            throw new InvalidTokenException("The signature of the JWT access token is invalid!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
         }
     }
 
@@ -255,12 +247,12 @@ class OAuthManager implements IOAuthManager
 
         $private_key = openssl_pkey_get_private("file://" . $this->private_key, $this->pass_phrase);
         if ($private_key === false) {
-            throw new \Exception(sprintf("The private key file '%s' or the pass phrase is not valid! Error: %s", $this->private_key, openssl_error_string()));
+            throw new SmartException(sprintf("The private key file '%s' or the pass phrase is not valid! Error: %s", $this->private_key, openssl_error_string()), SmartException::ERR_CODE_SYSTEM_ERROR);
         }
 
         $signature = "";
         if (!openssl_sign($input, $signature, $private_key, $algorithm_id)) {
-            throw new \Exception(sprintf("Error by signing data: %s", openssl_error_string()));
+            throw new SmartException(sprintf("Error by signing data: %s", openssl_error_string()), SmartException::ERR_CODE_SYSTEM_ERROR);
         }
 
         return $signature;
@@ -311,7 +303,7 @@ class OAuthManager implements IOAuthManager
                 return $this->generateRSASignature($input, OPENSSL_ALGO_SHA512);
 
             default:
-                throw new \Exception(sprintf("Unsupported or invalid signing algorithm '%s'.", $this->encryption_algorithm));
+                throw new SmartException(sprintf("Unsupported or invalid signing algorithm '%s'.", $this->encryption_algorithm), SmartException::ERR_CODE_SYSTEM_ERROR);
         }
     }
 
@@ -347,7 +339,7 @@ class OAuthManager implements IOAuthManager
             case'HS384':
             case'HS512':
                 if (!hash_equals($this->generateJwtSignature($input), $signature)) {
-                    throw new InvalidTokenException("The signature of the JWT access token is invalid!");
+                    throw new InvalidTokenException("The signature of the JWT access token is invalid!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
                 }
                 break;
 
@@ -364,7 +356,7 @@ class OAuthManager implements IOAuthManager
                 break;
 
             default:
-                throw new \Exception(sprintf("Unsupported or invalid signing algorithm '%s'.", $this->encryption_algorithm));
+                throw new SmartException(sprintf("Unsupported or invalid signing algorithm '%s'.", $this->encryption_algorithm), SmartException::ERR_CODE_SYSTEM_ERROR);
         }
     }
 
@@ -383,22 +375,18 @@ class OAuthManager implements IOAuthManager
      */
     protected function generateToken()
     {
-        try {
-            if (function_exists('random_bytes')) {
-                $randomData = random_bytes(20);
-                if ($randomData !== false && strlen($randomData) === 20) {
-                    return bin2hex($randomData);
-                }
+        if (function_exists('random_bytes')) {
+            $randomData = random_bytes(20);
+            if ($randomData !== false && strlen($randomData) === 20) {
+                return bin2hex($randomData);
             }
+        }
 
-            if (function_exists('openssl_random_pseudo_bytes')) {
-                $randomData = openssl_random_pseudo_bytes(20);
-                if ($randomData !== false && strlen($randomData) === 20) {
-                    return bin2hex($randomData);
-                }
+        if (function_exists('openssl_random_pseudo_bytes')) {
+            $randomData = openssl_random_pseudo_bytes(20);
+            if ($randomData !== false && strlen($randomData) === 20) {
+                return bin2hex($randomData);
             }
-        } catch (\Exception $ex) {
-            throw new \Exception($ex->getMessage());
         }
 
         // last resort which you probably should just get rid of:
@@ -471,23 +459,23 @@ class OAuthManager implements IOAuthManager
     protected function getJwtPayload($jwt_access_token, $verify_signature = true)
     {
         if (!strpos($jwt_access_token, '.')) {
-            throw new InvalidTokenException("The format of the JWT access token is invalid!");
+            throw new InvalidTokenException("The format of the JWT access token is invalid!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
         }
 
         $segements = explode('.', $jwt_access_token);
 
         if (count($segements) != 3) {
-            throw new InvalidTokenException("The format of the JWT access token is invalid!");
+            throw new InvalidTokenException("The format of the JWT access token is invalid!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
         }
 
         list($headb64, $payloadb64, $cryptob64) = $segements;
 
         if (null === ($header = json_decode($this->urlSafeB64Decode($headb64), true))) {
-            throw new InvalidTokenException("The header of the JWT access token is invalid!");
+            throw new InvalidTokenException("The header of the JWT access token is invalid!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
         }
 
         if (null === $payload = json_decode($this->urlSafeB64Decode($payloadb64), true)) {
-            throw new InvalidTokenException("The payload of the JWT access token is invalid!");
+            throw new InvalidTokenException("The payload of the JWT access token is invalid!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
         }
 
         if (!$verify_signature) {
@@ -495,13 +483,13 @@ class OAuthManager implements IOAuthManager
         }
 
         if (empty($header['alg'])) {
-            throw new InvalidTokenException("The signing algorithm of the JWT access token is missing in the header!");
+            throw new InvalidTokenException("The signing algorithm of the JWT access token is missing in the header!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
         }
 
         $signature = $this->urlSafeB64Decode($cryptob64);
 
         if (!in_array($header['alg'], $this->supported_algorithms)) {
-            throw new InvalidTokenException("The signing algorithm of the JWT access token is invalid!");
+            throw new InvalidTokenException("The signing algorithm of the JWT access token is invalid!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
         }
 
         $this->verifyJwtSignature("$headb64.$payloadb64", $signature);
@@ -530,56 +518,56 @@ class OAuthManager implements IOAuthManager
      */
     protected function validateParameters()
     {
-        if (empty($this->access_token_ttl) || !is_numeric($this->access_token_ttl) || $this->access_token_ttl < 1) {
-            throw new \Exception("The 'access_token_ttl' is not specified or invalid!");
+        if (!function_exists("openssl_pkey_get_private")) {
+            throw new SmartException("The extension 'open_ssl' is not installed!", SmartException::ERR_CODE_SYSTEM_ERROR);
         }
 
-        if (empty($this->refresh_token_ttl) || !is_numeric($this->refresh_token_ttl) || $this->refresh_token_ttl < 1) {
-            throw new \Exception("The 'refresh_token_ttl' is not specified or invalid!");
+        if (empty($this->access_token_ttl_minutes) || !is_numeric($this->access_token_ttl_minutes) || $this->access_token_ttl_minutes < 1) {
+            throw new SmartException("The 'access_token_ttl_minutes' is not specified or invalid!", SmartException::ERR_CODE_CONFIG_ERROR);
         }
 
-        if (empty($this->max_token_inactivity_days) || !is_numeric($this->max_token_inactivity_days) || $this->max_token_inactivity_days < 1) {
-            throw new \Exception("The 'max_token_inactivity_days' is not specified or invalid!");
+        if (empty($this->refresh_token_ttl_days) || !is_numeric($this->refresh_token_ttl_days) || $this->refresh_token_ttl_days < 1) {
+            throw new SmartException("The 'refresh_token_ttl_days' is not specified or invalid!", SmartException::ERR_CODE_CONFIG_ERROR);
         }
 
         if (empty($this->token_storage)) {
-            throw new \Exception("The 'token_storage' is not specified!");
+            throw new SmartException("The 'token_storage' is not specified!", SmartException::ERR_CODE_CONFIG_ERROR);
         }
 
         if (!$this->token_storage instanceof ITokenStorage) {
-            throw new \Exception(sprintf("The 'token_storage' does not implement the interface '%s'!", ITokenStorage::class));
+            throw new SmartException(sprintf("The 'token_storage' does not implement the interface '%s'!", ITokenStorage::class), SmartException::ERR_CODE_SYSTEM_ERROR);
         }
 
         if (empty($this->user_authenticator)) {
-            throw new \Exception("The 'user_authenticator' is not specified!");
+            throw new SmartException("The 'user_authenticator' is not specified!", SmartException::ERR_CODE_CONFIG_ERROR);
         }
 
         if (!$this->user_authenticator instanceof IUserAuthenticator) {
-            throw new \Exception(sprintf("The 'user_authenticator' does not implement the interface '%s'!", IUserAuthenticator::class));
+            throw new SmartException(sprintf("The 'user_authenticator' does not implement the interface '%s'!", IUserAuthenticator::class), SmartException::ERR_CODE_SYSTEM_ERROR);
         }
 
         if (empty($this->encryption_algorithm)) {
-            throw new \Exception("The encryption algorithm is not specified!");
+            throw new SmartException("The encryption algorithm is not specified!", SmartException::ERR_CODE_CONFIG_ERROR);
         }
 
         if (!in_array($this->encryption_algorithm, $this->supported_algorithms)) {
-            throw new \Exception(sprintf("The encryption algorithm %s is not supported! The suppoted algoritms are: %s", $this->encryption_algorithm, implode(", ", $this->supported_algorithms)));
+            throw new SmartException(sprintf("The encryption algorithm %s is not supported! The suppoted algoritms are: %s", $this->encryption_algorithm, implode(", ", $this->supported_algorithms)), SmartException::ERR_CODE_CONFIG_ERROR);
         }
 
         if (in_array($this->encryption_algorithm, ['HS256', 'HS384', 'HS512']) && empty($this->secret_key)) {
-            throw new \Exception(sprintf("The encryption algorithm %s requires a secret key! Set the parameter 'secret_key'.", $this->encryption_algorithm));
+            throw new SmartException(sprintf("The encryption algorithm %s requires a secret key! Set the parameter 'secret_key'.", $this->encryption_algorithm), SmartException::ERR_CODE_CONFIG_ERROR);
         }
 
         if (in_array($this->encryption_algorithm, ['RS256', 'RS384', 'RS512']) && (empty($this->public_key) || empty($this->private_key))) {
-            throw new \Exception(sprintf("The encryption algorithm %s requires a public key and a private key! Set the parameters 'public_key' and 'private_key'.", $this->encryption_algorithm));
+            throw new SmartException(sprintf("The encryption algorithm %s requires a public key and a private key! Set the parameters 'public_key' and 'private_key'.", $this->encryption_algorithm), SmartException::ERR_CODE_CONFIG_ERROR);
         }
 
         if (!file_exists($this->private_key)) {
-            throw new \Exception(sprintf("The private key file '%s' does not exists!", $this->private_key));
+            throw new SmartException(sprintf("The private key file '%s' does not exists!", $this->private_key), SmartException::ERR_CODE_CONFIG_ERROR);
         }
 
         if (!file_exists($this->public_key)) {
-            throw new \Exception(sprintf("The public key file '%s' does not exists!", $this->public_key));
+            throw new SmartException(sprintf("The public key file '%s' does not exists!", $this->public_key), SmartException::ERR_CODE_CONFIG_ERROR);
         }
     }
 
@@ -617,13 +605,13 @@ class OAuthManager implements IOAuthManager
         $response["user_id"] = $user_id;
         $response["client_id"] = $client_id;
 
+        $response["last_activity"] = time();
+
         $response["refresh_token"] = $this->generateToken();
-        $response["refresh_token_expire"] = time() + $this->refresh_token_ttl;
+        $response["refresh_token_expire"] = time() + $this->refresh_token_ttl_days * 24 * 3600;
 
         $response["access_token"] = $this->generateToken();
-        $response["access_token_expire"] = time() + $this->access_token_ttl;
-
-        $response["last_activity"] = time();
+        $response["access_token_expire"] = time() + $this->access_token_ttl_minutes * 60;
 
         $payload = ["access_token" => $response["access_token"], "access_token_expire" => $response["access_token_expire"], "user_id" => $user_id, "client_id" => $client_id];
 
@@ -641,9 +629,8 @@ class OAuthManager implements IOAuthManager
      * @param array $parameters
      * The parameters are:
      *
-     * - $parameters["access_token_ttl"] - time to live in seconds for the access token.
-     * - $parameters["refresh_token_ttl"] - time to live in seconds for the refresh token.
-     * - $parameters["max_token_inactivity_days"] - maximal number of inactivity days for the token.
+     * - $parameters["access_token_ttl_minutes"] - time to live in minutes for the access token.
+     * - $parameters["refresh_token_ttl_days"] - time to live in days for the refresh token.
      * - $parameters["encryption_algorithm"] - the encryption algorithm used for signing. The following
      * algorithms are supported: HS256, HS384, HS512, RS256, RS384, RS512.
      * - $parameters["public_key"] - location of the public key file. Required for the algorithms: RS256, RS384, RS512.
@@ -672,16 +659,12 @@ class OAuthManager implements IOAuthManager
      */
     public function init($parameters)
     {
-        if (!empty($parameters["access_token_ttl"])) {
-            $this->access_token_ttl = $parameters["access_token_ttl"];
+        if (!empty($parameters["access_token_ttl_minutes"])) {
+            $this->access_token_ttl_minutes = $parameters["access_token_ttl_minutes"];
         }
 
-        if (!empty($parameters["refresh_token_ttl"])) {
-            $this->refresh_token_ttl = $parameters["refresh_token_ttl"];
-        }
-
-        if (!empty($parameters["max_token_inactivity_days"])) {
-            $this->max_token_inactivity_days = $parameters["max_token_inactivity_days"];
+        if (!empty($parameters["refresh_token_ttl_days"])) {
+            $this->refresh_token_ttl_days = $parameters["refresh_token_ttl_days"];
         }
 
         if (!empty($parameters["token_storage"])) {
@@ -738,6 +721,8 @@ class OAuthManager implements IOAuthManager
      * - $response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
      * token is the access token encoded and signed by the JWT standard approach.
      *
+     * @return void
+     *
      * @throws \Exception
      * It might throw an exception in the case of any system errors:
      *
@@ -748,8 +733,6 @@ class OAuthManager implements IOAuthManager
      * - if the private key is invalid.
      * - if ssl signing fails due to system errors.
      * - if the token storage fails to save the token record.
-     *
-     * @return void
      *
      * @throws \OAuth2\InvalidCredentialsException
      * It might throw the InvalidCredentialsException if the authentication fails.
@@ -764,7 +747,7 @@ class OAuthManager implements IOAuthManager
     public function authenticateUser($credentials, &$response)
     {
         if (empty($credentials["client_id"])) {
-            throw new MissingParametersException("The client id is not specified!");
+            throw new MissingParametersException("The client id is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
         }
 
         $this->createTokenRecord($this->user_authenticator->authenticateUser($credentials), $credentials["client_id"], $response);
@@ -870,61 +853,40 @@ class OAuthManager implements IOAuthManager
     public function verifyJwtAccessToken($jwt_access_token, $check_on_server = true)
     {
         if (empty($jwt_access_token)) {
-            throw new MissingParametersException("The access token is not specified!");
+            throw new MissingParametersException("The access token is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
         }
 
         $payload = $this->getJwtPayload($jwt_access_token);
 
         if (empty($payload)) {
-            throw new InvalidTokenException("The jwt access token is invalid, the payload is empty!");
+            throw new InvalidTokenException("The jwt access token is invalid, the payload is empty!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
         }
 
         if (empty($payload["access_token"])) {
-            throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'access_token'!");
+            throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'access_token'!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
         }
 
         if (empty($payload["user_id"])) {
-            throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'user_id'!");
+            throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'user_id'!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
         }
 
         if (empty($payload["client_id"])) {
-            throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'client_id'!");
+            throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'client_id'!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
         }
 
         if (empty($payload["access_token_expire"])) {
-            throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'access_token_expire'!");
+            throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'access_token_expire'!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
         }
 
         if (time() > $payload["access_token_expire"]) {
-            throw new TokenExpiredException("The access token is expired!");
+            throw new TokenExpiredException("The access token is expired!", "token_expired", "", [], "Expired on " . date("Y-m-d H:i:s", $payload["access_token_expire"]));
         }
 
         if (!$check_on_server) {
             return $payload;
         }
 
-        $token_record = [
-            "user_id" => $payload["user_id"],
-            "client_id" => $payload["client_id"],
-            "access_token" => $payload["access_token"]
-        ];
-
-        try {
-            $this->token_storage->loadTokenRecord($token_record);
-        } catch (\OAuth2\InvalidTokenException $ex) {
-            throw new \OAuth2\InvalidTokenException("The access token is invalid!");
-        }
-
-        if (time() > $token_record["access_token_expire"]) {
-            throw new \OAuth2\TokenExpiredException("The access token is expired!");
-        }
-
-        if (time() > $token_record["last_activity"] + $this->max_token_inactivity_days * 24 * 3600) {
-            throw new \OAuth2\TokenExpiredException("The access token is expired!");
-        }
-
-        $token_record["last_activity"] = time();
-        $this->token_storage->saveTokenRecord($token_record);
+        $this->token_storage->verifyAccessToken($payload["access_token"], $payload["user_id"], $payload["client_id"]);
 
         return $payload;
     }
@@ -953,7 +915,7 @@ class OAuthManager implements IOAuthManager
      * It might throw the TokenExpiredException if the jwt access token is expired.
      *
      * @throws \OAuth2\MissingParametersException
-     * It should throw the MissingParametersException if any required paramters are empty.
+     * It should throw the MissingParametersException if any required parameters are empty.
      *
      * @uses \OAuth2\Interfaces\ITokenStorage::loadTokenRecord()
      *
@@ -962,37 +924,18 @@ class OAuthManager implements IOAuthManager
     public function verifyRefreshToken($refresh_token, $user_id, $client_id)
     {
         if (empty($user_id)) {
-            throw new MissingParametersException("The user id is not specified!");
+            throw new MissingParametersException("The user id is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
         }
 
         if (empty($client_id)) {
-            throw new MissingParametersException("The client id is not specified!");
+            throw new MissingParametersException("The client id is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
         }
 
         if (empty($refresh_token)) {
-            throw new MissingParametersException("The refresh token is not specified!");
+            throw new MissingParametersException("The refresh token is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
         }
 
-        $token_record["user_id"] = $user_id;
-        $token_record["client_id"] = $client_id;
-        $token_record["refresh_token"] = $refresh_token;
-
-        try {
-            $this->token_storage->loadTokenRecord($token_record);
-        } catch (\OAuth2\InvalidTokenException $ex) {
-            throw new \OAuth2\InvalidTokenException("The refresh token is invalid!");
-        }
-
-        if (time() > $token_record["access_token_expire"]) {
-            throw new \OAuth2\TokenExpiredException("The refresh token is expired!");
-        }
-
-        if (time() > $token_record["last_activity"] + $this->max_token_inactivity_days * 24 * 3600) {
-            throw new \OAuth2\TokenExpiredException("The refresh token is expired!");
-        }
-
-        $token_record["last_activity"] = time();
-        $this->token_storage->saveTokenRecord($token_record);
+        $this->token_storage->verifyRefreshToken($refresh_token, $user_id, $client_id);
     }
 
     /**
@@ -1038,15 +981,15 @@ class OAuthManager implements IOAuthManager
     public function invalidateUser($user_id, $client_id, $refresh_token)
     {
         if (empty($user_id)) {
-            throw new MissingParametersException("The user id is not specified!");
+            throw new MissingParametersException("The user id is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
         }
 
         if (empty($client_id)) {
-            throw new MissingParametersException("The client id is not specified!");
+            throw new MissingParametersException("The client id is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
         }
 
         if (empty($refresh_token)) {
-            throw new MissingParametersException("The refresh token is not specified!");
+            throw new MissingParametersException("The refresh token is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
         }
 
         $this->verifyRefreshToken($refresh_token, $user_id, $client_id);
@@ -1097,15 +1040,15 @@ class OAuthManager implements IOAuthManager
     public function invalidateClient($user_id, $client_id, $refresh_token)
     {
         if (empty($user_id)) {
-            throw new MissingParametersException("The user id is not specified!");
+            throw new MissingParametersException("The user id is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
         }
 
         if (empty($client_id)) {
-            throw new MissingParametersException("The client id is not specified!");
+            throw new MissingParametersException("The client id is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
         }
 
         if (empty($refresh_token)) {
-            throw new MissingParametersException("The refresh token is not specified!");
+            throw new MissingParametersException("The refresh token is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
         }
 
         $this->verifyRefreshToken($refresh_token, $user_id, $client_id);
@@ -1148,11 +1091,11 @@ class OAuthManager implements IOAuthManager
         $payload = $this->getJwtPayload($jwt_access_token, true);
 
         if (empty($payload)) {
-            throw new InvalidTokenException("The jwt access token is invalid, the payload is empty!");
+            throw new InvalidTokenException("The jwt access token is invalid, the payload is empty!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
         }
 
         if (empty($payload["access_token"])) {
-            throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'access_token'!");
+            throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'access_token'!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
         }
 
         $this->token_storage->deleteTokenRecordByKey("access_token", $payload["access_token"]);
