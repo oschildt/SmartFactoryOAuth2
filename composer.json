@@ -21,6 +21,6 @@
   },
   "require": {
     "php": ">=8.0",
-    "smartfactory/smartfactory": ">=2.1.20"
+    "smartfactory/smartfactory": ">=2.1.21"
   }
 }
