@@ -10,7 +10,7 @@ For more details see [Presentation](http://php-smart-factory.org/oauth2_presenta
 
 ### Requirements
 
-- PHP 8.0.x
+- PHP 8.x
 
 ### Installation
 
