@@ -1,6 +1,8 @@
 var ApiGen = ApiGen || {};
 ApiGen.elements = [
 {"file":"namespace-OAuth2.html","label":"OAuth2 - Namespace"},
+{"file":"class-OAuth2.AuthSystemException.html","label":"AuthSystemException - Class"},
+{"file":"class-OAuth2.AuthSystemException.html#__construct","label":"AuthSystemException::__construct()"},
 {"file":"namespace-OAuth2.Interfaces.html","label":"OAuth2\\Interfaces - Namespace"},
 {"file":"interface-OAuth2.Interfaces.IOAuthManager.html","label":"IOAuthManager - Interface"},
 {"file":"interface-OAuth2.Interfaces.IOAuthManager.html#authenticateUser","label":"IOAuthManager::authenticateUser()"},

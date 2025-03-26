@@ -7,7 +7,7 @@
 
 namespace OAuth2;
 
-use SmartFactory\SmartException;
+use \SmartFactory\SmartException;
 
 /**
  * Class for the exception InvalidCredentialsException.

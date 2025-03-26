@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the implementation of the MissingParametersException.
+ * This file contains the implementation of the AuthSystemException.
  *
  * @author Oleg Schildt
  */
@@ -10,11 +10,11 @@ namespace OAuth2;
 use \SmartFactory\SmartException;
 
 /**
- * Class for the exception MissingParametersException.
+ * Class for the exception AuthSystemException.
  *
  * @author Oleg Schildt
  */
-class MissingParametersException extends SmartException
+class AuthSystemException extends SmartException
 {
     /**
      * Constructor.

@@ -7,7 +7,7 @@
 
 namespace OAuth2\Interfaces;
 
-use SmartFactory\Interfaces\IInitable;
+use \SmartFactory\Interfaces\IInitable;
 
 /**
  * Interface for secure user authentication.
@@ -60,6 +60,9 @@ interface IOAuthManager extends IInitable
      * @throws \OAuth2\InvalidCredentialsException
      * It should throw the InvalidCredentialsException if the authentication fails.
      *
+     * @throws \OAuth2\AuthSystemException
+     * It should throw the AuthSystemException if some system error occurs.
+     *
      * @throws \OAuth2\MissingParametersException
      * It should throw the MissingParametersException if any required paramters are empty.
      *
@@ -106,6 +109,9 @@ interface IOAuthManager extends IInitable
      * @throws \OAuth2\MissingParametersException
      * It should throw the MissingParametersException if some required paramters are empty.
      *
+     * @throws \OAuth2\AuthSystemException
+     * It should throw the AuthSystemException if some system error occurs.
+     *
      * @author Oleg Schildt
      */
     public function refreshTokens($refresh_token, $user_id, $client_id, &$response);
@@ -132,8 +138,11 @@ interface IOAuthManager extends IInitable
      * @throws \OAuth2\TokenExpiredException
      * It might throw the TokenExpiredException if the jwt access token is expired.
      *
-     * @throws \OAuth2\TokenExpiredException
-     * It might throw the TokenExpiredException if the jwt access token is expired.
+     * @throws \OAuth2\MissingParametersException
+     * It should throw the MissingParametersException if any required paramters are empty.
+     *
+     * @throws \OAuth2\AuthSystemException
+     * It should throw the AuthSystemException if some system error occurs.
      *
      * @author Oleg Schildt
      */
@@ -164,6 +173,9 @@ interface IOAuthManager extends IInitable
      *
      * @throws \OAuth2\MissingParametersException
      * It should throw the MissingParametersException if any required paramters are empty.
+     *
+     * @throws \OAuth2\AuthSystemException
+     * It should throw the AuthSystemException if some system error occurs.
      *
      * @author Oleg Schildt
      */
@@ -198,6 +210,9 @@ interface IOAuthManager extends IInitable
      * @throws \OAuth2\TokenExpiredException
      * It might throw the TokenExpiredException if the jwt refresh token is expired.
      *
+     * @throws \OAuth2\AuthSystemException
+     * It should throw the AuthSystemException if some system error occurs.
+     *
      * @throws \OAuth2\MissingParametersException
      * It should throw the MissingParametersException if some required paramters are empty.
      *
@@ -230,6 +245,9 @@ interface IOAuthManager extends IInitable
      *
      * @throws \OAuth2\InvalidTokenException
      * It should throw the InvalidTokenException if the refresh token is invalid.
+     *
+     * @throws \OAuth2\AuthSystemException
+     * It should throw the AuthSystemException if some system error occurs.
      *
      * @throws \OAuth2\MissingParametersException
      * It should throw the MissingParametersException if some required paramters are empty.

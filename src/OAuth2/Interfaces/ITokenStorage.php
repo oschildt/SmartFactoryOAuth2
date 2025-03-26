@@ -7,7 +7,7 @@
 
 namespace OAuth2\Interfaces;
 
-use SmartFactory\Interfaces\IInitable;
+use \SmartFactory\Interfaces\IInitable;
 
 /**
  * Interface for storing and validating of the stored tokens. It can be implemnted for a database or

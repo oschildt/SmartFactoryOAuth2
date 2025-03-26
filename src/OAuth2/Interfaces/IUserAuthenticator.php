@@ -8,7 +8,7 @@
 
 namespace OAuth2\Interfaces;
 
-use SmartFactory\Interfaces\IInitable;
+use \SmartFactory\Interfaces\IInitable;
 
 /**
  * Interface for authentication

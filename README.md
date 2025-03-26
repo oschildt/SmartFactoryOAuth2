@@ -2,7 +2,7 @@
 
 - Lightweight simple and flexible OAuth2 Server
 - With support of the JSON Web Token
-- Customizable user suthentication and storage of the token records
+- Customizable user authentication and storage of the token records
 - Designed based on IoC 
 
 For more details see [Presentation](http://php-smart-factory.org/oauth2_presentation.pdf) and
@@ -26,8 +26,8 @@ composer require smartfactory/oauth2"
 
   "require": {
     "php": ">=8.0",
-    "smartfactory/smartfactory": ">=2.1.22",
-    "smartfactory/oauth2": ">=1.2.22"
+    "smartfactory/smartfactory": ">=2.1.23",
+    "smartfactory/oauth2": ">=1.2.23"
   }
   
   ...

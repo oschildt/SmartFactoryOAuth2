@@ -7,11 +7,11 @@
 
 namespace OAuth2;
 
-use OAuth2\Interfaces\IOAuthManager;
-use OAuth2\Interfaces\ITokenStorage;
-use OAuth2\Interfaces\IUserAuthenticator;
+use \OAuth2\Interfaces\IOAuthManager;
+use \OAuth2\Interfaces\ITokenStorage;
+use \OAuth2\Interfaces\IUserAuthenticator;
 
-use SmartFactory\SmartException;
+use \SmartFactory\SmartException;
 
 /**
  * Class for secure user authentication.
@@ -198,15 +198,15 @@ class OAuthManager implements IOAuthManager
     {
         $this->validateParameters();
 
-        $public_key = openssl_pkey_get_public("file://" . $this->public_key);
+        $public_key = @openssl_pkey_get_public("file://" . $this->public_key);
         if ($public_key === false) {
-            throw new SmartException(sprintf("The public key file '%s' is not valid! Error: %s", $this->public_key, openssl_error_string()), SmartException::ERR_CODE_SYSTEM_ERROR);
+            throw new AuthSystemException(sprintf("The public key file '%s' is not valid!\n\nError: %s", $this->public_key, openssl_error_string()), SmartException::ERR_CODE_SYSTEM_ERROR);
         }
 
         $result = @openssl_verify($input, $signature, $public_key, $algorithm_id);
 
         if ($result === -1 || $result === false) {
-            throw new SmartException(sprintf("Error by data verification: %s", openssl_error_string()), SmartException::ERR_CODE_SYSTEM_ERROR);
+            throw new AuthSystemException(sprintf("Error by data verification:\n\n%s", openssl_error_string()), SmartException::ERR_CODE_SYSTEM_ERROR);
         }
 
         if ($result === 0) {
@@ -245,14 +245,14 @@ class OAuthManager implements IOAuthManager
     {
         $this->validateParameters();
 
-        $private_key = openssl_pkey_get_private("file://" . $this->private_key, $this->pass_phrase);
+        $private_key = @openssl_pkey_get_private("file://" . $this->private_key, $this->pass_phrase);
         if ($private_key === false) {
-            throw new SmartException(sprintf("The private key file '%s' or the pass phrase is not valid! Error: %s", $this->private_key, openssl_error_string()), SmartException::ERR_CODE_SYSTEM_ERROR);
+            throw new AuthSystemException(sprintf("The private key file '%s' or the pass phrase is not valid!\n\nError: %s", $this->private_key, openssl_error_string()), SmartException::ERR_CODE_SYSTEM_ERROR);
         }
 
         $signature = "";
-        if (!openssl_sign($input, $signature, $private_key, $algorithm_id)) {
-            throw new SmartException(sprintf("Error by signing data: %s", openssl_error_string()), SmartException::ERR_CODE_SYSTEM_ERROR);
+        if (!@openssl_sign($input, $signature, $private_key, $algorithm_id)) {
+            throw new AuthSystemException(sprintf("Error by signing data:\n\n%s", openssl_error_string()), SmartException::ERR_CODE_SYSTEM_ERROR);
         }
 
         return $signature;
@@ -303,7 +303,7 @@ class OAuthManager implements IOAuthManager
                 return $this->generateRSASignature($input, OPENSSL_ALGO_SHA512);
 
             default:
-                throw new SmartException(sprintf("Unsupported or invalid signing algorithm '%s'.", $this->encryption_algorithm), SmartException::ERR_CODE_SYSTEM_ERROR);
+                throw new AuthSystemException(sprintf("Unsupported or invalid signing algorithm '%s'.", $this->encryption_algorithm), SmartException::ERR_CODE_SYSTEM_ERROR);
         }
     }
 
@@ -356,7 +356,7 @@ class OAuthManager implements IOAuthManager
                 break;
 
             default:
-                throw new SmartException(sprintf("Unsupported or invalid signing algorithm '%s'.", $this->encryption_algorithm), SmartException::ERR_CODE_SYSTEM_ERROR);
+                throw new AuthSystemException(sprintf("Unsupported or invalid signing algorithm '%s'.", $this->encryption_algorithm), SmartException::ERR_CODE_SYSTEM_ERROR);
         }
     }
 
@@ -519,55 +519,55 @@ class OAuthManager implements IOAuthManager
     protected function validateParameters()
     {
         if (!function_exists("openssl_pkey_get_private")) {
-            throw new SmartException("The extension 'open_ssl' is not installed!", SmartException::ERR_CODE_SYSTEM_ERROR);
+            throw new AuthSystemException("The extension 'open_ssl' is not installed!", SmartException::ERR_CODE_SYSTEM_ERROR);
         }
 
         if (empty($this->access_token_ttl_minutes) || !is_numeric($this->access_token_ttl_minutes) || $this->access_token_ttl_minutes < 1) {
-            throw new SmartException("The 'access_token_ttl_minutes' is not specified or invalid!", SmartException::ERR_CODE_CONFIG_ERROR);
+            throw new AuthSystemException("The 'access_token_ttl_minutes' is not specified or invalid!", SmartException::ERR_CODE_CONFIG_ERROR);
         }
 
         if (empty($this->refresh_token_ttl_days) || !is_numeric($this->refresh_token_ttl_days) || $this->refresh_token_ttl_days < 1) {
-            throw new SmartException("The 'refresh_token_ttl_days' is not specified or invalid!", SmartException::ERR_CODE_CONFIG_ERROR);
+            throw new AuthSystemException("The 'refresh_token_ttl_days' is not specified or invalid!", SmartException::ERR_CODE_CONFIG_ERROR);
         }
 
         if (empty($this->token_storage)) {
-            throw new SmartException("The 'token_storage' is not specified!", SmartException::ERR_CODE_CONFIG_ERROR);
+            throw new AuthSystemException("The 'token_storage' is not specified!", SmartException::ERR_CODE_CONFIG_ERROR);
         }
 
         if (!$this->token_storage instanceof ITokenStorage) {
-            throw new SmartException(sprintf("The 'token_storage' does not implement the interface '%s'!", ITokenStorage::class), SmartException::ERR_CODE_SYSTEM_ERROR);
+            throw new AuthSystemException(sprintf("The 'token_storage' does not implement the interface '%s'!", ITokenStorage::class), SmartException::ERR_CODE_SYSTEM_ERROR);
         }
 
         if (empty($this->user_authenticator)) {
-            throw new SmartException("The 'user_authenticator' is not specified!", SmartException::ERR_CODE_CONFIG_ERROR);
+            throw new AuthSystemException("The 'user_authenticator' is not specified!", SmartException::ERR_CODE_CONFIG_ERROR);
         }
 
         if (!$this->user_authenticator instanceof IUserAuthenticator) {
-            throw new SmartException(sprintf("The 'user_authenticator' does not implement the interface '%s'!", IUserAuthenticator::class), SmartException::ERR_CODE_SYSTEM_ERROR);
+            throw new AuthSystemException(sprintf("The 'user_authenticator' does not implement the interface '%s'!", IUserAuthenticator::class), SmartException::ERR_CODE_SYSTEM_ERROR);
         }
 
         if (empty($this->encryption_algorithm)) {
-            throw new SmartException("The encryption algorithm is not specified!", SmartException::ERR_CODE_CONFIG_ERROR);
+            throw new AuthSystemException("The encryption algorithm is not specified!", SmartException::ERR_CODE_CONFIG_ERROR);
         }
 
         if (!in_array($this->encryption_algorithm, $this->supported_algorithms)) {
-            throw new SmartException(sprintf("The encryption algorithm %s is not supported! The suppoted algoritms are: %s", $this->encryption_algorithm, implode(", ", $this->supported_algorithms)), SmartException::ERR_CODE_CONFIG_ERROR);
+            throw new AuthSystemException(sprintf("The encryption algorithm %s is not supported! The suppoted algoritms are: %s", $this->encryption_algorithm, implode(", ", $this->supported_algorithms)), SmartException::ERR_CODE_CONFIG_ERROR);
         }
 
         if (in_array($this->encryption_algorithm, ['HS256', 'HS384', 'HS512']) && empty($this->secret_key)) {
-            throw new SmartException(sprintf("The encryption algorithm %s requires a secret key! Set the parameter 'secret_key'.", $this->encryption_algorithm), SmartException::ERR_CODE_CONFIG_ERROR);
+            throw new AuthSystemException(sprintf("The encryption algorithm %s requires a secret key! Set the parameter 'secret_key'.", $this->encryption_algorithm), SmartException::ERR_CODE_CONFIG_ERROR);
         }
 
         if (in_array($this->encryption_algorithm, ['RS256', 'RS384', 'RS512']) && (empty($this->public_key) || empty($this->private_key))) {
-            throw new SmartException(sprintf("The encryption algorithm %s requires a public key and a private key! Set the parameters 'public_key' and 'private_key'.", $this->encryption_algorithm), SmartException::ERR_CODE_CONFIG_ERROR);
+            throw new AuthSystemException(sprintf("The encryption algorithm %s requires a public key and a private key! Set the parameters 'public_key' and 'private_key'.", $this->encryption_algorithm), SmartException::ERR_CODE_CONFIG_ERROR);
         }
 
         if (!file_exists($this->private_key)) {
-            throw new SmartException(sprintf("The private key file '%s' does not exists!", $this->private_key), SmartException::ERR_CODE_CONFIG_ERROR);
+            throw new AuthSystemException(sprintf("The private key file '%s' does not exists!", $this->private_key), SmartException::ERR_CODE_CONFIG_ERROR);
         }
 
         if (!file_exists($this->public_key)) {
-            throw new SmartException(sprintf("The public key file '%s' does not exists!", $this->public_key), SmartException::ERR_CODE_CONFIG_ERROR);
+            throw new AuthSystemException(sprintf("The public key file '%s' does not exists!", $this->public_key), SmartException::ERR_CODE_CONFIG_ERROR);
         }
     }
 
@@ -737,6 +737,9 @@ class OAuthManager implements IOAuthManager
      * @throws \OAuth2\InvalidCredentialsException
      * It might throw the InvalidCredentialsException if the authentication fails.
      *
+     * @throws \OAuth2\AuthSystemException
+     * It might throw the AuthSystemException if some system error occurs.
+     *
      * @throws \OAuth2\MissingParametersException
      * It might throw the MissingParametersException if any required paramters are empty.
      *
@@ -798,6 +801,9 @@ class OAuthManager implements IOAuthManager
      * @throws \OAuth2\TokenExpiredException
      * It might throw the TokenExpiredException if the refresh token is expired.
      *
+     * @throws \OAuth2\AuthSystemException
+     * It might throw the AuthSystemException if some system error occurs.
+     *
      * @throws \OAuth2\MissingParametersException
      * It might throw the MissingParametersException if any required paramters are empty.
      *
@@ -842,6 +848,9 @@ class OAuthManager implements IOAuthManager
      *
      * @throws \OAuth2\TokenExpiredException
      * It might throw the TokenExpiredException if the jwt access token is expired.
+     *
+     * @throws \OAuth2\AuthSystemException
+     * It might throw the AuthSystemException if some system error occurs.
      *
      * @throws \OAuth2\MissingParametersException
      * It might throw the MissingParametersException if any required paramters are empty.
@@ -914,6 +923,9 @@ class OAuthManager implements IOAuthManager
      * @throws \OAuth2\TokenExpiredException
      * It might throw the TokenExpiredException if the jwt access token is expired.
      *
+     * @throws \OAuth2\AuthSystemException
+     * It might throw the AuthSystemException if some system error occurs.
+     *
      * @throws \OAuth2\MissingParametersException
      * It should throw the MissingParametersException if any required parameters are empty.
      *
@@ -969,6 +981,9 @@ class OAuthManager implements IOAuthManager
      *
      * @throws \OAuth2\TokenExpiredException
      * It might throw the TokenExpiredException if the jwt refresh token is expired.
+     *
+     * @throws \OAuth2\AuthSystemException
+     * It might throw the AuthSystemException if some system error occurs.
      *
      * @throws \OAuth2\MissingParametersException
      * It might throw the MissingParametersException if any required paramters are empty.
@@ -1028,6 +1043,9 @@ class OAuthManager implements IOAuthManager
      *
      * @throws \OAuth2\TokenExpiredException
      * It might throw the TokenExpiredException if the jwt refresh token is expired.
+     *
+     * @throws \OAuth2\AuthSystemException
+     * It might throw the AuthSystemException if some system error occurs.
      *
      * @throws \OAuth2\MissingParametersException
      * It might throw the MissingParametersException if any required paramters are empty.

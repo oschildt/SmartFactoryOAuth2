@@ -413,6 +413,11 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   <div class="item_description"><p>It should throw the InvalidCredentialsException if the authentication fails.</p></div>
   
   
+  <a href='class-OAuth2.AuthSystemException.html'>\OAuth2\AuthSystemException</a><br>
+  
+  <div class="item_description"><p>It should throw the AuthSystemException if some system error occurs.</p></div>
+  
+  
   <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
   
   <div class="item_description"><p>It should throw the MissingParametersException if any required paramters are empty.</p></div>
@@ -436,7 +441,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#68'>OAuth2/Interfaces/IOAuthManager.php</a>
+  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#71'>OAuth2/Interfaces/IOAuthManager.php</a>
   </div>
   
 
@@ -673,6 +678,11 @@ The refresh token generated upon successful authentication.</p>
   <div class="item_description"><p>It should throw the InvalidTokenException if the refresh token is invalid.</p></div>
   
   
+  <a href='class-OAuth2.AuthSystemException.html'>\OAuth2\AuthSystemException</a><br>
+  
+  <div class="item_description"><p>It should throw the AuthSystemException if some system error occurs.</p></div>
+  
+  
   <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
   
   <div class="item_description"><p>It should throw the MissingParametersException if some required paramters are empty.</p></div>
@@ -696,7 +706,7 @@ The refresh token generated upon successful authentication.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#239'>OAuth2/Interfaces/IOAuthManager.php</a>
+  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#257'>OAuth2/Interfaces/IOAuthManager.php</a>
   </div>
   
 
@@ -809,7 +819,7 @@ The jwt access token generated upon successful authentication.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#261'>OAuth2/Interfaces/IOAuthManager.php</a>
+  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#279'>OAuth2/Interfaces/IOAuthManager.php</a>
   </div>
   
 
@@ -921,7 +931,7 @@ The refresh token generated upon successful authentication.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#281'>OAuth2/Interfaces/IOAuthManager.php</a>
+  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#299'>OAuth2/Interfaces/IOAuthManager.php</a>
   </div>
   
 
@@ -1061,6 +1071,11 @@ The refresh token generated upon successful authentication.</p>
   <div class="item_description"><p>It might throw the TokenExpiredException if the jwt refresh token is expired.</p></div>
   
   
+  <a href='class-OAuth2.AuthSystemException.html'>\OAuth2\AuthSystemException</a><br>
+  
+  <div class="item_description"><p>It should throw the AuthSystemException if some system error occurs.</p></div>
+  
+  
   <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
   
   <div class="item_description"><p>It should throw the MissingParametersException if some required paramters are empty.</p></div>
@@ -1084,7 +1099,7 @@ The refresh token generated upon successful authentication.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#206'>OAuth2/Interfaces/IOAuthManager.php</a>
+  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#221'>OAuth2/Interfaces/IOAuthManager.php</a>
   </div>
   
 
@@ -1251,6 +1266,11 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   <div class="item_description"><p>It should throw the MissingParametersException if some required paramters are empty.</p></div>
   
   
+  <a href='class-OAuth2.AuthSystemException.html'>\OAuth2\AuthSystemException</a><br>
+  
+  <div class="item_description"><p>It should throw the AuthSystemException if some system error occurs.</p></div>
+  
+  
   </div>
 
   
@@ -1269,7 +1289,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#111'>OAuth2/Interfaces/IOAuthManager.php</a>
+  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#117'>OAuth2/Interfaces/IOAuthManager.php</a>
   </div>
   
 
@@ -1386,9 +1406,14 @@ The method should return the payload array on successful verification, otherwise
   <div class="item_description"><p>It might throw the TokenExpiredException if the jwt access token is expired.</p></div>
   
   
-  <a href='class-OAuth2.TokenExpiredException.html'>\OAuth2\TokenExpiredException</a><br>
+  <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
   
-  <div class="item_description"><p>It might throw the TokenExpiredException if the jwt access token is expired.</p></div>
+  <div class="item_description"><p>It should throw the MissingParametersException if any required paramters are empty.</p></div>
+  
+  
+  <a href='class-OAuth2.AuthSystemException.html'>\OAuth2\AuthSystemException</a><br>
+  
+  <div class="item_description"><p>It should throw the AuthSystemException if some system error occurs.</p></div>
   
   
   </div>
@@ -1409,7 +1434,7 @@ The method should return the payload array on successful verification, otherwise
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#140'>OAuth2/Interfaces/IOAuthManager.php</a>
+  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#149'>OAuth2/Interfaces/IOAuthManager.php</a>
   </div>
   
 
@@ -1546,6 +1571,11 @@ The client id for which the refresh token was issued.</p>
   <div class="item_description"><p>It should throw the MissingParametersException if any required paramters are empty.</p></div>
   
   
+  <a href='class-OAuth2.AuthSystemException.html'>\OAuth2\AuthSystemException</a><br>
+  
+  <div class="item_description"><p>It should throw the AuthSystemException if some system error occurs.</p></div>
+  
+  
   </div>
 
   
@@ -1564,11 +1594,11 @@ The client id for which the refresh token was issued.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#170'>OAuth2/Interfaces/IOAuthManager.php</a>
+  <a href='source-OAuth2.Interfaces.IOAuthManager.php.html#182'>OAuth2/Interfaces/IOAuthManager.php</a>
   </div>
                     
                     <div id="footer">
-                        Generated on 2024-11-19 13:39 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
+                        Generated on 2025-03-26 06:57 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
                     </div>                    
                 </div>
             </div>
