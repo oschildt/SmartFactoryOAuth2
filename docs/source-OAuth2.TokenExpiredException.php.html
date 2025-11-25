@@ -127,11 +127,11 @@
 </span><span class="line" id="38">38: </span><span class="php-comment">     * uses the message id, gets the final translated text and substitutes the parameters through the details.
 </span><span class="line" id="39">39: </span><span class="php-comment">     *
 </span><span class="line" id="40">40: </span><span class="php-comment">     * @param string $technical_info
-</span><span class="line" id="41">41: </span><span class="php-comment">     * Additional technical infromation. It can be used if it is a programming error and displayed only if the debug mode is active.
+</span><span class="line" id="41">41: </span><span class="php-comment">     * Additional technical information. It can be used if it is a programming error and displayed only if the debug mode is active.
 </span><span class="line" id="42">42: </span><span class="php-comment">     *
 </span><span class="line" id="43">43: </span><span class="php-comment">     * @author Oleg Schildt
 </span><span class="line" id="44">44: </span><span class="php-comment">     */</span>
-<span class="line" id="45">45: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> __construct(<span class="php-var">$message</span>, <span class="php-var">$error_code</span> = SmartException::ERR_CODE_SYSTEM_ERROR, <span class="php-var">$error_element</span> = <span class="php-quote">&quot;&quot;</span>, <span class="php-var">$error_details</span> = [], <span class="php-var">$technical_info</span> = <span class="php-quote">&quot;&quot;</span>)
+<span class="line" id="45">45: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> __construct(string <span class="php-var">$message</span>, string <span class="php-var">$error_code</span> = SmartException::ERR_CODE_SYSTEM_ERROR, string <span class="php-var">$error_element</span> = <span class="php-quote">&quot;&quot;</span>, <span class="php-keyword1">array</span> <span class="php-var">$error_details</span> = [], string <span class="php-var">$technical_info</span> = <span class="php-quote">&quot;&quot;</span>)
 <span class="line" id="46">46: </span>    {
 <span class="line" id="47">47: </span>        parent::__construct(<span class="php-var">$message</span>, <span class="php-var">$error_code</span>, <span class="php-var">$error_element</span>, <span class="php-var">$error_details</span>, <span class="php-var">$technical_info</span>);
 <span class="line" id="48">48: </span>    }
@@ -141,7 +141,7 @@
 </div>
                     
                     <div id="footer">
-                        Generated on 2025-03-26 06:57 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
+                        Generated on 2025-11-25 16:57 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
                     </div>                    
                 </div>
             </div>

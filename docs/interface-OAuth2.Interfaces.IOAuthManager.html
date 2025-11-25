@@ -311,7 +311,7 @@
   
   <h1>Method: IOAuthManager::authenticateUser()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> authenticateUser(<span class="php-keyword1">array</span> <span class="php-var">$credentials</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> authenticateUser(<span class="php-keyword1">array</span> <span class="php-var">$credentials</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>): void;</div>
 
   
   <div class="short-description">
@@ -354,8 +354,7 @@
                 
             </td>
             <td class="description_column">
-                <p>The credentials for the authentication. They may vary depending on implementation.
-The credentials for the authentication. They may vary depending on implementation.</p>
+                <p>The credentials for the authentication. They may vary depending on implementation.</p>
             </td>
         </tr>
         
@@ -375,15 +374,14 @@ The credentials for the authentication. They may vary depending on implementatio
             <td class="description_column">
                 <p>The response upon successful authentication. The expected properties are:</p>
 <ul>
-<li>$response[&quot;user_id&quot;] - id of the user.</li>
-<li>$response[&quot;client_id&quot;] - id of the client (device token etc.).</li>
-<li>$response[&quot;access_token&quot;] - access token generated upon successful authentication.</li>
-<li>$response[&quot;access_token_expire&quot;] - expiration time of the access token.</li>
-<li>$response[&quot;refresh_token&quot;] - refresh token generated upon successful authentication.</li>
-<li>$response[&quot;refresh_token_expire&quot;] - expiration time of the refresh token.</li>
-<li>$response[&quot;last_activity&quot;] - last activity time of the user of this token.</li>
-<li>$response[&quot;jwt_access_token&quot;] - jwt access token generated upon successful authentication. JWT access
-token is the access token encoded and signed by the JWT standard approach.
+<li>$response["user_id"] - id of the user.</li>
+<li>$response["client_id"] - id of the client (device token etc.).</li>
+<li>$response["access_token"] - access token generated upon successful authentication.</li>
+<li>$response["access_token_expire"] - expiration time of the access token.</li>
+<li>$response["refresh_token"] - refresh token generated upon successful authentication.</li>
+<li>$response["refresh_token_expire"] - expiration time of the refresh token.</li>
+<li>$response["last_activity"] - last activity time of the user of this token.</li>
+<li>$response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
 token is the access token encoded and signed by the JWT standard approach.</li>
 </ul>
             </td>
@@ -463,7 +461,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h1>Method: IOAuthManager::init()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> init(<span class="php-keyword1">array</span> <span class="php-var">$parameters</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> init(<span class="php-keyword1">array</span> <span class="php-var">$parameters</span>): void;</div>
 
   
   <div class="short-description">
@@ -501,8 +499,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
                 
             </td>
             <td class="description_column">
-                <p>The parameters may vary depending on implementation.
-The parameters may vary depending on implementation.</p>
+                <p>The parameters may vary depending on implementation.</p>
             </td>
         </tr>
         
@@ -565,7 +562,7 @@ The parameters may vary depending on implementation.</p>
   
   <h1>Method: IOAuthManager::invalidateClient()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateClient(string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>, string <span class="php-var">$refresh_token</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateClient(?string <span class="php-var">$user_id</span>, ?string <span class="php-var">$client_id</span>, ?string <span class="php-var">$refresh_token</span>): void;</div>
 
   
   <div class="short-description">
@@ -605,14 +602,13 @@ can be done only after authentication.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The user id for which the refresh token was issued.
-The user id for which the refresh token was issued.</p>
+                <p>The user id for which the refresh token was issued.</p>
             </td>
         </tr>
         
@@ -624,14 +620,13 @@ The user id for which the refresh token was issued.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The client id for which the refresh token was issued.
-The client id for which the refresh token was issued.</p>
+                <p>The client id for which the refresh token was issued.</p>
             </td>
         </tr>
         
@@ -643,14 +638,13 @@ The client id for which the refresh token was issued.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The refresh token generated upon successful authentication.
-The refresh token generated upon successful authentication.</p>
+                <p>The refresh token generated upon successful authentication.</p>
             </td>
         </tr>
         
@@ -685,7 +679,7 @@ The refresh token generated upon successful authentication.</p>
   
   <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
   
-  <div class="item_description"><p>It should throw the MissingParametersException if some required paramters are empty.</p></div>
+  <div class="item_description"><p>It should throw the MissingParametersException if some required parameters are empty.</p></div>
   
   
   </div>
@@ -728,7 +722,7 @@ The refresh token generated upon successful authentication.</p>
   
   <h1>Method: IOAuthManager::invalidateJwtAccessToken()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateJwtAccessToken(string <span class="php-var">$jwt_access_token</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateJwtAccessToken(?string <span class="php-var">$jwt_access_token</span>): void;</div>
 
   
   <div class="short-description">
@@ -766,14 +760,13 @@ The refresh token generated upon successful authentication.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The jwt access token generated upon successful authentication.
-The jwt access token generated upon successful authentication.</p>
+                <p>The jwt access token generated upon successful authentication.</p>
             </td>
         </tr>
         
@@ -841,7 +834,7 @@ The jwt access token generated upon successful authentication.</p>
   
   <h1>Method: IOAuthManager::invalidateRefreshToken()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateRefreshToken(string <span class="php-var">$refresh_token</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateRefreshToken(?string <span class="php-var">$refresh_token</span>): void;</div>
 
   
   <div class="short-description">
@@ -878,14 +871,13 @@ The jwt access token generated upon successful authentication.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The refresh token generated upon successful authentication.
-The refresh token generated upon successful authentication.</p>
+                <p>The refresh token generated upon successful authentication.</p>
             </td>
         </tr>
         
@@ -953,7 +945,7 @@ The refresh token generated upon successful authentication.</p>
   
   <h1>Method: IOAuthManager::invalidateUser()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateUser(string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>, string <span class="php-var">$refresh_token</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateUser(?string <span class="php-var">$user_id</span>, ?string <span class="php-var">$client_id</span>, ?string <span class="php-var">$refresh_token</span>): void;</div>
 
   
   <div class="short-description">
@@ -993,14 +985,13 @@ can be done only after authentication.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The user id for which the refresh token was issued.
-The user id for which the refresh token was issued.</p>
+                <p>The user id for which the refresh token was issued.</p>
             </td>
         </tr>
         
@@ -1012,14 +1003,13 @@ The user id for which the refresh token was issued.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The client id for which the refresh token was issued.
-The client id for which the refresh token was issued.</p>
+                <p>The client id for which the refresh token was issued.</p>
             </td>
         </tr>
         
@@ -1031,14 +1021,13 @@ The client id for which the refresh token was issued.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The refresh token generated upon successful authentication.
-The refresh token generated upon successful authentication.</p>
+                <p>The refresh token generated upon successful authentication.</p>
             </td>
         </tr>
         
@@ -1078,7 +1067,7 @@ The refresh token generated upon successful authentication.</p>
   
   <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
   
-  <div class="item_description"><p>It should throw the MissingParametersException if some required paramters are empty.</p></div>
+  <div class="item_description"><p>It should throw the MissingParametersException if some required parameters are empty.</p></div>
   
   
   </div>
@@ -1121,7 +1110,7 @@ The refresh token generated upon successful authentication.</p>
   
   <h1>Method: IOAuthManager::refreshTokens()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> refreshTokens(string <span class="php-var">$refresh_token</span>, string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> refreshTokens(?string <span class="php-var">$refresh_token</span>, ?string <span class="php-var">$user_id</span>, ?string <span class="php-var">$client_id</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>): void;</div>
 
   
   <div class="short-description">
@@ -1153,14 +1142,13 @@ The refresh token generated upon successful authentication.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The refresh token generated upon successful authentication.
-The refresh token generated upon successful authentication.</p>
+                <p>The refresh token generated upon successful authentication.</p>
             </td>
         </tr>
         
@@ -1172,14 +1160,13 @@ The refresh token generated upon successful authentication.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The user id for which the refresh token was issued.
-The user id for which the refresh token was issued.</p>
+                <p>The user id for which the refresh token was issued.</p>
             </td>
         </tr>
         
@@ -1191,14 +1178,13 @@ The user id for which the refresh token was issued.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The client id for which the refresh token was issued.
-The client id for which the refresh token was issued.</p>
+                <p>The client id for which the refresh token was issued.</p>
             </td>
         </tr>
         
@@ -1218,15 +1204,14 @@ The client id for which the refresh token was issued.</p>
             <td class="description_column">
                 <p>The response upon successful refresh. The expected properties are:</p>
 <ul>
-<li>$response[&quot;user_id&quot;] - id of the user.</li>
-<li>$response[&quot;client_id&quot;] - id of the client (device token etc.).</li>
-<li>$response[&quot;access_token&quot;] - access token generated upon successful authentication.</li>
-<li>$response[&quot;access_token_expire&quot;] - expiration time of the access token.</li>
-<li>$response[&quot;refresh_token&quot;] - refresh token generated upon successful authentication.</li>
-<li>$response[&quot;refresh_token_expire&quot;] - expiration time of the refresh token.</li>
-<li>$response[&quot;last_activity&quot;] - last activity time of the user of this token.</li>
-<li>$response[&quot;jwt_access_token&quot;] - jwt access token generated upon successful authentication. JWT access
-token is the access token encoded and signed by the JWT standard approach.
+<li>$response["user_id"] - id of the user.</li>
+<li>$response["client_id"] - id of the client (device token etc.).</li>
+<li>$response["access_token"] - access token generated upon successful authentication.</li>
+<li>$response["access_token_expire"] - expiration time of the access token.</li>
+<li>$response["refresh_token"] - refresh token generated upon successful authentication.</li>
+<li>$response["refresh_token_expire"] - expiration time of the refresh token.</li>
+<li>$response["last_activity"] - last activity time of the user of this token.</li>
+<li>$response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
 token is the access token encoded and signed by the JWT standard approach.</li>
 </ul>
             </td>
@@ -1263,7 +1248,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
   
-  <div class="item_description"><p>It should throw the MissingParametersException if some required paramters are empty.</p></div>
+  <div class="item_description"><p>It should throw the MissingParametersException if some required parameters are empty.</p></div>
   
   
   <a href='class-OAuth2.AuthSystemException.html'>\OAuth2\AuthSystemException</a><br>
@@ -1311,7 +1296,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h1>Method: IOAuthManager::verifyJwtAccessToken()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyJwtAccessToken(string <span class="php-var">$jwt_access_token</span>, bool <span class="php-var">$check_on_server</span> = <span class="php-keyword1">true</span>) : <span class="php-keyword1">array</span>|<span class="php-keyword1">false</span>;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyJwtAccessToken(?string <span class="php-var">$jwt_access_token</span>, bool <span class="php-var">$check_on_server</span> = <span class="php-keyword1">true</span>): <span class="php-keyword1">array</span>|<span class="php-keyword1">false</span>;</div>
 
   
   <div class="short-description">
@@ -1343,14 +1328,13 @@ token is the access token encoded and signed by the JWT standard approach.</li>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The jwt access token generated upon successful authentication.
-The jwt access token generated upon successful authentication.</p>
+                <p>The jwt access token generated upon successful authentication.</p>
             </td>
         </tr>
         
@@ -1368,8 +1352,7 @@ The jwt access token generated upon successful authentication.</p>
                 true
             </td>
             <td class="description_column">
-                <p>This flag defines whether only the signatire should be checked or also the
-authentication server should be asked.
+                <p>This flag defines whether only the signature should be checked or also the
 authentication server should be asked.</p>
             </td>
         </tr>
@@ -1382,8 +1365,7 @@ authentication server should be asked.</p>
   <div class="item_list">
   array|false<br>
   
-  <div class="item_description"><p>The method should return the payload array on successful verification, otherwise false.
-The method should return the payload array on successful verification, otherwise false.</p></div>
+  <div class="item_description"><p>The method should return the payload array on successful verification, otherwise false.</p></div>
   
   </div>
   
@@ -1408,7 +1390,7 @@ The method should return the payload array on successful verification, otherwise
   
   <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
   
-  <div class="item_description"><p>It should throw the MissingParametersException if any required paramters are empty.</p></div>
+  <div class="item_description"><p>It should throw the MissingParametersException if any required parameters are empty.</p></div>
   
   
   <a href='class-OAuth2.AuthSystemException.html'>\OAuth2\AuthSystemException</a><br>
@@ -1456,7 +1438,7 @@ The method should return the payload array on successful verification, otherwise
   
   <h1>Method: IOAuthManager::verifyRefreshToken()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyRefreshToken(string <span class="php-var">$refresh_token</span>, string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyRefreshToken(?string <span class="php-var">$refresh_token</span>, ?string <span class="php-var">$user_id</span>, ?string <span class="php-var">$client_id</span>): void;</div>
 
   
   <div class="short-description">
@@ -1488,14 +1470,13 @@ The method should return the payload array on successful verification, otherwise
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The refresh token to be verified.
-The refresh token to be verified.</p>
+                <p>The refresh token to be verified.</p>
             </td>
         </tr>
         
@@ -1507,14 +1488,13 @@ The refresh token to be verified.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The user id for which the refresh token was issued.
-The user id for which the refresh token was issued.</p>
+                <p>The user id for which the refresh token was issued.</p>
             </td>
         </tr>
         
@@ -1526,14 +1506,13 @@ The user id for which the refresh token was issued.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The client id for which the refresh token was issued.
-The client id for which the refresh token was issued.</p>
+                <p>The client id for which the refresh token was issued.</p>
             </td>
         </tr>
         
@@ -1568,7 +1547,7 @@ The client id for which the refresh token was issued.</p>
   
   <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
   
-  <div class="item_description"><p>It should throw the MissingParametersException if any required paramters are empty.</p></div>
+  <div class="item_description"><p>It should throw the MissingParametersException if any required parameters are empty.</p></div>
   
   
   <a href='class-OAuth2.AuthSystemException.html'>\OAuth2\AuthSystemException</a><br>
@@ -1598,7 +1577,7 @@ The client id for which the refresh token was issued.</p>
   </div>
                     
                     <div id="footer">
-                        Generated on 2025-03-26 06:57 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
+                        Generated on 2025-11-25 16:57 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
                     </div>                    
                 </div>
             </div>

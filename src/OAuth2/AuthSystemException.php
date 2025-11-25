@@ -42,7 +42,7 @@ class AuthSystemException extends SmartException
      *
      * @author Oleg Schildt
      */
-    public function __construct($message, $error_code = SmartException::ERR_CODE_SYSTEM_ERROR, $error_element = "", $error_details = [], $technical_info = "")
+    public function __construct(string $message, string $error_code = SmartException::ERR_CODE_SYSTEM_ERROR, string $error_element = "", array $error_details = [], string $technical_info = "")
     {
         parent::__construct($message, $error_code, $error_element, $error_details, $technical_info);
     }

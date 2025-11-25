@@ -25,84 +25,84 @@ class OAuthManager implements IOAuthManager
      *
      * It must implement {@see \OAuth2\Interfaces\ITokenStorage}.
      *
-     * @var \OAuth2\Interfaces\ITokenStorage
+     * @var ?\OAuth2\Interfaces\ITokenStorage
      *
      * @author Oleg Schildt
      */
-    protected $token_storage = null;
+    protected ?\OAuth2\Interfaces\ITokenStorage $token_storage = null;
 
     /**
      * Internal reference to the user authenticator object.
      *
      * It must implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
      *
-     * @var \OAuth2\Interfaces\IUserAuthenticator
+     * @var ?\OAuth2\Interfaces\IUserAuthenticator
      *
      * @author Oleg Schildt
      */
-    protected $user_authenticator = null;
+    protected ?\OAuth2\Interfaces\IUserAuthenticator $user_authenticator = null;
 
     /**
-     * Internal property for storing the sekret key.
+     * Internal property for storing the secret key.
      *
-     * The secret key is required for the algoritms HS256, HS384, HS512.
+     * The secret key is required for the algorithms HS256, HS384, HS512.
      *
-     * @var string
+     * @var ?string
      *
      * @author Oleg Schildt
      */
-    protected $secret_key = null;
+    protected ?string $secret_key = null;
 
     /**
      * Internal property for storing the encryption algorithm.
      *
      * The supported algorithms are HS256, HS384, HS512, RS256, RS384, RS512.
      *
-     * @var string
+     * @var ?string
      *
      * @author Oleg Schildt
      */
-    protected $encryption_algorithm = null;
+    protected ?string $encryption_algorithm = null;
 
     /**
      * Internal property for storing the time to live of the access token.
      *
-     * @var string
+     * @var ?string
      *
      * @author Oleg Schildt
      */
-    protected $access_token_ttl_minutes = null;
+    protected ?string $access_token_ttl_minutes = null;
 
     /**
      * Internal property for storing the time to live of the refresh token.
      *
-     * @var string
+     * @var ?string
      *
      * @author Oleg Schildt
      */
-    protected $refresh_token_ttl_days = null;
+    protected ?string $refresh_token_ttl_days = null;
 
     /**
      * Internal property for storing the path to the public key file.
      *
      * Required for the algorithms: RS256, RS384, RS512.
      *
-     * @var string
+     * @var ?string
      *
      * @author Oleg Schildt
      */
-    protected $public_key = null;
+    protected ?string $public_key = null;
 
     /**
-     * Internal property for storing the path to the provate key file.
+     * Internal property for storing the path to the private key file.
      *
      * Required for the algorithms: RS256, RS384, RS512.
      *
-     * @var string
+     * @var ?string
      *
      * @author Oleg Schildt
      */
-    protected $private_key = null;
+    protected ?string $private_key = null;
 
     /**
      * Internal property for storing the pass phrase for the private key.
@@ -113,7 +113,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    protected $pass_phrase = "";
+    protected string $pass_phrase = "";
 
     /**
      * Internal property for the list of supported algorithms.
@@ -122,7 +122,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    protected $supported_algorithms = ['HS256', 'HS384', 'HS512', 'RS256', 'RS384', 'RS512'];
+    protected array $supported_algorithms = ['HS256', 'HS384', 'HS512', 'RS256', 'RS384', 'RS512'];
 
     /**
      * Internal auxiliary function for safe base64 encoding.
@@ -137,7 +137,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    protected function urlSafeB64Encode($data)
+    protected function urlSafeB64Encode(string $data): string
     {
         $b64 = base64_encode($data);
         $b64 = str_replace(array('+', '/', "\r", "\n", '='), array('-', '_'), $b64);
@@ -158,7 +158,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    protected function urlSafeB64Decode($b64)
+    protected function urlSafeB64Decode(string $b64): string
     {
         $b64 = str_replace(array('-', '_'), array('+', '/'), $b64);
 
@@ -175,7 +175,7 @@ class OAuthManager implements IOAuthManager
      * @param string $signature
      * Signature used for signing the data.
      *
-     * @param string $algorithm_id
+     * @param int $algorithm_id
      * Algorithm used for signing. The supported algorithms are: RS256, RS384, RS512.
      *
      * @return void
@@ -194,7 +194,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    protected function verifyRSASignature($input, $signature, $algorithm_id)
+    protected function verifyRSASignature(string $input, string $signature, int $algorithm_id): void
     {
         $this->validateParameters();
 
@@ -221,7 +221,7 @@ class OAuthManager implements IOAuthManager
      * @param string $input
      * Data which is signed.
      *
-     * @param string $algorithm_id
+     * @param int $algorithm_id
      * Algorithm to use for signing. The supported algorithms are: RS256, RS384, RS512.
      *
      * @return string
@@ -241,7 +241,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    protected function generateRSASignature($input, $algorithm_id)
+    protected function generateRSASignature(string $input, int $algorithm_id): string
     {
         $this->validateParameters();
 
@@ -281,7 +281,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    protected function generateJwtSignature($input)
+    protected function generateJwtSignature(string $input): string
     {
         switch ($this->encryption_algorithm) {
             case 'HS256':
@@ -332,7 +332,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    protected function verifyJwtSignature($input, $signature)
+    protected function verifyJwtSignature(string $input, string $signature): void
     {
         switch ($this->encryption_algorithm) {
             case'HS256':
@@ -373,7 +373,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    protected function generateToken()
+    protected function generateToken(): string
     {
         if (function_exists('random_bytes')) {
             $randomData = random_bytes(20);
@@ -416,7 +416,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    protected function createJwtToken($payload)
+    protected function createJwtToken(array $payload): string
     {
         $header = ["typ" => "JWT", "alg" => $this->encryption_algorithm];
 
@@ -432,7 +432,7 @@ class OAuthManager implements IOAuthManager
     /**
      * Internal auxiliary function for extraction of the payload from the jwt access token.
      *
-     * @param string $jwt_access_token
+     * @param ?string $jwt_access_token
      * The jwt access token.
      *
      * @param boolean $verify_signature
@@ -456,7 +456,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    protected function getJwtPayload($jwt_access_token, $verify_signature = true)
+    protected function getJwtPayload(?string $jwt_access_token, bool $verify_signature = true): array
     {
         if (!strpos($jwt_access_token, '.')) {
             throw new InvalidTokenException("The format of the JWT access token is invalid!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
@@ -516,7 +516,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    protected function validateParameters()
+    protected function validateParameters(): void
     {
         if (!function_exists("openssl_pkey_get_private")) {
             throw new AuthSystemException("The extension 'open_ssl' is not installed!", SmartException::ERR_CODE_SYSTEM_ERROR);
@@ -600,7 +600,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    protected function createTokenRecord($user_id, $client_id, &$response)
+    protected function createTokenRecord(string $user_id, string $client_id, array &$response): void
     {
         $response["user_id"] = $user_id;
         $response["client_id"] = $client_id;
@@ -657,7 +657,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    public function init($parameters)
+    public function init(array $parameters): void
     {
         if (!empty($parameters["access_token_ttl_minutes"])) {
             $this->access_token_ttl_minutes = $parameters["access_token_ttl_minutes"];
@@ -747,7 +747,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    public function authenticateUser($credentials, &$response)
+    public function authenticateUser(array $credentials, array &$response): void
     {
         if (empty($credentials["client_id"])) {
             throw new MissingParametersException("The client id is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
@@ -759,13 +759,13 @@ class OAuthManager implements IOAuthManager
     /**
      * Refreshes the access and refresh tokens by using the valid refresh token.
      *
-     * @param string $refresh_token
+     * @param ?string $refresh_token
      * The refresh token generated upon successful authentication.
      *
-     * @param string $user_id
+     * @param ?string $user_id
      * The user id for which the refresh token was issued.
      *
-     * @param string $client_id
+     * @param ?string $client_id
      * The client id for which the refresh token was issued.
      *
      * @param array &$response
@@ -812,7 +812,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    public function refreshTokens($refresh_token, $user_id, $client_id, &$response)
+    public function refreshTokens(?string $refresh_token, ?string $user_id, ?string $client_id, array &$response): void
     {
         $this->verifyRefreshToken($refresh_token, $user_id, $client_id);
 
@@ -822,7 +822,7 @@ class OAuthManager implements IOAuthManager
     /**
      * Verifies the jwt access token.
      *
-     * @param string $jwt_access_token
+     * @param ?string $jwt_access_token
      * The jwt access token generated upon successful authentication.
      *
      * @param boolean $check_on_server
@@ -859,7 +859,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    public function verifyJwtAccessToken($jwt_access_token, $check_on_server = true)
+    public function verifyJwtAccessToken(?string $jwt_access_token, bool $check_on_server = true): false|array
     {
         if (empty($jwt_access_token)) {
             throw new MissingParametersException("The access token is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
@@ -903,13 +903,13 @@ class OAuthManager implements IOAuthManager
     /**
      * Verifies the refresh token.
      *
-     * @param string $refresh_token
+     * @param ?string $refresh_token
      * The refresh token to be verified.
      *
-     * @param string $user_id
+     * @param ?string $user_id
      * The user id for which the refresh token was issued.
      *
-     * @param string $client_id
+     * @param ?string $client_id
      * The client id for which the refresh token was issued.
      *
      * @return void
@@ -933,7 +933,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    public function verifyRefreshToken($refresh_token, $user_id, $client_id)
+    public function verifyRefreshToken(?string $refresh_token, ?string $user_id, ?string $client_id): void
     {
         if (empty($user_id)) {
             throw new MissingParametersException("The user id is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
@@ -959,13 +959,13 @@ class OAuthManager implements IOAuthManager
      *
      * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'user_id'.
      *
-     * @param string $user_id
+     * @param ?string $user_id
      * The user id for which the refresh token was issued.
      *
-     * @param string $client_id
+     * @param ?string $client_id
      * The client id for which the refresh token was issued.
      *
-     * @param string $refresh_token
+     * @param ?string $refresh_token
      * The refresh token generated upon successful authentication.
      *
      * @return void
@@ -986,14 +986,14 @@ class OAuthManager implements IOAuthManager
      * It might throw the AuthSystemException if some system error occurs.
      *
      * @throws \OAuth2\MissingParametersException
-     * It might throw the MissingParametersException if any required paramters are empty.
+     * It might throw the MissingParametersException if any required parameters are empty.
      *
      * @uses OAuthManager::verifyRefreshToken()
      * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
      *
      * @author Oleg Schildt
      */
-    public function invalidateUser($user_id, $client_id, $refresh_token)
+    public function invalidateUser(?string $user_id, ?string $client_id, ?string $refresh_token): void
     {
         if (empty($user_id)) {
             throw new MissingParametersException("The user id is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
@@ -1021,13 +1021,13 @@ class OAuthManager implements IOAuthManager
      *
      * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'client_id'.
      *
-     * @param string $user_id
+     * @param ?string $user_id
      * The user id for which the refresh token was issued.
      *
-     * @param string $client_id
+     * @param ?string $client_id
      * The client id for which the refresh token was issued.
      *
-     * @param string $refresh_token
+     * @param ?string $refresh_token
      * The refresh token generated upon successful authentication.
      *
      * @return void
@@ -1048,14 +1048,14 @@ class OAuthManager implements IOAuthManager
      * It might throw the AuthSystemException if some system error occurs.
      *
      * @throws \OAuth2\MissingParametersException
-     * It might throw the MissingParametersException if any required paramters are empty.
+     * It might throw the MissingParametersException if any required parameters are empty.
      *
      * @uses OAuthManager::verifyRefreshToken()
      * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
      *
      * @author Oleg Schildt
      */
-    public function invalidateClient($user_id, $client_id, $refresh_token)
+    public function invalidateClient(?string $user_id, ?string $client_id, ?string $refresh_token): void
     {
         if (empty($user_id)) {
             throw new MissingParametersException("The user id is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
@@ -1081,7 +1081,7 @@ class OAuthManager implements IOAuthManager
      *
      * The origin access token is extracted from the jwt payload.
      *
-     * @param string $jwt_access_token
+     * @param ?string $jwt_access_token
      * The jwt access token generated upon successful authentication.
      *
      * @return void
@@ -1104,7 +1104,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    public function invalidateJwtAccessToken($jwt_access_token)
+    public function invalidateJwtAccessToken(?string $jwt_access_token): void
     {
         $payload = $this->getJwtPayload($jwt_access_token, true);
 
@@ -1124,7 +1124,7 @@ class OAuthManager implements IOAuthManager
      *
      * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'refresh_token'.
      *
-     * @param string $refresh_token
+     * @param ?string $refresh_token
      * The refresh token generated upon successful authentication.
      *
      * @return void
@@ -1141,7 +1141,7 @@ class OAuthManager implements IOAuthManager
      *
      * @author Oleg Schildt
      */
-    public function invalidateRefreshToken($refresh_token)
+    public function invalidateRefreshToken(?string $refresh_token): void
     {
         $this->token_storage->deleteTokenRecordByKey("refresh_token", $refresh_token);
     }

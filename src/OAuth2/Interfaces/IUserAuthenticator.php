@@ -24,7 +24,7 @@ interface IUserAuthenticator extends IInitable
      * @param array $credentials
      * The credentials may vary depending on implementation.
      *
-     * @return int|false
+     * @return int
      * The method should return the user id upon success, otherwise false.
      *
      * @throws \Exception
@@ -34,9 +34,9 @@ interface IUserAuthenticator extends IInitable
      * It should throw the InvalidCredentialsException if the authentication fails.
      *
      * @throws \OAuth2\MissingParametersException
-     * It should throw the MissingParametersException if any required paramters are empty.
+     * It should throw the MissingParametersException if any required parameters are empty.
      *
      * @author Oleg Schildt
      */
-    public function authenticateUser($credentials);
+    public function authenticateUser(array $credentials): int;
 }

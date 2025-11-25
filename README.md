@@ -10,12 +10,12 @@ For more details see [Presentation](http://php-smart-factory.org/oauth2_presenta
 
 ### Requirements
 
-- PHP 8.x
+- PHP 8.4
 
 ### Installation
 
 ```
-composer require smartfactory/oauth2"
+composer require "smartfactory/oauth2"
 ```
 
 **composer.json**
@@ -25,9 +25,9 @@ composer require smartfactory/oauth2"
   ...
 
   "require": {
-    "php": ">=8.0",
-    "smartfactory/smartfactory": ">=2.1.23",
-    "smartfactory/oauth2": ">=1.2.23"
+    "php": ">=8.4",
+    "smartfactory/smartfactory": ">=2.1.24",
+    "smartfactory/oauth2": ">=1.2.24"
   }
   
   ...

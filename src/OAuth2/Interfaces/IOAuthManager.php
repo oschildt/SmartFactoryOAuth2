@@ -29,7 +29,7 @@ interface IOAuthManager extends IInitable
      *
      * @author Oleg Schildt
      */
-    public function init($parameters);
+    public function init(array $parameters): void;
 
     /**
      * Authenticates the user based on the specified credentials and writes the response.
@@ -68,18 +68,18 @@ interface IOAuthManager extends IInitable
      *
      * @author Oleg Schildt
      */
-    public function authenticateUser($credentials, &$response);
+    public function authenticateUser(array $credentials, array &$response): void;
     
     /**
      * Refreshes the access and refresh tokens by using the valid refresh token.
      *
-     * @param string $refresh_token
+     * @param ?string $refresh_token
      * The refresh token generated upon successful authentication.
      *
-     * @param string $user_id
+     * @param ?string $user_id
      * The user id for which the refresh token was issued.
      *
-     * @param string $client_id
+     * @param ?string $client_id
      * The client id for which the refresh token was issued.
      *
      * @param array &$response
@@ -107,23 +107,23 @@ interface IOAuthManager extends IInitable
      * It might throw the TokenExpiredException if the refresh token is expired.
      *
      * @throws \OAuth2\MissingParametersException
-     * It should throw the MissingParametersException if some required paramters are empty.
+     * It should throw the MissingParametersException if some required parameters are empty.
      *
      * @throws \OAuth2\AuthSystemException
      * It should throw the AuthSystemException if some system error occurs.
      *
      * @author Oleg Schildt
      */
-    public function refreshTokens($refresh_token, $user_id, $client_id, &$response);
+    public function refreshTokens(?string $refresh_token, ?string $user_id, ?string $client_id, array &$response): void;
     
     /**
      * Verifies the jwt access token.
      *
-     * @param string $jwt_access_token
+     * @param ?string $jwt_access_token
      * The jwt access token generated upon successful authentication.
      *
      * @param boolean $check_on_server
-     * This flag defines whether only the signatire should be checked or also the
+     * This flag defines whether only the signature should be checked or also the
      * authentication server should be asked.
      *
      * @return array|false
@@ -139,25 +139,25 @@ interface IOAuthManager extends IInitable
      * It might throw the TokenExpiredException if the jwt access token is expired.
      *
      * @throws \OAuth2\MissingParametersException
-     * It should throw the MissingParametersException if any required paramters are empty.
+     * It should throw the MissingParametersException if any required parameters are empty.
      *
      * @throws \OAuth2\AuthSystemException
      * It should throw the AuthSystemException if some system error occurs.
      *
      * @author Oleg Schildt
      */
-    public function verifyJwtAccessToken($jwt_access_token, $check_on_server = true);
+    public function verifyJwtAccessToken(?string $jwt_access_token, bool $check_on_server = true): false|array;
     
     /**
      * Verifies the refresh token.
      *
-     * @param string $refresh_token
+     * @param ?string $refresh_token
      * The refresh token to be verified.
      *
-     * @param string $user_id
+     * @param ?string $user_id
      * The user id for which the refresh token was issued.
      *
-     * @param string $client_id
+     * @param ?string $client_id
      * The client id for which the refresh token was issued.
      *
      * @return void
@@ -172,14 +172,14 @@ interface IOAuthManager extends IInitable
      * It might throw the TokenExpiredException if the refresh token is expired.
      *
      * @throws \OAuth2\MissingParametersException
-     * It should throw the MissingParametersException if any required paramters are empty.
+     * It should throw the MissingParametersException if any required parameters are empty.
      *
      * @throws \OAuth2\AuthSystemException
      * It should throw the AuthSystemException if some system error occurs.
      *
      * @author Oleg Schildt
      */
-    public function verifyRefreshToken($refresh_token, $user_id, $client_id);
+    public function verifyRefreshToken(?string $refresh_token, ?string $user_id, ?string $client_id): void;
     
     /**
      * Invalidates all token records for the user.
@@ -190,13 +190,13 @@ interface IOAuthManager extends IInitable
      *
      * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'user_id'.
      *
-     * @param string $user_id
+     * @param ?string $user_id
      * The user id for which the refresh token was issued.
      *
-     * @param string $client_id
+     * @param ?string $client_id
      * The client id for which the refresh token was issued.
      *
-     * @param string $refresh_token
+     * @param ?string $refresh_token
      * The refresh token generated upon successful authentication.
      *
      * @return void
@@ -214,11 +214,11 @@ interface IOAuthManager extends IInitable
      * It should throw the AuthSystemException if some system error occurs.
      *
      * @throws \OAuth2\MissingParametersException
-     * It should throw the MissingParametersException if some required paramters are empty.
+     * It should throw the MissingParametersException if some required parameters are empty.
      *
      * @author Oleg Schildt
      */
-    public function invalidateUser($user_id, $client_id, $refresh_token);
+    public function invalidateUser(?string $user_id, ?string $client_id, ?string $refresh_token): void;
     
     /**
      * Invalidates all token records for the client.
@@ -229,13 +229,13 @@ interface IOAuthManager extends IInitable
      *
      * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'client_id'.
      *
-     * @param string $user_id
+     * @param ?string $user_id
      * The user id for which the refresh token was issued.
      *
-     * @param string $client_id
+     * @param ?string $client_id
      * The client id for which the refresh token was issued.
      *
-     * @param string $refresh_token
+     * @param ?string $refresh_token
      * The refresh token generated upon successful authentication.
      *
      * @return void
@@ -250,11 +250,11 @@ interface IOAuthManager extends IInitable
      * It should throw the AuthSystemException if some system error occurs.
      *
      * @throws \OAuth2\MissingParametersException
-     * It should throw the MissingParametersException if some required paramters are empty.
+     * It should throw the MissingParametersException if some required parameters are empty.
      *
      * @author Oleg Schildt
      */
-    public function invalidateClient($user_id, $client_id, $refresh_token);
+    public function invalidateClient(?string $user_id, ?string $client_id, ?string $refresh_token): void;
     
     /**
      * Invalidates the token record for the jwt access token.
@@ -263,7 +263,7 @@ interface IOAuthManager extends IInitable
      *
      * The origin access token is extracted from the jwt payload.
      *
-     * @param string $jwt_access_token
+     * @param ?string $jwt_access_token
      * The jwt access token generated upon successful authentication.
      *
      * @return void
@@ -276,14 +276,14 @@ interface IOAuthManager extends IInitable
      *
      * @author Oleg Schildt
      */
-    public function invalidateJwtAccessToken($jwt_access_token);
+    public function invalidateJwtAccessToken(?string $jwt_access_token): void;
     
     /**
      * Invalidates all token records for the refresh token.
      *
      * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'refresh_token'.
      *
-     * @param string $refresh_token
+     * @param ?string $refresh_token
      * The refresh token generated upon successful authentication.
      *
      * @return void
@@ -296,5 +296,5 @@ interface IOAuthManager extends IInitable
      *
      * @author Oleg Schildt
      */
-    public function invalidateRefreshToken($refresh_token);
+    public function invalidateRefreshToken(?string $refresh_token): void;
 } // IOAuthManager

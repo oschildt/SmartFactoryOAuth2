@@ -221,7 +221,7 @@
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Internal property for storing the path to the provate key file.</p>
+              <p>Internal property for storing the path to the private key file.</p>
           </td>
       </tr><tr>
           <td>
@@ -260,7 +260,7 @@
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Internal property for storing the sekret key.</p>
+              <p>Internal property for storing the secret key.</p>
           </td>
       </tr><tr>
           <td>
@@ -580,7 +580,7 @@ RS256, RS384, RS512.</p>
   
   <h1>Property: OAuthManager::$access_token_ttl_minutes</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> string <span class="php-var">$access_token_ttl_minutes</span> = <span class="php-keyword1">null</span>;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> ?string <span class="php-var">$access_token_ttl_minutes</span> = <span class="php-keyword1">null</span>;</div>
 
   
   <div class="short-description">
@@ -593,7 +593,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Type</h2>
   <div class="item_list">
-  string
+  ?string
   </div>
   
 
@@ -618,7 +618,7 @@ RS256, RS384, RS512.</p>
   
   <h1>Property: OAuthManager::$encryption_algorithm</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> string <span class="php-var">$encryption_algorithm</span> = <span class="php-keyword1">null</span>;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> ?string <span class="php-var">$encryption_algorithm</span> = <span class="php-keyword1">null</span>;</div>
 
   
   <div class="short-description">
@@ -636,7 +636,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Type</h2>
   <div class="item_list">
-  string
+  ?string
   </div>
   
 
@@ -704,11 +704,11 @@ RS256, RS384, RS512.</p>
   
   <h1>Property: OAuthManager::$private_key</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> string <span class="php-var">$private_key</span> = <span class="php-keyword1">null</span>;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> ?string <span class="php-var">$private_key</span> = <span class="php-keyword1">null</span>;</div>
 
   
   <div class="short-description">
-  <p>Internal property for storing the path to the provate key file.</p>
+  <p>Internal property for storing the path to the private key file.</p>
   </div>
   
 
@@ -722,7 +722,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Type</h2>
   <div class="item_list">
-  string
+  ?string
   </div>
   
 
@@ -747,7 +747,7 @@ RS256, RS384, RS512.</p>
   
   <h1>Property: OAuthManager::$public_key</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> string <span class="php-var">$public_key</span> = <span class="php-keyword1">null</span>;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> ?string <span class="php-var">$public_key</span> = <span class="php-keyword1">null</span>;</div>
 
   
   <div class="short-description">
@@ -765,7 +765,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Type</h2>
   <div class="item_list">
-  string
+  ?string
   </div>
   
 
@@ -790,7 +790,7 @@ RS256, RS384, RS512.</p>
   
   <h1>Property: OAuthManager::$refresh_token_ttl_days</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> string <span class="php-var">$refresh_token_ttl_days</span> = <span class="php-keyword1">null</span>;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> ?string <span class="php-var">$refresh_token_ttl_days</span> = <span class="php-keyword1">null</span>;</div>
 
   
   <div class="short-description">
@@ -803,7 +803,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Type</h2>
   <div class="item_list">
-  string
+  ?string
   </div>
   
 
@@ -828,25 +828,25 @@ RS256, RS384, RS512.</p>
   
   <h1>Property: OAuthManager::$secret_key</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> string <span class="php-var">$secret_key</span> = <span class="php-keyword1">null</span>;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> ?string <span class="php-var">$secret_key</span> = <span class="php-keyword1">null</span>;</div>
 
   
   <div class="short-description">
-  <p>Internal property for storing the sekret key.</p>
+  <p>Internal property for storing the secret key.</p>
   </div>
   
 
   
   <div class="long_description">
   <h2>Details</h2>
-  <p>The secret key is required for the algoritms HS256, HS384, HS512.</p>
+  <p>The secret key is required for the algorithms HS256, HS384, HS512.</p>
   </div>
   
 
   
   <h2>Type</h2>
   <div class="item_list">
-  string
+  ?string
   </div>
   
 
@@ -909,7 +909,7 @@ RS256, RS384, RS512.</p>
   
   <h1>Property: OAuthManager::$token_storage</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> \OAuth2\Interfaces\ITokenStorage <span class="php-var">$token_storage</span> = <span class="php-keyword1">null</span>;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> ?\OAuth2\Interfaces\ITokenStorage <span class="php-var">$token_storage</span> = <span class="php-keyword1">null</span>;</div>
 
   
   <div class="short-description">
@@ -927,7 +927,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Type</h2>
   <div class="item_list">
-  <a href='interface-OAuth2.Interfaces.ITokenStorage.html'>\OAuth2\Interfaces\ITokenStorage</a>
+  ?\OAuth2\Interfaces\ITokenStorage
   </div>
   
 
@@ -952,7 +952,7 @@ RS256, RS384, RS512.</p>
   
   <h1>Property: OAuthManager::$user_authenticator</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> \OAuth2\Interfaces\IUserAuthenticator <span class="php-var">$user_authenticator</span> = <span class="php-keyword1">null</span>;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> ?\OAuth2\Interfaces\IUserAuthenticator <span class="php-var">$user_authenticator</span> = <span class="php-keyword1">null</span>;</div>
 
   
   <div class="short-description">
@@ -970,7 +970,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Type</h2>
   <div class="item_list">
-  <a href='interface-OAuth2.Interfaces.IUserAuthenticator.html'>\OAuth2\Interfaces\IUserAuthenticator</a>
+  ?\OAuth2\Interfaces\IUserAuthenticator
   </div>
   
 
@@ -997,7 +997,7 @@ RS256, RS384, RS512.</p>
   
   <h1>Method: OAuthManager::authenticateUser()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> authenticateUser(<span class="php-keyword1">array</span> <span class="php-var">$credentials</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> authenticateUser(<span class="php-keyword1">array</span> <span class="php-var">$credentials</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>): void;</div>
 
   
   <div class="short-description">
@@ -1037,10 +1037,9 @@ RS256, RS384, RS512.</p>
             <td class="description_column">
                 <p>The credentials for the authentication. The expected credentials are:</p>
 <ul>
-<li>$credentials[&quot;client_id&quot;] - id of the client (device token etc.).</li>
-<li>$credentials[&quot;user_login&quot;] - the user login.</li>
-<li>$credentials[&quot;user_password&quot;] - the user password.</li>
-<li>$credentials[&quot;user_password&quot;] - the user password.</li>
+<li>$credentials["client_id"] - id of the client (device token etc.).</li>
+<li>$credentials["user_login"] - the user login.</li>
+<li>$credentials["user_password"] - the user password.</li>
 </ul>
             </td>
         </tr>
@@ -1061,15 +1060,14 @@ RS256, RS384, RS512.</p>
             <td class="description_column">
                 <p>The response upon successful authentication. The expected properties are:</p>
 <ul>
-<li>$response[&quot;user_id&quot;] - id of the user.</li>
-<li>$response[&quot;client_id&quot;] - id of the client (device token etc.).</li>
-<li>$response[&quot;access_token&quot;] - access token generated upon successful authentication.</li>
-<li>$response[&quot;access_token_expire&quot;] - expiration time of the access token.</li>
-<li>$response[&quot;refresh_token&quot;] - refresh token generated upon successful authentication.</li>
-<li>$response[&quot;refresh_token_expire&quot;] - expiration time of the refresh token.</li>
-<li>$response[&quot;last_activity&quot;] - last activity time of the user of this token.</li>
-<li>$response[&quot;jwt_access_token&quot;] - jwt access token generated upon successful authentication. JWT access
-token is the access token encoded and signed by the JWT standard approach.
+<li>$response["user_id"] - id of the user.</li>
+<li>$response["client_id"] - id of the client (device token etc.).</li>
+<li>$response["access_token"] - access token generated upon successful authentication.</li>
+<li>$response["access_token_expire"] - expiration time of the access token.</li>
+<li>$response["refresh_token"] - refresh token generated upon successful authentication.</li>
+<li>$response["refresh_token_expire"] - expiration time of the refresh token.</li>
+<li>$response["last_activity"] - last activity time of the user of this token.</li>
+<li>$response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
 token is the access token encoded and signed by the JWT standard approach.</li>
 </ul>
             </td>
@@ -1169,7 +1167,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h1>Method: OAuthManager::createJwtToken()</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> createJwtToken(<span class="php-keyword1">array</span> <span class="php-var">$payload</span>) : string;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> createJwtToken(<span class="php-keyword1">array</span> <span class="php-var">$payload</span>): string;</div>
 
   
   <div class="short-description">
@@ -1207,8 +1205,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
                 
             </td>
             <td class="description_column">
-                <p>The payload array.
-The payload array.</p>
+                <p>The payload array.</p>
             </td>
         </tr>
         
@@ -1220,8 +1217,7 @@ The payload array.</p>
   <div class="item_list">
   string<br>
   
-  <div class="item_description"><p>Returns the jwt token string.
-Returns the jwt token string.</p></div>
+  <div class="item_description"><p>Returns the jwt token string.</p></div>
   
   </div>
   
@@ -1282,7 +1278,7 @@ Returns the jwt token string.</p></div>
   
   <h1>Method: OAuthManager::createTokenRecord()</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> createTokenRecord(string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> createTokenRecord(string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>): void;</div>
 
   
   <div class="short-description">
@@ -1320,8 +1316,7 @@ Returns the jwt token string.</p></div>
                 
             </td>
             <td class="description_column">
-                <p>The user id for which the tokens were issued.
-The user id for which the tokens were issued.</p>
+                <p>The user id for which the tokens were issued.</p>
             </td>
         </tr>
         
@@ -1339,8 +1334,7 @@ The user id for which the tokens were issued.</p>
                 
             </td>
             <td class="description_column">
-                <p>The client id for which the tokens were issued.
-The client id for which the tokens were issued.</p>
+                <p>The client id for which the tokens were issued.</p>
             </td>
         </tr>
         
@@ -1358,8 +1352,7 @@ The client id for which the tokens were issued.</p>
                 
             </td>
             <td class="description_column">
-                <p>The response to be filled with the user data and tokens.
-The response to be filled with the user data and tokens.</p>
+                <p>The response to be filled with the user data and tokens.</p>
             </td>
         </tr>
         
@@ -1446,7 +1439,7 @@ The response to be filled with the user data and tokens.</p>
   
   <h1>Method: OAuthManager::generateJwtSignature()</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> generateJwtSignature(string <span class="php-var">$input</span>) : string;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> generateJwtSignature(string <span class="php-var">$input</span>): string;</div>
 
   
   <div class="short-description">
@@ -1484,8 +1477,7 @@ The response to be filled with the user data and tokens.</p>
                 
             </td>
             <td class="description_column">
-                <p>Data to be signed.
-Data to be signed.</p>
+                <p>Data to be signed.</p>
             </td>
         </tr>
         
@@ -1497,8 +1489,7 @@ Data to be signed.</p>
   <div class="item_list">
   string<br>
   
-  <div class="item_description"><p>Returns the signature of the data.
-Returns the signature of the data.</p></div>
+  <div class="item_description"><p>Returns the signature of the data.</p></div>
   
   </div>
   
@@ -1565,7 +1556,7 @@ Returns the signature of the data.</p></div>
   
   <h1>Method: OAuthManager::generateRSASignature()</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> generateRSASignature(string <span class="php-var">$input</span>, string <span class="php-var">$algorithm_id</span>) : string;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> generateRSASignature(string <span class="php-var">$input</span>, int <span class="php-var">$algorithm_id</span>): string;</div>
 
   
   <div class="short-description">
@@ -1604,8 +1595,7 @@ RS256, RS384, RS512.</p>
                 
             </td>
             <td class="description_column">
-                <p>Data which is signed.
-Data which is signed.</p>
+                <p>Data which is signed.</p>
             </td>
         </tr>
         
@@ -1617,14 +1607,13 @@ Data which is signed.</p>
                 by value
             </td>
             <td>
-                string
+                int
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>Algorithm to use for signing. The supported algorithms are: RS256, RS384, RS512.
-Algorithm to use for signing. The supported algorithms are: RS256, RS384, RS512.</p>
+                <p>Algorithm to use for signing. The supported algorithms are: RS256, RS384, RS512.</p>
             </td>
         </tr>
         
@@ -1636,8 +1625,7 @@ Algorithm to use for signing. The supported algorithms are: RS256, RS384, RS512.
   <div class="item_list">
   string<br>
   
-  <div class="item_description"><p>Returns the signature of the data.
-Returns the signature of the data.</p></div>
+  <div class="item_description"><p>Returns the signature of the data.</p></div>
   
   </div>
   
@@ -1713,7 +1701,7 @@ Returns the signature of the data.</p></div>
   
   <h1>Method: OAuthManager::generateToken()</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> generateToken() : string;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> generateToken(): string;</div>
 
   
   <div class="short-description">
@@ -1732,8 +1720,7 @@ Returns the signature of the data.</p></div>
   <div class="item_list">
   string<br>
   
-  <div class="item_description"><p>Returns the token string.
-Returns the token string.</p></div>
+  <div class="item_description"><p>Returns the token string.</p></div>
   
   </div>
   
@@ -1789,7 +1776,7 @@ Returns the token string.</p></div>
   
   <h1>Method: OAuthManager::getJwtPayload()</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> getJwtPayload(string <span class="php-var">$jwt_access_token</span>, bool <span class="php-var">$verify_signature</span> = <span class="php-keyword1">true</span>) : <span class="php-keyword1">array</span>;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> getJwtPayload(?string <span class="php-var">$jwt_access_token</span>, bool <span class="php-var">$verify_signature</span> = <span class="php-keyword1">true</span>): <span class="php-keyword1">array</span>;</div>
 
   
   <div class="short-description">
@@ -1821,14 +1808,13 @@ Returns the token string.</p></div>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The jwt access token.
-The jwt access token.</p>
+                <p>The jwt access token.</p>
             </td>
         </tr>
         
@@ -1846,8 +1832,7 @@ The jwt access token.</p>
                 true
             </td>
             <td class="description_column">
-                <p>The flag to control whether the signature should be verified or not.
-The flag to control whether the signature should be verified or not.</p>
+                <p>The flag to control whether the signature should be verified or not.</p>
             </td>
         </tr>
         
@@ -1859,8 +1844,7 @@ The flag to control whether the signature should be verified or not.</p>
   <div class="item_list">
   array<br>
   
-  <div class="item_description"><p>Returns the extracted payload array.
-Returns the extracted payload array.</p></div>
+  <div class="item_description"><p>Returns the extracted payload array.</p></div>
   
   </div>
   
@@ -1926,7 +1910,7 @@ Returns the extracted payload array.</p></div>
   
   <h1>Method: OAuthManager::init()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> init(<span class="php-keyword1">array</span> <span class="php-var">$parameters</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> init(<span class="php-keyword1">array</span> <span class="php-var">$parameters</span>): void;</div>
 
   
   <div class="short-description">
@@ -1967,31 +1951,30 @@ Returns the extracted payload array.</p></div>
                 <p>The parameters are:</p>
 <ul>
 <li>
-<p>$parameters[&quot;access_token_ttl_minutes&quot;] - time to live in minutes for the access token.</p>
+<p>$parameters["access_token_ttl_minutes"] - time to live in minutes for the access token.</p>
 </li>
 <li>
-<p>$parameters[&quot;refresh_token_ttl_days&quot;] - time to live in days for the refresh token.</p>
+<p>$parameters["refresh_token_ttl_days"] - time to live in days for the refresh token.</p>
 </li>
 <li>
-<p>$parameters[&quot;encryption_algorithm&quot;] - the encryption algorithm used for signing. The following
+<p>$parameters["encryption_algorithm"] - the encryption algorithm used for signing. The following
 algorithms are supported: HS256, HS384, HS512, RS256, RS384, RS512.</p>
 </li>
 <li>
-<p>$parameters[&quot;public_key&quot;] - location of the public key file. Required for the algorithms: RS256, RS384, RS512.</p>
+<p>$parameters["public_key"] - location of the public key file. Required for the algorithms: RS256, RS384, RS512.</p>
 </li>
 <li>
-<p>$parameters[&quot;private_key&quot;] - location of the private key file. Required for the algorithms: RS256, RS384, RS512.</p>
+<p>$parameters["private_key"] - location of the private key file. Required for the algorithms: RS256, RS384, RS512.</p>
 </li>
 <li>
-<p>$parameters[&quot;pass_phrase&quot;] - the pass phrase for the private key if necessary.</p>
+<p>$parameters["pass_phrase"] - the pass phrase for the private key if necessary.</p>
 </li>
 <li>
-<p>$parameters[&quot;token_storage&quot;] - the object implementing the interface <a href='interface-OAuth2.Interfaces.ITokenStorage.html'>\OAuth2\Interfaces\ITokenStorage</a>. It is used for storing and
+<p>$parameters["token_storage"] - the object implementing the interface <a href='interface-OAuth2.Interfaces.ITokenStorage.html'>\OAuth2\Interfaces\ITokenStorage</a>. It is used for storing and
 validating of the stored tokens.</p>
 </li>
 <li>
-<p>$parameters[&quot;user_authenticator&quot;] - the object implementing the interface <a href='interface-OAuth2.Interfaces.IUserAuthenticator.html'>\OAuth2\Interfaces\IUserAuthenticator</a>. It is used for authentication
-of the user upon his credentials before generation of the tokens.
+<p>$parameters["user_authenticator"] - the object implementing the interface <a href='interface-OAuth2.Interfaces.IUserAuthenticator.html'>\OAuth2\Interfaces\IUserAuthenticator</a>. It is used for authentication
 of the user upon his credentials before generation of the tokens.</p>
 </li>
 </ul>
@@ -2077,7 +2060,7 @@ of the user upon his credentials before generation of the tokens.</p>
   
   <h1>Method: OAuthManager::invalidateClient()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateClient(string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>, string <span class="php-var">$refresh_token</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateClient(?string <span class="php-var">$user_id</span>, ?string <span class="php-var">$client_id</span>, ?string <span class="php-var">$refresh_token</span>): void;</div>
 
   
   <div class="short-description">
@@ -2117,14 +2100,13 @@ can be done only after authentication.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The user id for which the refresh token was issued.
-The user id for which the refresh token was issued.</p>
+                <p>The user id for which the refresh token was issued.</p>
             </td>
         </tr>
         
@@ -2136,14 +2118,13 @@ The user id for which the refresh token was issued.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The client id for which the refresh token was issued.
-The client id for which the refresh token was issued.</p>
+                <p>The client id for which the refresh token was issued.</p>
             </td>
         </tr>
         
@@ -2155,14 +2136,13 @@ The client id for which the refresh token was issued.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The refresh token generated upon successful authentication.
-The refresh token generated upon successful authentication.</p>
+                <p>The refresh token generated upon successful authentication.</p>
             </td>
         </tr>
         
@@ -2206,7 +2186,7 @@ The refresh token generated upon successful authentication.</p>
   
   <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
   
-  <div class="item_description"><p>It might throw the MissingParametersException if any required paramters are empty.</p></div>
+  <div class="item_description"><p>It might throw the MissingParametersException if any required parameters are empty.</p></div>
   
   
   </div>
@@ -2263,7 +2243,7 @@ The refresh token generated upon successful authentication.</p>
   
   <h1>Method: OAuthManager::invalidateJwtAccessToken()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateJwtAccessToken(string <span class="php-var">$jwt_access_token</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateJwtAccessToken(?string <span class="php-var">$jwt_access_token</span>): void;</div>
 
   
   <div class="short-description">
@@ -2301,14 +2281,13 @@ The refresh token generated upon successful authentication.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The jwt access token generated upon successful authentication.
-The jwt access token generated upon successful authentication.</p>
+                <p>The jwt access token generated upon successful authentication.</p>
             </td>
         </tr>
         
@@ -2396,7 +2375,7 @@ The jwt access token generated upon successful authentication.</p>
   
   <h1>Method: OAuthManager::invalidateRefreshToken()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateRefreshToken(string <span class="php-var">$refresh_token</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateRefreshToken(?string <span class="php-var">$refresh_token</span>): void;</div>
 
   
   <div class="short-description">
@@ -2433,14 +2412,13 @@ The jwt access token generated upon successful authentication.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The refresh token generated upon successful authentication.
-The refresh token generated upon successful authentication.</p>
+                <p>The refresh token generated upon successful authentication.</p>
             </td>
         </tr>
         
@@ -2522,7 +2500,7 @@ The refresh token generated upon successful authentication.</p>
   
   <h1>Method: OAuthManager::invalidateUser()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateUser(string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>, string <span class="php-var">$refresh_token</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateUser(?string <span class="php-var">$user_id</span>, ?string <span class="php-var">$client_id</span>, ?string <span class="php-var">$refresh_token</span>): void;</div>
 
   
   <div class="short-description">
@@ -2562,14 +2540,13 @@ can be done only after authentication.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The user id for which the refresh token was issued.
-The user id for which the refresh token was issued.</p>
+                <p>The user id for which the refresh token was issued.</p>
             </td>
         </tr>
         
@@ -2581,14 +2558,13 @@ The user id for which the refresh token was issued.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The client id for which the refresh token was issued.
-The client id for which the refresh token was issued.</p>
+                <p>The client id for which the refresh token was issued.</p>
             </td>
         </tr>
         
@@ -2600,14 +2576,13 @@ The client id for which the refresh token was issued.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The refresh token generated upon successful authentication.
-The refresh token generated upon successful authentication.</p>
+                <p>The refresh token generated upon successful authentication.</p>
             </td>
         </tr>
         
@@ -2651,7 +2626,7 @@ The refresh token generated upon successful authentication.</p>
   
   <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
   
-  <div class="item_description"><p>It might throw the MissingParametersException if any required paramters are empty.</p></div>
+  <div class="item_description"><p>It might throw the MissingParametersException if any required parameters are empty.</p></div>
   
   
   </div>
@@ -2708,7 +2683,7 @@ The refresh token generated upon successful authentication.</p>
   
   <h1>Method: OAuthManager::refreshTokens()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> refreshTokens(string <span class="php-var">$refresh_token</span>, string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> refreshTokens(?string <span class="php-var">$refresh_token</span>, ?string <span class="php-var">$user_id</span>, ?string <span class="php-var">$client_id</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>): void;</div>
 
   
   <div class="short-description">
@@ -2740,14 +2715,13 @@ The refresh token generated upon successful authentication.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The refresh token generated upon successful authentication.
-The refresh token generated upon successful authentication.</p>
+                <p>The refresh token generated upon successful authentication.</p>
             </td>
         </tr>
         
@@ -2759,14 +2733,13 @@ The refresh token generated upon successful authentication.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The user id for which the refresh token was issued.
-The user id for which the refresh token was issued.</p>
+                <p>The user id for which the refresh token was issued.</p>
             </td>
         </tr>
         
@@ -2778,14 +2751,13 @@ The user id for which the refresh token was issued.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The client id for which the refresh token was issued.
-The client id for which the refresh token was issued.</p>
+                <p>The client id for which the refresh token was issued.</p>
             </td>
         </tr>
         
@@ -2805,15 +2777,14 @@ The client id for which the refresh token was issued.</p>
             <td class="description_column">
                 <p>The response upon successful refresh. The expected properties are:</p>
 <ul>
-<li>$response[&quot;user_id&quot;] - id of the user.</li>
-<li>$response[&quot;client_id&quot;] - id of the client (device token etc.).</li>
-<li>$response[&quot;access_token&quot;] - access token generated upon successful authentication.</li>
-<li>$response[&quot;access_token_expire&quot;] - expiration time of the access token.</li>
-<li>$response[&quot;refresh_token&quot;] - refresh token generated upon successful authentication.</li>
-<li>$response[&quot;refresh_token_expire&quot;] - expiration time of the refresh token.</li>
-<li>$response[&quot;last_activity&quot;] - last activity time of the user of this token.</li>
-<li>$response[&quot;jwt_access_token&quot;] - jwt access token generated upon successful authentication. JWT access
-token is the access token encoded and signed by the JWT standard approach.
+<li>$response["user_id"] - id of the user.</li>
+<li>$response["client_id"] - id of the client (device token etc.).</li>
+<li>$response["access_token"] - access token generated upon successful authentication.</li>
+<li>$response["access_token_expire"] - expiration time of the access token.</li>
+<li>$response["refresh_token"] - refresh token generated upon successful authentication.</li>
+<li>$response["refresh_token_expire"] - expiration time of the refresh token.</li>
+<li>$response["last_activity"] - last activity time of the user of this token.</li>
+<li>$response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
 token is the access token encoded and signed by the JWT standard approach.</li>
 </ul>
             </td>
@@ -2922,7 +2893,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h1>Method: OAuthManager::urlSafeB64Decode()</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> urlSafeB64Decode(string <span class="php-var">$b64</span>) : string;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> urlSafeB64Decode(string <span class="php-var">$b64</span>): string;</div>
 
   
   <div class="short-description">
@@ -2960,8 +2931,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
                 
             </td>
             <td class="description_column">
-                <p>Data to be decoded.
-Data to be decoded.</p>
+                <p>Data to be decoded.</p>
             </td>
         </tr>
         
@@ -2973,8 +2943,7 @@ Data to be decoded.</p>
   <div class="item_list">
   string<br>
   
-  <div class="item_description"><p>Returns the base64 decoded data string.
-Returns the base64 decoded data string.</p></div>
+  <div class="item_description"><p>Returns the base64 decoded data string.</p></div>
   
   </div>
   
@@ -3025,7 +2994,7 @@ Returns the base64 decoded data string.</p></div>
   
   <h1>Method: OAuthManager::urlSafeB64Encode()</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> urlSafeB64Encode(string <span class="php-var">$data</span>) : string;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> urlSafeB64Encode(string <span class="php-var">$data</span>): string;</div>
 
   
   <div class="short-description">
@@ -3063,8 +3032,7 @@ Returns the base64 decoded data string.</p></div>
                 
             </td>
             <td class="description_column">
-                <p>Data to be encoded.
-Data to be encoded.</p>
+                <p>Data to be encoded.</p>
             </td>
         </tr>
         
@@ -3076,8 +3044,7 @@ Data to be encoded.</p>
   <div class="item_list">
   string<br>
   
-  <div class="item_description"><p>Returns the base64 encoded data string.
-Returns the base64 encoded data string.</p></div>
+  <div class="item_description"><p>Returns the base64 encoded data string.</p></div>
   
   </div>
   
@@ -3128,7 +3095,7 @@ Returns the base64 encoded data string.</p></div>
   
   <h1>Method: OAuthManager::validateParameters()</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> validateParameters() : void;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> validateParameters(): void;</div>
 
   
   <div class="short-description">
@@ -3204,7 +3171,7 @@ Returns the base64 encoded data string.</p></div>
   
   <h1>Method: OAuthManager::verifyJwtAccessToken()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyJwtAccessToken(string <span class="php-var">$jwt_access_token</span>, bool <span class="php-var">$check_on_server</span> = <span class="php-keyword1">true</span>) : <span class="php-keyword1">array</span>|<span class="php-keyword1">false</span>;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyJwtAccessToken(?string <span class="php-var">$jwt_access_token</span>, bool <span class="php-var">$check_on_server</span> = <span class="php-keyword1">true</span>): <span class="php-keyword1">array</span>|<span class="php-keyword1">false</span>;</div>
 
   
   <div class="short-description">
@@ -3236,14 +3203,13 @@ Returns the base64 encoded data string.</p></div>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The jwt access token generated upon successful authentication.
-The jwt access token generated upon successful authentication.</p>
+                <p>The jwt access token generated upon successful authentication.</p>
             </td>
         </tr>
         
@@ -3262,7 +3228,6 @@ The jwt access token generated upon successful authentication.</p>
             </td>
             <td class="description_column">
                 <p>This flag defines whether only the signatire should be checked or also the
-authentication server should be asked.
 authentication server should be asked.</p>
             </td>
         </tr>
@@ -3275,8 +3240,7 @@ authentication server should be asked.</p>
   <div class="item_list">
   array|false<br>
   
-  <div class="item_description"><p>Returns the payload array on successful verification, otherwise false.
-Returns the payload array on successful verification, otherwise false.</p></div>
+  <div class="item_description"><p>Returns the payload array on successful verification, otherwise false.</p></div>
   
   </div>
   
@@ -3369,7 +3333,7 @@ Returns the payload array on successful verification, otherwise false.</p></div>
   
   <h1>Method: OAuthManager::verifyJwtSignature()</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> verifyJwtSignature(string <span class="php-var">$input</span>, string <span class="php-var">$signature</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> verifyJwtSignature(string <span class="php-var">$input</span>, string <span class="php-var">$signature</span>): void;</div>
 
   
   <div class="short-description">
@@ -3407,8 +3371,7 @@ Returns the payload array on successful verification, otherwise false.</p></div>
                 
             </td>
             <td class="description_column">
-                <p>Data which was signed.
-Data which was signed.</p>
+                <p>Data which was signed.</p>
             </td>
         </tr>
         
@@ -3426,8 +3389,7 @@ Data which was signed.</p>
                 
             </td>
             <td class="description_column">
-                <p>Signature used for signing.
-Signature used for signing.</p>
+                <p>Signature used for signing.</p>
             </td>
         </tr>
         
@@ -3504,7 +3466,7 @@ Signature used for signing.</p>
   
   <h1>Method: OAuthManager::verifyRSASignature()</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> verifyRSASignature(string <span class="php-var">$input</span>, string <span class="php-var">$signature</span>, string <span class="php-var">$algorithm_id</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> verifyRSASignature(string <span class="php-var">$input</span>, string <span class="php-var">$signature</span>, int <span class="php-var">$algorithm_id</span>): void;</div>
 
   
   <div class="short-description">
@@ -3543,8 +3505,7 @@ RS256, RS384, RS512.</p>
                 
             </td>
             <td class="description_column">
-                <p>Data which is signed.
-Data which is signed.</p>
+                <p>Data which is signed.</p>
             </td>
         </tr>
         
@@ -3562,8 +3523,7 @@ Data which is signed.</p>
                 
             </td>
             <td class="description_column">
-                <p>Signature used for signing the data.
-Signature used for signing the data.</p>
+                <p>Signature used for signing the data.</p>
             </td>
         </tr>
         
@@ -3575,14 +3535,13 @@ Signature used for signing the data.</p>
                 by value
             </td>
             <td>
-                string
+                int
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>Algorithm used for signing. The supported algorithms are: RS256, RS384, RS512.
-Algorithm used for signing. The supported algorithms are: RS256, RS384, RS512.</p>
+                <p>Algorithm used for signing. The supported algorithms are: RS256, RS384, RS512.</p>
             </td>
         </tr>
         
@@ -3665,7 +3624,7 @@ Algorithm used for signing. The supported algorithms are: RS256, RS384, RS512.</
   
   <h1>Method: OAuthManager::verifyRefreshToken()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyRefreshToken(string <span class="php-var">$refresh_token</span>, string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyRefreshToken(?string <span class="php-var">$refresh_token</span>, ?string <span class="php-var">$user_id</span>, ?string <span class="php-var">$client_id</span>): void;</div>
 
   
   <div class="short-description">
@@ -3697,14 +3656,13 @@ Algorithm used for signing. The supported algorithms are: RS256, RS384, RS512.</
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The refresh token to be verified.
-The refresh token to be verified.</p>
+                <p>The refresh token to be verified.</p>
             </td>
         </tr>
         
@@ -3716,14 +3674,13 @@ The refresh token to be verified.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The user id for which the refresh token was issued.
-The user id for which the refresh token was issued.</p>
+                <p>The user id for which the refresh token was issued.</p>
             </td>
         </tr>
         
@@ -3735,14 +3692,13 @@ The user id for which the refresh token was issued.</p>
                 by value
             </td>
             <td>
-                string
+                ?string
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The client id for which the refresh token was issued.
-The client id for which the refresh token was issued.</p>
+                <p>The client id for which the refresh token was issued.</p>
             </td>
         </tr>
         
@@ -3839,7 +3795,7 @@ The client id for which the refresh token was issued.</p>
   </div>
                     
                     <div id="footer">
-                        Generated on 2025-03-26 06:57 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
+                        Generated on 2025-11-25 16:57 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
                     </div>                    
                 </div>
             </div>

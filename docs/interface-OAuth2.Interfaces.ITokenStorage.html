@@ -117,7 +117,7 @@
 
 
 <div class="short-description">
-<p>Interface for storing and validating of the stored tokens. It can be implemnted for a database or
+<p>Interface for storing and validating of the stored tokens. It can be implemented for a database or
 for a cache solution like Redis.</p>
 </div>
 
@@ -255,7 +255,7 @@ for a cache solution like Redis.</p>
   
   <h1>Method: ITokenStorage::deleteTokenRecordByKey()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> deleteTokenRecordByKey(string <span class="php-var">$key</span>, string <span class="php-var">$value</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> deleteTokenRecordByKey(string <span class="php-var">$key</span>, string <span class="php-var">$value</span>): void;</div>
 
   
   <div class="short-description">
@@ -299,7 +299,6 @@ for a cache solution like Redis.</p>
 <li>'client_id' - id of the client (device token etc.).</li>
 <li>'access_token' - access token generated upon successful authentication.</li>
 <li>'refresh_token' - refresh token generated upon successful authentication.</li>
-<li>'refresh_token' - refresh token generated upon successful authentication.</li>
 </ul>
             </td>
         </tr>
@@ -318,8 +317,7 @@ for a cache solution like Redis.</p>
                 
             </td>
             <td class="description_column">
-                <p>The value of the key, by which the record should be located and deleted.
-The value of the key, by which the record should be located and deleted.</p>
+                <p>The value of the key, by which the record should be located and deleted.</p>
             </td>
         </tr>
         
@@ -397,7 +395,7 @@ The value of the key, by which the record should be located and deleted.</p>
   
   <h1>Method: ITokenStorage::loadTokenRecord()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> loadTokenRecord(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> loadTokenRecord(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>): void;</div>
 
   
   <div class="short-description">
@@ -435,8 +433,7 @@ The value of the key, by which the record should be located and deleted.</p>
                 
             </td>
             <td class="description_column">
-                <p>The token record may vary depending on implementation. The expected parameters are:
-The token record may vary depending on implementation. The expected parameters are:</p>
+                <p>The token record may vary depending on implementation. The expected parameters are:</p>
             </td>
         </tr>
         
@@ -449,14 +446,13 @@ The token record may vary depending on implementation. The expected parameters a
   void<br>
   
   <div class="item_description"><ul>
-<li>$token_record[&quot;user_id&quot;] - id of the user.</li>
-<li>$token_record[&quot;client_id&quot;] - id of the client (device token etc.).</li>
-<li>$token_record[&quot;access_token&quot;] - access token generated upon successful authentication.</li>
-<li>$token_record[&quot;access_token_expire&quot;] - expiration time of the access token.</li>
-<li>$token_record[&quot;refresh_token&quot;] - refresh token generated upon successful authentication.</li>
-<li>$token_record[&quot;refresh_token_expire&quot;] - expiration time of the refresh token.</li>
-<li>$token_record[&quot;last_activity&quot;] - last activity time of the user of this token.</li>
-<li>$token_record[&quot;last_activity&quot;] - last activity time of the user of this token.</li>
+<li>$token_record["user_id"] - id of the user.</li>
+<li>$token_record["client_id"] - id of the client (device token etc.).</li>
+<li>$token_record["access_token"] - access token generated upon successful authentication.</li>
+<li>$token_record["access_token_expire"] - expiration time of the access token.</li>
+<li>$token_record["refresh_token"] - refresh token generated upon successful authentication.</li>
+<li>$token_record["refresh_token_expire"] - expiration time of the refresh token.</li>
+<li>$token_record["last_activity"] - last activity time of the user of this token.</li>
 </ul></div>
   
   </div>
@@ -519,7 +515,7 @@ The token record may vary depending on implementation. The expected parameters a
   
   <h1>Method: ITokenStorage::saveTokenRecord()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> saveTokenRecord(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> saveTokenRecord(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>): void;</div>
 
   
   <div class="short-description">
@@ -530,7 +526,7 @@ The token record may vary depending on implementation. The expected parameters a
   
   <div class="long_description">
   <h2>Details</h2>
-  <p>It is reccomnended to look for an existing record by user_id and client_id, and if it exists,
+  <p>It is recommender to look for an existing record by user_id and client_id, and if it exists,
 it should be overwritten.</p>
   </div>
   
@@ -565,14 +561,13 @@ it should be overwritten.</p>
             <td class="description_column">
                 <p>The token record may vary depending on implementation. The expected parameters are:</p>
 <ul>
-<li>$token_record[&quot;user_id&quot;] - id of the user.</li>
-<li>$token_record[&quot;client_id&quot;] - id of the client (device token etc.).</li>
-<li>$token_record[&quot;access_token&quot;] - access token generated upon successful authentication.</li>
-<li>$token_record[&quot;access_token_expire&quot;] - expiration time of the access token.</li>
-<li>$token_record[&quot;refresh_token&quot;] - refresh token generated upon successful authentication.</li>
-<li>$token_record[&quot;refresh_token_expire&quot;] - expiration time of the refresh token.</li>
-<li>$token_record[&quot;last_activity&quot;] - last activity time of the user of this token.</li>
-<li>$token_record[&quot;last_activity&quot;] - last activity time of the user of this token.</li>
+<li>$token_record["user_id"] - id of the user.</li>
+<li>$token_record["client_id"] - id of the client (device token etc.).</li>
+<li>$token_record["access_token"] - access token generated upon successful authentication.</li>
+<li>$token_record["access_token_expire"] - expiration time of the access token.</li>
+<li>$token_record["refresh_token"] - refresh token generated upon successful authentication.</li>
+<li>$token_record["refresh_token_expire"] - expiration time of the refresh token.</li>
+<li>$token_record["last_activity"] - last activity time of the user of this token.</li>
 </ul>
             </td>
         </tr>
@@ -642,7 +637,7 @@ it should be overwritten.</p>
   
   <h1>Method: ITokenStorage::verifyAccessToken()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyAccessToken(string <span class="php-var">$access_token</span>, string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyAccessToken(string <span class="php-var">$access_token</span>, string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>): void;</div>
 
   
   <div class="short-description">
@@ -680,8 +675,7 @@ it should be overwritten.</p>
                 
             </td>
             <td class="description_column">
-                <p>The access token to be verified.
-The access token to be verified.</p>
+                <p>The access token to be verified.</p>
             </td>
         </tr>
         
@@ -699,8 +693,7 @@ The access token to be verified.</p>
                 
             </td>
             <td class="description_column">
-                <p>The user id for which the refresh token was issued.
-The user id for which the refresh token was issued.</p>
+                <p>The user id for which the refresh token was issued.</p>
             </td>
         </tr>
         
@@ -718,8 +711,7 @@ The user id for which the refresh token was issued.</p>
                 
             </td>
             <td class="description_column">
-                <p>The client id for which the refresh token was issued.
-The client id for which the refresh token was issued.</p>
+                <p>The client id for which the refresh token was issued.</p>
             </td>
         </tr>
         
@@ -754,7 +746,7 @@ The client id for which the refresh token was issued.</p>
   
   <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
   
-  <div class="item_description"><p>It should throw the MissingParametersException if any required paramters are empty.</p></div>
+  <div class="item_description"><p>It should throw the MissingParametersException if any required parameters are empty.</p></div>
   
   
   </div>
@@ -797,7 +789,7 @@ The client id for which the refresh token was issued.</p>
   
   <h1>Method: ITokenStorage::verifyRefreshToken()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyRefreshToken(string <span class="php-var">$refresh_token</span>, string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>) : void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyRefreshToken(string <span class="php-var">$refresh_token</span>, string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>): void;</div>
 
   
   <div class="short-description">
@@ -835,8 +827,7 @@ The client id for which the refresh token was issued.</p>
                 
             </td>
             <td class="description_column">
-                <p>The refresh token to be verified.
-The refresh token to be verified.</p>
+                <p>The refresh token to be verified.</p>
             </td>
         </tr>
         
@@ -854,8 +845,7 @@ The refresh token to be verified.</p>
                 
             </td>
             <td class="description_column">
-                <p>The user id for which the refresh token was issued.
-The user id for which the refresh token was issued.</p>
+                <p>The user id for which the refresh token was issued.</p>
             </td>
         </tr>
         
@@ -873,8 +863,7 @@ The user id for which the refresh token was issued.</p>
                 
             </td>
             <td class="description_column">
-                <p>The client id for which the refresh token was issued.
-The client id for which the refresh token was issued.</p>
+                <p>The client id for which the refresh token was issued.</p>
             </td>
         </tr>
         
@@ -909,7 +898,7 @@ The client id for which the refresh token was issued.</p>
   
   <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
   
-  <div class="item_description"><p>It should throw the MissingParametersException if any required paramters are empty.</p></div>
+  <div class="item_description"><p>It should throw the MissingParametersException if any required parameters are empty.</p></div>
   
   
   </div>
@@ -934,7 +923,7 @@ The client id for which the refresh token was issued.</p>
   </div>
                     
                     <div id="footer">
-                        Generated on 2025-03-26 06:57 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
+                        Generated on 2025-11-25 16:57 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
                     </div>                    
                 </div>
             </div>

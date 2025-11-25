@@ -38,11 +38,11 @@ class TokenExpiredException extends SmartException
      * uses the message id, gets the final translated text and substitutes the parameters through the details.
      *
      * @param string $technical_info
-     * Additional technical infromation. It can be used if it is a programming error and displayed only if the debug mode is active.
+     * Additional technical information. It can be used if it is a programming error and displayed only if the debug mode is active.
      *
      * @author Oleg Schildt
      */
-    public function __construct($message, $error_code = SmartException::ERR_CODE_SYSTEM_ERROR, $error_element = "", $error_details = [], $technical_info = "")
+    public function __construct(string $message, string $error_code = SmartException::ERR_CODE_SYSTEM_ERROR, string $error_element = "", array $error_details = [], string $technical_info = "")
     {
         parent::__construct($message, $error_code, $error_element, $error_details, $technical_info);
     }

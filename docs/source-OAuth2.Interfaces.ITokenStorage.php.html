@@ -99,7 +99,7 @@
 <span class="line" id="10"> 10: </span><span class="php-keyword1">use</span> \SmartFactory\Interfaces\IInitable;
 <span class="line" id="11"> 11: </span>
 <span class="line" id="12"> 12: </span><span class="php-comment">/**
-</span><span class="line" id="13"> 13: </span><span class="php-comment"> * Interface for storing and validating of the stored tokens. It can be implemnted for a database or
+</span><span class="line" id="13"> 13: </span><span class="php-comment"> * Interface for storing and validating of the stored tokens. It can be implemented for a database or
 </span><span class="line" id="14"> 14: </span><span class="php-comment"> * for a cache solution like Redis.
 </span><span class="line" id="15"> 15: </span><span class="php-comment"> *
 </span><span class="line" id="16"> 16: </span><span class="php-comment"> * @author Oleg Schildt
@@ -127,12 +127,12 @@
 </span><span class="line" id="38"> 38: </span><span class="php-comment">     *
 </span><span class="line" id="39"> 39: </span><span class="php-comment">     * @author Oleg Schildt
 </span><span class="line" id="40"> 40: </span><span class="php-comment">     */</span>
-<span class="line" id="41"> 41: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> loadTokenRecord(&amp;<span class="php-var">$token_record</span>);
+<span class="line" id="41"> 41: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> loadTokenRecord(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>): void;
 <span class="line" id="42"> 42: </span>    
 <span class="line" id="43"> 43: </span>    <span class="php-comment">/**
 </span><span class="line" id="44"> 44: </span><span class="php-comment">     * Saves the token record.
 </span><span class="line" id="45"> 45: </span><span class="php-comment">     *
-</span><span class="line" id="46"> 46: </span><span class="php-comment">     * It is reccomnended to look for an existing record by user_id and client_id, and if it exists,
+</span><span class="line" id="46"> 46: </span><span class="php-comment">     * It is recommender to look for an existing record by user_id and client_id, and if it exists,
 </span><span class="line" id="47"> 47: </span><span class="php-comment">     * it should be overwritten.
 </span><span class="line" id="48"> 48: </span><span class="php-comment">     *
 </span><span class="line" id="49"> 49: </span><span class="php-comment">     * @param array &amp;$token_record
@@ -153,7 +153,7 @@
 </span><span class="line" id="64"> 64: </span><span class="php-comment">     *
 </span><span class="line" id="65"> 65: </span><span class="php-comment">     * @author Oleg Schildt
 </span><span class="line" id="66"> 66: </span><span class="php-comment">     */</span>
-<span class="line" id="67"> 67: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> saveTokenRecord(&amp;<span class="php-var">$token_record</span>);
+<span class="line" id="67"> 67: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> saveTokenRecord(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>): void;
 <span class="line" id="68"> 68: </span>    
 <span class="line" id="69"> 69: </span>    <span class="php-comment">/**
 </span><span class="line" id="70"> 70: </span><span class="php-comment">     * Deletes the token record by a key.
@@ -181,7 +181,7 @@
 </span><span class="line" id="92"> 92: </span><span class="php-comment">     *
 </span><span class="line" id="93"> 93: </span><span class="php-comment">     * @author Oleg Schildt
 </span><span class="line" id="94"> 94: </span><span class="php-comment">     */</span>
-<span class="line" id="95"> 95: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> deleteTokenRecordByKey(<span class="php-var">$key</span>, <span class="php-var">$value</span>);
+<span class="line" id="95"> 95: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> deleteTokenRecordByKey(string <span class="php-var">$key</span>, string <span class="php-var">$value</span>): void;
 <span class="line" id="96"> 96: </span>
 <span class="line" id="97"> 97: </span>    <span class="php-comment">/**
 </span><span class="line" id="98"> 98: </span><span class="php-comment">     * Verifies the access token.
@@ -207,11 +207,11 @@
 </span><span class="line" id="118">118: </span><span class="php-comment">     * It might throw the TokenExpiredException if the refresh token is expired.
 </span><span class="line" id="119">119: </span><span class="php-comment">     *
 </span><span class="line" id="120">120: </span><span class="php-comment">     * @throws \OAuth2\MissingParametersException
-</span><span class="line" id="121">121: </span><span class="php-comment">     * It should throw the MissingParametersException if any required paramters are empty.
+</span><span class="line" id="121">121: </span><span class="php-comment">     * It should throw the MissingParametersException if any required parameters are empty.
 </span><span class="line" id="122">122: </span><span class="php-comment">     *
 </span><span class="line" id="123">123: </span><span class="php-comment">     * @author Oleg Schildt
 </span><span class="line" id="124">124: </span><span class="php-comment">     */</span>
-<span class="line" id="125">125: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyAccessToken(<span class="php-var">$access_token</span>, <span class="php-var">$user_id</span>, <span class="php-var">$client_id</span>);
+<span class="line" id="125">125: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyAccessToken(string <span class="php-var">$access_token</span>, string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>): void;
 <span class="line" id="126">126: </span>
 <span class="line" id="127">127: </span>    <span class="php-comment">/**
 </span><span class="line" id="128">128: </span><span class="php-comment">     * Verifies the refresh token.
@@ -237,18 +237,18 @@
 </span><span class="line" id="148">148: </span><span class="php-comment">     * It might throw the TokenExpiredException if the refresh token is expired.
 </span><span class="line" id="149">149: </span><span class="php-comment">     *
 </span><span class="line" id="150">150: </span><span class="php-comment">     * @throws \OAuth2\MissingParametersException
-</span><span class="line" id="151">151: </span><span class="php-comment">     * It should throw the MissingParametersException if any required paramters are empty.
+</span><span class="line" id="151">151: </span><span class="php-comment">     * It should throw the MissingParametersException if any required parameters are empty.
 </span><span class="line" id="152">152: </span><span class="php-comment">     *
 </span><span class="line" id="153">153: </span><span class="php-comment">     * @author Oleg Schildt
 </span><span class="line" id="154">154: </span><span class="php-comment">     */</span>
-<span class="line" id="155">155: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyRefreshToken(<span class="php-var">$refresh_token</span>, <span class="php-var">$user_id</span>, <span class="php-var">$client_id</span>);
+<span class="line" id="155">155: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyRefreshToken(string <span class="php-var">$refresh_token</span>, string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>): void;
 <span class="line" id="156">156: </span>} <span class="php-comment">// ITokenStorage</span>
 </code>
 </pre>
 </div>
                     
                     <div id="footer">
-                        Generated on 2025-03-26 06:57 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
+                        Generated on 2025-11-25 16:57 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
                     </div>                    
                 </div>
             </div>

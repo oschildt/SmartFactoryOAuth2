@@ -10,7 +10,7 @@ namespace OAuth2\Interfaces;
 use \SmartFactory\Interfaces\IInitable;
 
 /**
- * Interface for storing and validating of the stored tokens. It can be implemnted for a database or
+ * Interface for storing and validating of the stored tokens. It can be implemented for a database or
  * for a cache solution like Redis.
  *
  * @author Oleg Schildt
@@ -38,12 +38,12 @@ interface ITokenStorage extends IInitable
      *
      * @author Oleg Schildt
      */
-    public function loadTokenRecord(&$token_record);
+    public function loadTokenRecord(array &$token_record): void;
     
     /**
      * Saves the token record.
      *
-     * It is reccomnended to look for an existing record by user_id and client_id, and if it exists,
+     * It is recommender to look for an existing record by user_id and client_id, and if it exists,
      * it should be overwritten.
      *
      * @param array &$token_record
@@ -64,7 +64,7 @@ interface ITokenStorage extends IInitable
      *
      * @author Oleg Schildt
      */
-    public function saveTokenRecord(&$token_record);
+    public function saveTokenRecord(array &$token_record): void;
     
     /**
      * Deletes the token record by a key.
@@ -92,7 +92,7 @@ interface ITokenStorage extends IInitable
      *
      * @author Oleg Schildt
      */
-    public function deleteTokenRecordByKey($key, $value);
+    public function deleteTokenRecordByKey(string $key, string $value): void;
 
     /**
      * Verifies the access token.
@@ -118,11 +118,11 @@ interface ITokenStorage extends IInitable
      * It might throw the TokenExpiredException if the refresh token is expired.
      *
      * @throws \OAuth2\MissingParametersException
-     * It should throw the MissingParametersException if any required paramters are empty.
+     * It should throw the MissingParametersException if any required parameters are empty.
      *
      * @author Oleg Schildt
      */
-    public function verifyAccessToken($access_token, $user_id, $client_id);
+    public function verifyAccessToken(string $access_token, string $user_id, string $client_id): void;
 
     /**
      * Verifies the refresh token.
@@ -148,9 +148,9 @@ interface ITokenStorage extends IInitable
      * It might throw the TokenExpiredException if the refresh token is expired.
      *
      * @throws \OAuth2\MissingParametersException
-     * It should throw the MissingParametersException if any required paramters are empty.
+     * It should throw the MissingParametersException if any required parameters are empty.
      *
      * @author Oleg Schildt
      */
-    public function verifyRefreshToken($refresh_token, $user_id, $client_id);
+    public function verifyRefreshToken(string $refresh_token, string $user_id, string $client_id): void;
 } // ITokenStorage
