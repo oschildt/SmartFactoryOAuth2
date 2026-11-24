@@ -3,7 +3,7 @@
 - Lightweight simple and flexible OAuth2 Server
 - With support of the JSON Web Token
 - Customizable user authentication and storage of the token records
-- Designed based on IoC 
+- Designed based on IoC
 
 For more details see [Presentation](http://php-smart-factory.org/oauth2_presentation.pdf) and
 [OAuth2 API documentation](http://php-smart-factory.org/oauth2/).
@@ -19,7 +19,7 @@ composer require "smartfactory/oauth2"
 ```
 
 **composer.json**
- 
+
 ```
 {
   ...
@@ -29,18 +29,26 @@ composer require "smartfactory/oauth2"
     "smartfactory/smartfactory": ">=2.2.0",
     "smartfactory/oauth2": ">=2.2.0"
   }
-  
+
   ...
 }
 ```
 
 ### To get familiar with the SmartFactory Core and OAuth2 Server do the following:
 
-- Git-clone the demo application [SmartFactoryDemo](https://github.com/oschildt/SmartFactoryDemo) and run 'composer update'.
-- Use the script *database/create_database_mysql.sql* (*create_database_mssql.sql*) to create a demo database necessary for some examples.
-- View and study the API documentation in the folder docs or here [OAuth2 API documentation](http://php-smart-factory.org/oauth2/).
-- Study the core code of the library SmartFactory and SmartFactory OAuth2 Server.
-- The example *application/17.oauth.php* demonstrates the token manager.
+1. Git-clone the demo application [SmartFactoryDemo](https://github.com/oschildt/SmartFactoryDemo) and run 'composer update'.
+
+2. Use the scripts for your database engines to create the demo database required by some examples.
+  - MySQL - `database/mysql/create_database.cmd`
+  - PostgreSQL - `database/postgres/create_database.cmd`
+  - SQL Server - `database/mssql/create_database.cmd`
+  - Oracle - `database/oracle/create_database.cmd`
+
+3. View and study the API documentation in the folder docs or here [OAuth2 API documentation](http://php-smart-factory.org/oauth2/).
+
+4. Study the core code of the library SmartFactory and SmartFactory OAuth2 Server.
+
+5. The example *application/17.oauth.php* demonstrates the token manager.
 
 ### To start writing own application using SmartFactory OAuth2 Server
 
@@ -50,11 +58,11 @@ composer require "smartfactory/oauth2"
 
 3. Implement the interfaces IUserAuthenticator and ITokenStorage.
 
-4. Bind your classes to the interfaces in *initialization_inc.php* to use the IoC object factory.
+4. Bind you factory functions to the interfaces in the file *initialization_inc.php* to be able to use the IoC approach for creating objects offered by the library SmartFactory.
 
 5. Implement the JSON API request handlers.
 
-6. Add application translations through *localization/edit.php* or directly in *localization/texts.json*. Use *localization/check.php* to check for missing translations.
+6. Add translation texts for your application over the *localization/edit.php* or directly into the JSON file *localization/texts.json*. Use the option *Check* to check your translations for missing translations.
 
 ## Token configuration and security contract
 
@@ -175,7 +183,7 @@ Defaults distinguish `system_error`, `invalid_token`, `invalid_credentials`,
 `missing_request_data` and `token_expired`. Internal file paths and OpenSSL diagnostics
 are not included in public token-manager error messages.
 
-## Directory Structure 
+## Directory Structure
 
 ```
 docs
