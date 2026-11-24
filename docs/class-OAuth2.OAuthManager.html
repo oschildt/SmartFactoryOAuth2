@@ -103,14 +103,24 @@
 
 
 
-<div class="definition"></div>
+<div class="definition"><span class="php-keyword1">class</span> OAuthManager <span class="php-keyword1">implements</span> IOAuthManager
+{
+}</div>
+
 
 
 <div class="short-description">
-<p>Class for secure user authentication.</p>
+<p>Issues signed JWTs and delegates atomic session operations to token storage.</p>
 </div>
 
 
+
+<div class="long_description">
+<h2>Details</h2>
+<p>Standard JWT claims coexist with historical session claims. Revocation is
+immediate only when verification includes storage. HTTP grants, client
+registration, consent and endpoint transport belong to the calling application.</p>
+</div>
 
 
 
@@ -120,7 +130,7 @@
 <h2>Implements</h2>
 <div class="item_list">
 
-<a href='interface-OAuth2.Interfaces.IOAuthManager.html'>\OAuth2\Interfaces\IOAuthManager</a><br>
+<a href="interface-OAuth2.Interfaces.IOAuthManager.html">\OAuth2\Interfaces\IOAuthManager</a><br>
 
 </div>
 
@@ -144,7 +154,7 @@
 
 <h2>Source code</h2>
 <div class="item_list">
-<a href='source-OAuth2.OAuthManager.php.html#21'>OAuth2/OAuthManager.php</a>
+<a href='source-OAuth2.OAuthManager.php.html#19'>OAuth2/OAuthManager.php</a>
 </div>
 
 
@@ -170,10 +180,10 @@
 
 <table class="table table-responsive table-bordered table-striped class_multicolumn">
       <tr><th colspan="2">Properties</th></tr>
-      
+
       <tr>
           <td>
-              <div style='float:left'><a href="#$access_token_ttl_minutes">$access_token_ttl_minutes</a></div>
+              <div style='float:left'><a href="#$configuration">$configuration</a></div>
 
               <div style='float:right'>
               
@@ -182,132 +192,15 @@
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Internal property for storing the time to live of the access token.</p>
-          </td>
-      </tr><tr>
-          <td>
-              <div style='float:left'><a href="#$encryption_algorithm">$encryption_algorithm</a></div>
-
-              <div style='float:right'>
-              
-              <span class='label label-warning'>protected</span>
-              </div>
-              <div style="clear:both"></div>
-          </td>
-          <td class="description_column">
-              <p>Internal property for storing the encryption algorithm.</p>
-          </td>
-      </tr><tr>
-          <td>
-              <div style='float:left'><a href="#$pass_phrase">$pass_phrase</a></div>
-
-              <div style='float:right'>
-              
-              <span class='label label-warning'>protected</span>
-              </div>
-              <div style="clear:both"></div>
-          </td>
-          <td class="description_column">
-              <p>Internal property for storing the pass phrase for the private key.</p>
-          </td>
-      </tr><tr>
-          <td>
-              <div style='float:left'><a href="#$private_key">$private_key</a></div>
-
-              <div style='float:right'>
-              
-              <span class='label label-warning'>protected</span>
-              </div>
-              <div style="clear:both"></div>
-          </td>
-          <td class="description_column">
-              <p>Internal property for storing the path to the private key file.</p>
-          </td>
-      </tr><tr>
-          <td>
-              <div style='float:left'><a href="#$public_key">$public_key</a></div>
-
-              <div style='float:right'>
-              
-              <span class='label label-warning'>protected</span>
-              </div>
-              <div style="clear:both"></div>
-          </td>
-          <td class="description_column">
-              <p>Internal property for storing the path to the public key file.</p>
-          </td>
-      </tr><tr>
-          <td>
-              <div style='float:left'><a href="#$refresh_token_ttl_days">$refresh_token_ttl_days</a></div>
-
-              <div style='float:right'>
-              
-              <span class='label label-warning'>protected</span>
-              </div>
-              <div style="clear:both"></div>
-          </td>
-          <td class="description_column">
-              <p>Internal property for storing the time to live of the refresh token.</p>
-          </td>
-      </tr><tr>
-          <td>
-              <div style='float:left'><a href="#$secret_key">$secret_key</a></div>
-
-              <div style='float:right'>
-              
-              <span class='label label-warning'>protected</span>
-              </div>
-              <div style="clear:both"></div>
-          </td>
-          <td class="description_column">
-              <p>Internal property for storing the secret key.</p>
-          </td>
-      </tr><tr>
-          <td>
-              <div style='float:left'><a href="#$supported_algorithms">$supported_algorithms</a></div>
-
-              <div style='float:right'>
-              
-              <span class='label label-warning'>protected</span>
-              </div>
-              <div style="clear:both"></div>
-          </td>
-          <td class="description_column">
-              <p>Internal property for the list of supported algorithms.</p>
-          </td>
-      </tr><tr>
-          <td>
-              <div style='float:left'><a href="#$token_storage">$token_storage</a></div>
-
-              <div style='float:right'>
-              
-              <span class='label label-warning'>protected</span>
-              </div>
-              <div style="clear:both"></div>
-          </td>
-          <td class="description_column">
-              <p>Internal reference to the token storage object.</p>
-          </td>
-      </tr><tr>
-          <td>
-              <div style='float:left'><a href="#$user_authenticator">$user_authenticator</a></div>
-
-              <div style='float:right'>
-              
-              <span class='label label-warning'>protected</span>
-              </div>
-              <div style="clear:both"></div>
-          </td>
-          <td class="description_column">
-              <p>Internal reference to the user authenticator object.</p>
+              <p>Stores validated settings, parsed keys and optional collaborators.</p>
           </td>
       </tr>
-      
+
   </table>
 
 <table class="table table-responsive table-bordered table-striped class_multicolumn">
       <tr><th colspan="2">Methods</th></tr>
-      
+
       <tr>
           <td>
               <div style='float:left'><a href="#authenticateUser">authenticateUser()</a></div>
@@ -319,7 +212,7 @@
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Authenticates the user based on the specified credentials and writes the response.</p>
+              <p>Authenticates credentials and creates a new session for the supplied client.</p>
           </td>
       </tr><tr>
           <td>
@@ -332,7 +225,7 @@
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Internal auxiliary function for creation of the jwt token.</p>
+              <p>Serializes and signs claims before any storage update occurs.</p>
           </td>
       </tr><tr>
           <td>
@@ -345,7 +238,7 @@
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Internal auxiliary function for creation of the token record.</p>
+              <p>Builds a session and commits it before publishing tokens in the response.</p>
           </td>
       </tr><tr>
           <td>
@@ -358,21 +251,7 @@
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Internal auxiliary function for generation of the signature of the data for all supported algorithms.</p>
-          </td>
-      </tr><tr>
-          <td>
-              <div style='float:left'><a href="#generateRSASignature">generateRSASignature()</a></div>
-
-              <div style='float:right'>
-              
-              <span class='label label-warning'>protected</span>
-              </div>
-              <div style="clear:both"></div>
-          </td>
-          <td class="description_column">
-              <p>Internal auxiliary function for generation of the signature of the data for the algorithms
-RS256, RS384, RS512.</p>
+              <p>Signs a serialized JWT with the configured active key.</p>
           </td>
       </tr><tr>
           <td>
@@ -385,7 +264,20 @@ RS256, RS384, RS512.</p>
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Internal auxiliary function for generation of a token string.</p>
+              <p>Generates an opaque token using the operating system cryptographic generator.</p>
+          </td>
+      </tr><tr>
+          <td>
+              <div style='float:left'><a href="#getCurrentTime">getCurrentTime()</a></div>
+
+              <div style='float:right'>
+              
+              <span class='label label-warning'>protected</span>
+              </div>
+              <div style="clear:both"></div>
+          </td>
+          <td class="description_column">
+              <p>Supplies the wall clock for token issuance and JWT lifetime checks.</p>
           </td>
       </tr><tr>
           <td>
@@ -398,7 +290,20 @@ RS256, RS384, RS512.</p>
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Internal auxiliary function for extraction of the payload from the jwt access token.</p>
+              <p>Parses a JWT and verifies its signature using locally configured keys only.</p>
+          </td>
+      </tr><tr>
+          <td>
+              <div style='float:left'><a href="#getStorage">getStorage()</a></div>
+
+              <div style='float:right'>
+              
+              <span class='label label-warning'>protected</span>
+              </div>
+              <div style="clear:both"></div>
+          </td>
+          <td class="description_column">
+              <p>Returns storage for operations requiring server-side session state.</p>
           </td>
       </tr><tr>
           <td>
@@ -411,7 +316,7 @@ RS256, RS384, RS512.</p>
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Initializes the authentication manager with parameters.</p>
+              <p>Configures signing, verification, lifetimes and optional collaborators.</p>
           </td>
       </tr><tr>
           <td>
@@ -424,7 +329,7 @@ RS256, RS384, RS512.</p>
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Invalidates all token records for the client.</p>
+              <p>Atomically authorizes revocation using a current refresh token.</p>
           </td>
       </tr><tr>
           <td>
@@ -437,7 +342,7 @@ RS256, RS384, RS512.</p>
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Invalidates the token record for the jwt access token.</p>
+              <p>Revokes a session identified by a correctly signed JWT, including an expired JWT.</p>
           </td>
       </tr><tr>
           <td>
@@ -450,7 +355,7 @@ RS256, RS384, RS512.</p>
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Invalidates all token records for the refresh token.</p>
+              <p>Revokes a session by possession of a current or previously consumed refresh token.</p>
           </td>
       </tr><tr>
           <td>
@@ -463,7 +368,59 @@ RS256, RS384, RS512.</p>
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Invalidates all token records for the user.</p>
+              <p>Atomically authorizes revocation using a current refresh token.</p>
+          </td>
+      </tr><tr>
+          <td>
+              <div style='float:left'><a href="#isIdentifier">isIdentifier()</a></div>
+
+              <div style='float:right'>
+              
+              <span class='label label-warning'>protected</span>
+              </div>
+              <div style="clear:both"></div>
+          </td>
+          <td class="description_column">
+              <p>Checks identifiers before JSON serialization or storage access.</p>
+          </td>
+      </tr><tr>
+          <td>
+              <div style='float:left'><a href="#normalizeTtl">normalizeTtl()</a></div>
+
+              <div style='float:right'>
+              
+              <span class='label label-warning'>protected</span>
+              </div>
+              <div style="clear:both"></div>
+          </td>
+          <td class="description_column">
+              <p>Validates a bounded integer lifetime without floating-point overflow.</p>
+          </td>
+      </tr><tr>
+          <td>
+              <div style='float:left'><a href="#prepareKey">prepareKey()</a></div>
+
+              <div style='float:right'>
+              
+              <span class='label label-warning'>protected</span>
+              </div>
+              <div style="clear:both"></div>
+          </td>
+          <td class="description_column">
+              <p>Loads keys and binds their validated type and strength to one algorithm.</p>
+          </td>
+      </tr><tr>
+          <td>
+              <div style='float:left'><a href="#readKeyFile">readKeyFile()</a></div>
+
+              <div style='float:right'>
+              
+              <span class='label label-warning'>protected</span>
+              </div>
+              <div style="clear:both"></div>
+          </td>
+          <td class="description_column">
+              <p>Reads a local PEM key without accepting stream wrappers.</p>
           </td>
       </tr><tr>
           <td>
@@ -476,7 +433,20 @@ RS256, RS384, RS512.</p>
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Refreshes the access and refresh tokens by using the valid refresh token.</p>
+              <p>Atomically consumes a refresh token and replaces its session tokens.</p>
+          </td>
+      </tr><tr>
+          <td>
+              <div style='float:left'><a href="#requireIdentifier">requireIdentifier()</a></div>
+
+              <div style='float:right'>
+              
+              <span class='label label-warning'>protected</span>
+              </div>
+              <div style="clear:both"></div>
+          </td>
+          <td class="description_column">
+              <p>Validates request identifiers without treating the string "0" as empty.</p>
           </td>
       </tr><tr>
           <td>
@@ -489,7 +459,7 @@ RS256, RS384, RS512.</p>
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Internal auxiliary function for safe base64 decoding.</p>
+              <p>Decodes a canonical, nonempty Base64URL segment.</p>
           </td>
       </tr><tr>
           <td>
@@ -502,7 +472,7 @@ RS256, RS384, RS512.</p>
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Internal auxiliary function for safe base64 encoding.</p>
+              <p>Encodes bytes using unpadded Base64URL.</p>
           </td>
       </tr><tr>
           <td>
@@ -515,7 +485,20 @@ RS256, RS384, RS512.</p>
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Internal auxiliary function for validation of the parameters.</p>
+              <p>Ensures that configuration was successfully initialized.</p>
+          </td>
+      </tr><tr>
+          <td>
+              <div style='float:left'><a href="#validatePayload">validatePayload()</a></div>
+
+              <div style='float:right'>
+              
+              <span class='label label-warning'>protected</span>
+              </div>
+              <div style="clear:both"></div>
+          </td>
+          <td class="description_column">
+              <p>Validates session claims and configured issuer and audience restrictions.</p>
           </td>
       </tr><tr>
           <td>
@@ -528,34 +511,7 @@ RS256, RS384, RS512.</p>
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Verifies the jwt access token.</p>
-          </td>
-      </tr><tr>
-          <td>
-              <div style='float:left'><a href="#verifyJwtSignature">verifyJwtSignature()</a></div>
-
-              <div style='float:right'>
-              
-              <span class='label label-warning'>protected</span>
-              </div>
-              <div style="clear:both"></div>
-          </td>
-          <td class="description_column">
-              <p>Internal auxiliary function for verification of the signature of the data for all supported algorithms.</p>
-          </td>
-      </tr><tr>
-          <td>
-              <div style='float:left'><a href="#verifyRSASignature">verifyRSASignature()</a></div>
-
-              <div style='float:right'>
-              
-              <span class='label label-warning'>protected</span>
-              </div>
-              <div style="clear:both"></div>
-          </td>
-          <td class="description_column">
-              <p>Internal auxiliary function for verification of the data signature for the algorithms
-RS256, RS384, RS512.</p>
+              <p>Verifies JWT encoding, signature, claims and optionally its stored session.</p>
           </td>
       </tr><tr>
           <td>
@@ -568,23 +524,24 @@ RS256, RS384, RS512.</p>
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Verifies the refresh token.</p>
+              <p>Checks a refresh token without extending its expiry or rotating it.</p>
           </td>
       </tr>
-      
+
   </table>
 
 
 
-<hr id="$access_token_ttl_minutes">
-  
-  <h1>Property: OAuthManager::$access_token_ttl_minutes</h1>
+<hr id="$configuration">
 
-  <div class="definition"><span class="php-keyword1">protected</span> ?string <span class="php-var">$access_token_ttl_minutes</span> = <span class="php-keyword1">null</span>;</div>
+  <h1>Property: OAuthManager::$configuration</h1>
+
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">array</span> <span class="php-var">$configuration</span> = [];</div>
+  
 
   
   <div class="short-description">
-  <p>Internal property for storing the time to live of the access token.</p>
+  <p>Stores validated settings, parsed keys and optional collaborators.</p>
   </div>
   
 
@@ -593,7 +550,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Type</h2>
   <div class="item_list">
-  ?string
+  <code class="php-type">array&lt;string, mixed&gt;</code>
   </div>
   
 
@@ -613,395 +570,19 @@ RS256, RS384, RS512.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#74'>OAuth2/OAuthManager.php</a>
-  </div><hr id="$encryption_algorithm">
-  
-  <h1>Property: OAuthManager::$encryption_algorithm</h1>
-
-  <div class="definition"><span class="php-keyword1">protected</span> ?string <span class="php-var">$encryption_algorithm</span> = <span class="php-keyword1">null</span>;</div>
-
-  
-  <div class="short-description">
-  <p>Internal property for storing the encryption algorithm.</p>
-  </div>
-  
-
-  
-  <div class="long_description">
-  <h2>Details</h2>
-  <p>The supported algorithms are HS256, HS384, HS512, RS256, RS384, RS512.</p>
-  </div>
-  
-
-  
-  <h2>Type</h2>
-  <div class="item_list">
-  ?string
-  </div>
-  
-
-  
-
-  <h2>Authors</h2>
-  <div class="item_list">
-  
-  <div class='item'>Oleg Schildt</div>
-  
-  </div>
-
-  
-
-  
-
-  
-  <h2>Source code</h2>
-  <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#65'>OAuth2/OAuthManager.php</a>
-  </div><hr id="$pass_phrase">
-  
-  <h1>Property: OAuthManager::$pass_phrase</h1>
-
-  <div class="definition"><span class="php-keyword1">protected</span> string <span class="php-var">$pass_phrase</span> = <span class="php-quote">&quot;&quot;</span>;</div>
-
-  
-  <div class="short-description">
-  <p>Internal property for storing the pass phrase for the private key.</p>
-  </div>
-  
-
-  
-  <div class="long_description">
-  <h2>Details</h2>
-  <p>Only required, if the private key was generated with a pass phrase.</p>
-  </div>
-  
-
-  
-  <h2>Type</h2>
-  <div class="item_list">
-  string
-  </div>
-  
-
-  
-
-  <h2>Authors</h2>
-  <div class="item_list">
-  
-  <div class='item'>Oleg Schildt</div>
-  
-  </div>
-
-  
-
-  
-
-  
-  <h2>Source code</h2>
-  <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#116'>OAuth2/OAuthManager.php</a>
-  </div><hr id="$private_key">
-  
-  <h1>Property: OAuthManager::$private_key</h1>
-
-  <div class="definition"><span class="php-keyword1">protected</span> ?string <span class="php-var">$private_key</span> = <span class="php-keyword1">null</span>;</div>
-
-  
-  <div class="short-description">
-  <p>Internal property for storing the path to the private key file.</p>
-  </div>
-  
-
-  
-  <div class="long_description">
-  <h2>Details</h2>
-  <p>Required for the algorithms: RS256, RS384, RS512.</p>
-  </div>
-  
-
-  
-  <h2>Type</h2>
-  <div class="item_list">
-  ?string
-  </div>
-  
-
-  
-
-  <h2>Authors</h2>
-  <div class="item_list">
-  
-  <div class='item'>Oleg Schildt</div>
-  
-  </div>
-
-  
-
-  
-
-  
-  <h2>Source code</h2>
-  <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#105'>OAuth2/OAuthManager.php</a>
-  </div><hr id="$public_key">
-  
-  <h1>Property: OAuthManager::$public_key</h1>
-
-  <div class="definition"><span class="php-keyword1">protected</span> ?string <span class="php-var">$public_key</span> = <span class="php-keyword1">null</span>;</div>
-
-  
-  <div class="short-description">
-  <p>Internal property for storing the path to the public key file.</p>
-  </div>
-  
-
-  
-  <div class="long_description">
-  <h2>Details</h2>
-  <p>Required for the algorithms: RS256, RS384, RS512.</p>
-  </div>
-  
-
-  
-  <h2>Type</h2>
-  <div class="item_list">
-  ?string
-  </div>
-  
-
-  
-
-  <h2>Authors</h2>
-  <div class="item_list">
-  
-  <div class='item'>Oleg Schildt</div>
-  
-  </div>
-
-  
-
-  
-
-  
-  <h2>Source code</h2>
-  <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#94'>OAuth2/OAuthManager.php</a>
-  </div><hr id="$refresh_token_ttl_days">
-  
-  <h1>Property: OAuthManager::$refresh_token_ttl_days</h1>
-
-  <div class="definition"><span class="php-keyword1">protected</span> ?string <span class="php-var">$refresh_token_ttl_days</span> = <span class="php-keyword1">null</span>;</div>
-
-  
-  <div class="short-description">
-  <p>Internal property for storing the time to live of the refresh token.</p>
-  </div>
-  
-
-  
-
-  
-  <h2>Type</h2>
-  <div class="item_list">
-  ?string
-  </div>
-  
-
-  
-
-  <h2>Authors</h2>
-  <div class="item_list">
-  
-  <div class='item'>Oleg Schildt</div>
-  
-  </div>
-
-  
-
-  
-
-  
-  <h2>Source code</h2>
-  <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#83'>OAuth2/OAuthManager.php</a>
-  </div><hr id="$secret_key">
-  
-  <h1>Property: OAuthManager::$secret_key</h1>
-
-  <div class="definition"><span class="php-keyword1">protected</span> ?string <span class="php-var">$secret_key</span> = <span class="php-keyword1">null</span>;</div>
-
-  
-  <div class="short-description">
-  <p>Internal property for storing the secret key.</p>
-  </div>
-  
-
-  
-  <div class="long_description">
-  <h2>Details</h2>
-  <p>The secret key is required for the algorithms HS256, HS384, HS512.</p>
-  </div>
-  
-
-  
-  <h2>Type</h2>
-  <div class="item_list">
-  ?string
-  </div>
-  
-
-  
-
-  <h2>Authors</h2>
-  <div class="item_list">
-  
-  <div class='item'>Oleg Schildt</div>
-  
-  </div>
-
-  
-
-  
-
-  
-  <h2>Source code</h2>
-  <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#54'>OAuth2/OAuthManager.php</a>
-  </div><hr id="$supported_algorithms">
-  
-  <h1>Property: OAuthManager::$supported_algorithms</h1>
-
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">array</span> <span class="php-var">$supported_algorithms</span> = [<span class="php-quote">'HS256'</span>, <span class="php-quote">'HS384'</span>, <span class="php-quote">'HS512'</span>, <span class="php-quote">'RS256'</span>, <span class="php-quote">'RS384'</span>, <span class="php-quote">'RS512'</span>];</div>
-
-  
-  <div class="short-description">
-  <p>Internal property for the list of supported algorithms.</p>
-  </div>
-  
-
-  
-
-  
-  <h2>Type</h2>
-  <div class="item_list">
-  array
-  </div>
-  
-
-  
-
-  <h2>Authors</h2>
-  <div class="item_list">
-  
-  <div class='item'>Oleg Schildt</div>
-  
-  </div>
-
-  
-
-  
-
-  
-  <h2>Source code</h2>
-  <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#125'>OAuth2/OAuthManager.php</a>
-  </div><hr id="$token_storage">
-  
-  <h1>Property: OAuthManager::$token_storage</h1>
-
-  <div class="definition"><span class="php-keyword1">protected</span> ?\OAuth2\Interfaces\ITokenStorage <span class="php-var">$token_storage</span> = <span class="php-keyword1">null</span>;</div>
-
-  
-  <div class="short-description">
-  <p>Internal reference to the token storage object.</p>
-  </div>
-  
-
-  
-  <div class="long_description">
-  <h2>Details</h2>
-  <p>It must implement <a href='interface-OAuth2.Interfaces.ITokenStorage.html'>\OAuth2\Interfaces\ITokenStorage</a>.</p>
-  </div>
-  
-
-  
-  <h2>Type</h2>
-  <div class="item_list">
-  ?\OAuth2\Interfaces\ITokenStorage
-  </div>
-  
-
-  
-
-  <h2>Authors</h2>
-  <div class="item_list">
-  
-  <div class='item'>Oleg Schildt</div>
-  
-  </div>
-
-  
-
-  
-
-  
-  <h2>Source code</h2>
-  <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#32'>OAuth2/OAuthManager.php</a>
-  </div><hr id="$user_authenticator">
-  
-  <h1>Property: OAuthManager::$user_authenticator</h1>
-
-  <div class="definition"><span class="php-keyword1">protected</span> ?\OAuth2\Interfaces\IUserAuthenticator <span class="php-var">$user_authenticator</span> = <span class="php-keyword1">null</span>;</div>
-
-  
-  <div class="short-description">
-  <p>Internal reference to the user authenticator object.</p>
-  </div>
-  
-
-  
-  <div class="long_description">
-  <h2>Details</h2>
-  <p>It must implement <a href='interface-OAuth2.Interfaces.IUserAuthenticator.html'>\OAuth2\Interfaces\IUserAuthenticator</a>.</p>
-  </div>
-  
-
-  
-  <h2>Type</h2>
-  <div class="item_list">
-  ?\OAuth2\Interfaces\IUserAuthenticator
-  </div>
-  
-
-  
-
-  <h2>Authors</h2>
-  <div class="item_list">
-  
-  <div class='item'>Oleg Schildt</div>
-  
-  </div>
-
-  
-
-  
-
-  
-  <h2>Source code</h2>
-  <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#43'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#28'>OAuth2/OAuthManager.php</a>
   </div>
 
 <hr id="authenticateUser">
-  
+
   <h1>Method: OAuthManager::authenticateUser()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> authenticateUser(<span class="php-keyword1">array</span> <span class="php-var">$credentials</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>): void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> authenticateUser(<span class="php-keyword1">array</span> <span class="php-var">$credentials</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>): <span class="php-keyword1">void</span>;</div>
+  
 
   
   <div class="short-description">
-  <p>Authenticates the user based on the specified credentials and writes the response.</p>
+  <p>Authenticates credentials and creates a new session for the supplied client.</p>
   </div>
   
 
@@ -1011,7 +592,8 @@ RS256, RS384, RS512.</p>
 
   <h2>Parameters</h2>
 
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
         <tr>
         <th>Name</th>
         <th>Pass type</th>
@@ -1019,7 +601,7 @@ RS256, RS384, RS512.</p>
         <th>Default value</th>
         <th>Description</th>
         </tr>
-        
+
         
         <tr>
             <td>
@@ -1029,18 +611,13 @@ RS256, RS384, RS512.</p>
                 by value
             </td>
             <td>
-                array
+                <code class="php-type">array&lt;string, mixed&gt;</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The credentials for the authentication. The expected credentials are:</p>
-<ul>
-<li>$credentials["client_id"] - id of the client (device token etc.).</li>
-<li>$credentials["user_login"] - the user login.</li>
-<li>$credentials["user_password"] - the user password.</li>
-</ul>
+                <p>Authenticator-specific credentials and a nonempty string client_id.</p>
             </td>
         </tr>
         
@@ -1052,34 +629,27 @@ RS256, RS384, RS512.</p>
                 by reference
             </td>
             <td>
-                array
+                <code class="php-type">array&lt;string, mixed&gt;</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The response upon successful authentication. The expected properties are:</p>
-<ul>
-<li>$response["user_id"] - id of the user.</li>
-<li>$response["client_id"] - id of the client (device token etc.).</li>
-<li>$response["access_token"] - access token generated upon successful authentication.</li>
-<li>$response["access_token_expire"] - expiration time of the access token.</li>
-<li>$response["refresh_token"] - refresh token generated upon successful authentication.</li>
-<li>$response["refresh_token_expire"] - expiration time of the refresh token.</li>
-<li>$response["last_activity"] - last activity time of the user of this token.</li>
-<li>$response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
-token is the access token encoded and signed by the JWT standard approach.</li>
-</ul>
+                <p>Receives the committed token response described by createTokenRecord(); remains unchanged on
+failure.</p>
             </td>
         </tr>
         
-        
+
     </table>
+  </div>
 
   
   <h2>Returns</h2>
   <div class="item_list">
-  void<br>
+  <code class="php-type">void</code><br>
+  
+  <div class="item_description"><p>Publishes tokens only after authentication and successful persistence.</p></div>
   
   </div>
   
@@ -1087,33 +657,29 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   <h2>Throws</h2>
   <div class="item_list">
   
-  \Exception<br>
+  <code class="php-type"><a href="class-OAuth2.MissingParametersException.html">MissingParametersException</a></code><br>
   
-  <div class="item_description"><p>It might throw an exception in the case of any system errors:</p>
-<ul>
-<li>if any required initialization parameters are empty.</li>
-<li>if any initialization parameters are invalid.</li>
-<li>if token_storage does not implement <a href='interface-OAuth2.Interfaces.ITokenStorage.html'>\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>if user_authenticator does not implement <a href='interface-OAuth2.Interfaces.IUserAuthenticator.html'>\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
-<li>if the private key is invalid.</li>
-<li>if ssl signing fails due to system errors.</li>
-<li>if the token storage fails to save the token record.</li>
-</ul></div>
+  <div class="item_description"><p>If client_id or an authenticator-required credential is missing.</p></div>
   
   
-  <a href='class-OAuth2.InvalidCredentialsException.html'>\OAuth2\InvalidCredentialsException</a><br>
+  <code class="php-type"><a href="class-OAuth2.InvalidCredentialsException.html">InvalidCredentialsException</a></code><br>
   
-  <div class="item_description"><p>It might throw the InvalidCredentialsException if the authentication fails.</p></div>
-  
-  
-  <a href='class-OAuth2.AuthSystemException.html'>\OAuth2\AuthSystemException</a><br>
-  
-  <div class="item_description"><p>It might throw the AuthSystemException if some system error occurs.</p></div>
+  <div class="item_description"><p>If the authenticator rejects credentials or client_id has an invalid type.</p></div>
   
   
-  <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
+  <code class="php-type"><a href="class-OAuth2.InvalidTokenException.html">InvalidTokenException</a></code><br>
   
-  <div class="item_description"><p>It might throw the MissingParametersException if any required paramters are empty.</p></div>
+  <div class="item_description"><p>If the client or returned user identifier is invalid.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">AuthSystemException</a></code><br>
+  
+  <div class="item_description"><p>If configuration, the authenticator, signing or storage is unavailable.</p></div>
+  
+  
+  <code class="php-type">\Exception</code><br>
+  
+  <div class="item_description"><p>If the authenticator identity backend or storage fails.</p></div>
   
   
   </div>
@@ -1121,7 +687,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h2>Overrides</h2>
   <div class="item_list">
-  <a href='interface-OAuth2.Interfaces.IOAuthManager.html#authenticateUser'>\OAuth2\Interfaces\IOAuthManager::authenticateUser()</a>
+  <a href="interface-OAuth2.Interfaces.IOAuthManager.html#authenticateUser">\OAuth2\Interfaces\IOAuthManager::authenticateUser()</a>
   </div>
   
 
@@ -1139,7 +705,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#750'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#845'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -1147,13 +713,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
 
   
 
-  <h2>Uses</h2>
-  <div class="item_list">
   
-  <a href='class-OAuth2.OAuthManager.html#createTokenRecord'>\OAuth2\OAuthManager::createTokenRecord()</a><br>
-  
-  
-  </div>
 
   
 
@@ -1164,14 +724,15 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
 
   <hr id="createJwtToken">
-  
+
   <h1>Method: OAuthManager::createJwtToken()</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> createJwtToken(<span class="php-keyword1">array</span> <span class="php-var">$payload</span>): string;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> createJwtToken(<span class="php-keyword1">array</span> <span class="php-var">$payload</span>): <span class="php-keyword1">string</span>;</div>
+  
 
   
   <div class="short-description">
-  <p>Internal auxiliary function for creation of the jwt token.</p>
+  <p>Serializes and signs claims before any storage update occurs.</p>
   </div>
   
 
@@ -1181,7 +742,8 @@ token is the access token encoded and signed by the JWT standard approach.</li>
 
   <h2>Parameters</h2>
 
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
         <tr>
         <th>Name</th>
         <th>Pass type</th>
@@ -1189,7 +751,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
         <th>Default value</th>
         <th>Description</th>
         </tr>
-        
+
         
         <tr>
             <td>
@@ -1199,25 +761,26 @@ token is the access token encoded and signed by the JWT standard approach.</li>
                 by value
             </td>
             <td>
-                array
+                <code class="php-type">array&lt;string, mixed&gt;</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The payload array.</p>
+                <p>JSON-compatible session claims.</p>
             </td>
         </tr>
         
-        
+
     </table>
+  </div>
 
   
   <h2>Returns</h2>
   <div class="item_list">
-  string<br>
+  <code class="php-type">string</code><br>
   
-  <div class="item_description"><p>Returns the jwt token string.</p></div>
+  <div class="item_description"><p>Returns the compact signed JWT, limited to 16384 bytes.</p></div>
   
   </div>
   
@@ -1225,17 +788,9 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   <h2>Throws</h2>
   <div class="item_list">
   
-  \Exception<br>
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">AuthSystemException</a></code><br>
   
-  <div class="item_description"><p>It might throw an exception in the case of any system errors:</p>
-<ul>
-<li>if any required initialization parameters are empty.</li>
-<li>if any initialization parameters are invalid.</li>
-<li>if token_storage does not implement <a href='interface-OAuth2.Interfaces.ITokenStorage.html'>\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>if user_authenticator does not implement <a href='interface-OAuth2.Interfaces.IUserAuthenticator.html'>\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
-<li>if the private key is invalid.</li>
-<li>if ssl signing fails due to system errors.</li>
-</ul></div>
+  <div class="item_description"><p>If serialization or signing fails, or the token exceeds the size limit.</p></div>
   
   
   </div>
@@ -1256,7 +811,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#419'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#448'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -1275,14 +830,15 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
 
   <hr id="createTokenRecord">
-  
+
   <h1>Method: OAuthManager::createTokenRecord()</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> createTokenRecord(string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>): void;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> createTokenRecord(<span class="php-keyword1">string</span> <span class="php-var">$user_id</span>, <span class="php-keyword1">string</span> <span class="php-var">$client_id</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>, ?<span class="php-keyword1">string</span> <span class="php-var">$previous_refresh_token</span> = <span class="php-keyword1">null</span>): <span class="php-keyword1">void</span>;</div>
+  
 
   
   <div class="short-description">
-  <p>Internal auxiliary function for creation of the token record.</p>
+  <p>Builds a session and commits it before publishing tokens in the response.</p>
   </div>
   
 
@@ -1292,7 +848,8 @@ token is the access token encoded and signed by the JWT standard approach.</li>
 
   <h2>Parameters</h2>
 
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
         <tr>
         <th>Name</th>
         <th>Pass type</th>
@@ -1300,7 +857,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
         <th>Default value</th>
         <th>Description</th>
         </tr>
-        
+
         
         <tr>
             <td>
@@ -1310,13 +867,13 @@ token is the access token encoded and signed by the JWT standard approach.</li>
                 by value
             </td>
             <td>
-                string
+                <code class="php-type">string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The user id for which the tokens were issued.</p>
+                <p>The authenticated user identifier.</p>
             </td>
         </tr>
         
@@ -1328,13 +885,13 @@ token is the access token encoded and signed by the JWT standard approach.</li>
                 by value
             </td>
             <td>
-                string
+                <code class="php-type">string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The client id for which the tokens were issued.</p>
+                <p>The client or device identifier scoped to this user.</p>
             </td>
         </tr>
         
@@ -1346,23 +903,46 @@ token is the access token encoded and signed by the JWT standard approach.</li>
                 by reference
             </td>
             <td>
-                array
+                <code class="php-type">array&lt;string, mixed&gt;</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The response to be filled with the user data and tokens.</p>
+                <p>Receives the committed response and remains unchanged on failure.</p>
             </td>
         </tr>
         
+        <tr>
+            <td>
+                $previous_refresh_token
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">?string</code>
+            </td>
+            <td>
+                null
+            </td>
+            <td class="description_column">
+                <p>The refresh token to atomically consume, or null for a new authenticated family.</p>
+            </td>
+        </tr>
         
+
     </table>
+  </div>
 
   
   <h2>Returns</h2>
   <div class="item_list">
-  void<br>
+  <code class="php-type">void</code><br>
+  
+  <div class="item_description"><p>Publishes user_id, client_id, access_token (the JWT), jwt_access_token (its compatibility
+alias), token_type (Bearer), expires_in (seconds), both absolute expiry timestamps and
+refresh_token. The internal opaque access ID and last_activity are not response fields.</p></div>
   
   </div>
   
@@ -1370,18 +950,24 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   <h2>Throws</h2>
   <div class="item_list">
   
-  \Exception<br>
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">AuthSystemException</a></code><br>
   
-  <div class="item_description"><p>It might throw an exception in the case of any errors:</p>
-<ul>
-<li>if any required initialization parameters are empty.</li>
-<li>if any initialization parameters are invalid.</li>
-<li>if token_storage does not implement <a href='interface-OAuth2.Interfaces.ITokenStorage.html'>\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>if user_authenticator does not implement <a href='interface-OAuth2.Interfaces.IUserAuthenticator.html'>\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
-<li>if the private key is invalid.</li>
-<li>if ssl signing fails due to system errors.</li>
-<li>if the token storage fails to save the token record.</li>
-</ul></div>
+  <div class="item_description"><p>If signing, random generation, timestamp arithmetic or storage configuration fails.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.InvalidTokenException.html">InvalidTokenException</a></code><br>
+  
+  <div class="item_description"><p>If identifiers are invalid or rotation rejects an unknown or consumed refresh token.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.TokenExpiredException.html">TokenExpiredException</a></code><br>
+  
+  <div class="item_description"><p>If the refresh token expires before atomic replacement.</p></div>
+  
+  
+  <code class="php-type">\Exception</code><br>
+  
+  <div class="item_description"><p>If storage cannot persist the session.</p></div>
   
   
   </div>
@@ -1402,7 +988,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#603'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#765'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -1410,24 +996,9 @@ token is the access token encoded and signed by the JWT standard approach.</li>
 
   
 
-  <h2>Uses</h2>
-  <div class="item_list">
   
-  <a href='interface-OAuth2.Interfaces.ITokenStorage.html#saveTokenRecord'>\OAuth2\Interfaces\ITokenStorage::saveTokenRecord()</a><br>
-  
-  
-  </div>
 
-  <h2>Used by</h2>
-  <div class="item_list">
   
-  <a href='class-OAuth2.OAuthManager.html#authenticateUser'>\OAuth2\OAuthManager::authenticateUser()</a><br>
-  
-  
-  <a href='class-OAuth2.OAuthManager.html#refreshTokens'>\OAuth2\OAuthManager::refreshTokens()</a><br>
-  
-  
-  </div>
 
   
 
@@ -1436,14 +1007,15 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
 
   <hr id="generateJwtSignature">
-  
+
   <h1>Method: OAuthManager::generateJwtSignature()</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> generateJwtSignature(string <span class="php-var">$input</span>): string;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> generateJwtSignature(<span class="php-keyword1">string</span> <span class="php-var">$input</span>): <span class="php-keyword1">string</span>;</div>
+  
 
   
   <div class="short-description">
-  <p>Internal auxiliary function for generation of the signature of the data for all supported algorithms.</p>
+  <p>Signs a serialized JWT with the configured active key.</p>
   </div>
   
 
@@ -1453,7 +1025,8 @@ token is the access token encoded and signed by the JWT standard approach.</li>
 
   <h2>Parameters</h2>
 
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
         <tr>
         <th>Name</th>
         <th>Pass type</th>
@@ -1461,7 +1034,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
         <th>Default value</th>
         <th>Description</th>
         </tr>
-        
+
         
         <tr>
             <td>
@@ -1471,25 +1044,26 @@ token is the access token encoded and signed by the JWT standard approach.</li>
                 by value
             </td>
             <td>
-                string
+                <code class="php-type">string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>Data to be signed.</p>
+                <p>The encoded header and payload separated by a period.</p>
             </td>
         </tr>
         
-        
+
     </table>
+  </div>
 
   
   <h2>Returns</h2>
   <div class="item_list">
-  string<br>
+  <code class="php-type">string</code><br>
   
-  <div class="item_description"><p>Returns the signature of the data.</p></div>
+  <div class="item_description"><p>Returns the binary HMAC or RSA signature.</p></div>
   
   </div>
   
@@ -1497,17 +1071,9 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   <h2>Throws</h2>
   <div class="item_list">
   
-  \Exception<br>
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">AuthSystemException</a></code><br>
   
-  <div class="item_description"><p>It might throw an exception in the case of any system errors:</p>
-<ul>
-<li>if any required initialization parameters are empty.</li>
-<li>if any initialization parameters are invalid.</li>
-<li>if token_storage does not implement <a href='interface-OAuth2.Interfaces.ITokenStorage.html'>\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>if user_authenticator does not implement <a href='interface-OAuth2.Interfaces.IUserAuthenticator.html'>\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
-<li>if the private key is invalid.</li>
-<li>if ssl signing fails due to system errors.</li>
-</ul></div>
+  <div class="item_description"><p>If initialization, a private signing key or RSA signing is unavailable.</p></div>
   
   
   </div>
@@ -1528,7 +1094,7 @@ token is the access token encoded and signed by the JWT standard approach.</li>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#284'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#409'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -1536,160 +1102,9 @@ token is the access token encoded and signed by the JWT standard approach.</li>
 
   
 
-  <h2>Uses</h2>
-  <div class="item_list">
-  
-  <a href='class-OAuth2.OAuthManager.html#generateRSASignature'>\OAuth2\OAuthManager::generateRSASignature()</a><br>
-  
-  
-  </div>
-
   
 
   
-
-  
-
-  
-
-  <hr id="generateRSASignature">
-  
-  <h1>Method: OAuthManager::generateRSASignature()</h1>
-
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> generateRSASignature(string <span class="php-var">$input</span>, int <span class="php-var">$algorithm_id</span>): string;</div>
-
-  
-  <div class="short-description">
-  <p>Internal auxiliary function for generation of the signature of the data for the algorithms
-RS256, RS384, RS512.</p>
-  </div>
-  
-
-  
-
-  
-
-  <h2>Parameters</h2>
-
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
-        <tr>
-        <th>Name</th>
-        <th>Pass type</th>
-        <th>Value type</th>
-        <th>Default value</th>
-        <th>Description</th>
-        </tr>
-        
-        
-        <tr>
-            <td>
-                $input
-            </td>
-            <td>
-                by value
-            </td>
-            <td>
-                string
-            </td>
-            <td>
-                
-            </td>
-            <td class="description_column">
-                <p>Data which is signed.</p>
-            </td>
-        </tr>
-        
-        <tr>
-            <td>
-                $algorithm_id
-            </td>
-            <td>
-                by value
-            </td>
-            <td>
-                int
-            </td>
-            <td>
-                
-            </td>
-            <td class="description_column">
-                <p>Algorithm to use for signing. The supported algorithms are: RS256, RS384, RS512.</p>
-            </td>
-        </tr>
-        
-        
-    </table>
-
-  
-  <h2>Returns</h2>
-  <div class="item_list">
-  string<br>
-  
-  <div class="item_description"><p>Returns the signature of the data.</p></div>
-  
-  </div>
-  
-
-  <h2>Throws</h2>
-  <div class="item_list">
-  
-  \Exception<br>
-  
-  <div class="item_description"><p>It might throw an exception in the case of any system errors:</p>
-<ul>
-<li>if any required initialization parameters are empty.</li>
-<li>if any initialization parameters are invalid.</li>
-<li>if token_storage does not implement <a href='interface-OAuth2.Interfaces.ITokenStorage.html'>\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>if user_authenticator does not implement <a href='interface-OAuth2.Interfaces.IUserAuthenticator.html'>\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
-<li>if the private key is invalid.</li>
-<li>if ssl signing fails due to system errors.</li>
-</ul></div>
-  
-  
-  </div>
-
-  
-
-  <h2>Authors</h2>
-  <div class="item_list">
-  
-  <div class='item'>Oleg Schildt</div>
-  
-  </div>
-
-  
-
-  
-
-  
-  <h2>Source code</h2>
-  <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#244'>OAuth2/OAuthManager.php</a>
-  </div>
-  
-
-  <h2>See also</h2>
-  <div class="item_list">
-  
-  <a href='class-OAuth2.OAuthManager.html#verifyRSASignature'>\OAuth2\OAuthManager::verifyRSASignature()</a><br>
-  
-  
-  </div>
-
-  
-
-  
-
-  <h2>Used by</h2>
-  <div class="item_list">
-  
-  <a href='class-OAuth2.OAuthManager.html#verifyRSASignature'>\OAuth2\OAuthManager::verifyRSASignature()</a><br>
-  
-  
-  <a href='class-OAuth2.OAuthManager.html#generateJwtSignature'>\OAuth2\OAuthManager::generateJwtSignature()</a><br>
-  
-  
-  </div>
 
   
 
@@ -1698,14 +1113,15 @@ RS256, RS384, RS512.</p>
   
 
   <hr id="generateToken">
-  
+
   <h1>Method: OAuthManager::generateToken()</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> generateToken(): string;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> generateToken(): <span class="php-keyword1">string</span>;</div>
+  
 
   
   <div class="short-description">
-  <p>Internal auxiliary function for generation of a token string.</p>
+  <p>Generates an opaque token using the operating system cryptographic generator.</p>
   </div>
   
 
@@ -1718,9 +1134,9 @@ RS256, RS384, RS512.</p>
   
   <h2>Returns</h2>
   <div class="item_list">
-  string<br>
+  <code class="php-type">string</code><br>
   
-  <div class="item_description"><p>Returns the token string.</p></div>
+  <div class="item_description"><p>Returns 32 random bytes encoded as 64 lowercase hexadecimal characters.</p></div>
   
   </div>
   
@@ -1728,12 +1144,9 @@ RS256, RS384, RS512.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-  \Exception<br>
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">AuthSystemException</a></code><br>
   
-  <div class="item_description"><p>It might throw an exception in the case of any system errors:</p>
-<ul>
-<li>if ssl funtions fail due to system errors.</li>
-</ul></div>
+  <div class="item_description"><p>If the cryptographic generator fails; no weaker fallback is used.</p></div>
   
   
   </div>
@@ -1754,7 +1167,72 @@ RS256, RS384, RS512.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#376'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#386'>OAuth2/OAuthManager.php</a>
+  </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <hr id="getCurrentTime">
+
+  <h1>Method: OAuthManager::getCurrentTime()</h1>
+
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> getCurrentTime(): <span class="php-keyword1">int</span>;</div>
+  
+
+  
+  <div class="short-description">
+  <p>Supplies the wall clock for token issuance and JWT lifetime checks.</p>
+  </div>
+  
+
+  
+
+  
+
+  
+
+  
+  <h2>Returns</h2>
+  <div class="item_list">
+  <code class="php-type">int</code><br>
+  
+  <div class="item_description"><p>Returns the current Unix timestamp in seconds.</p></div>
+  
+  </div>
+  
+
+  
+
+  
+
+  <h2>Authors</h2>
+  <div class="item_list">
+  
+  <div class='item'>Oleg Schildt</div>
+  
+  </div>
+
+  
+
+  
+
+  
+  <h2>Source code</h2>
+  <div class="item_list">
+  <a href='source-OAuth2.OAuthManager.php.html#671'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -1773,14 +1251,15 @@ RS256, RS384, RS512.</p>
   
 
   <hr id="getJwtPayload">
-  
+
   <h1>Method: OAuthManager::getJwtPayload()</h1>
 
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> getJwtPayload(?string <span class="php-var">$jwt_access_token</span>, bool <span class="php-var">$verify_signature</span> = <span class="php-keyword1">true</span>): <span class="php-keyword1">array</span>;</div>
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> getJwtPayload(?<span class="php-keyword1">string</span> <span class="php-var">$jwt_access_token</span>, <span class="php-keyword1">bool</span> <span class="php-var">$verify_signature</span> = <span class="php-keyword1">true</span>): <span class="php-keyword1">array</span>;</div>
+  
 
   
   <div class="short-description">
-  <p>Internal auxiliary function for extraction of the payload from the jwt access token.</p>
+  <p>Parses a JWT and verifies its signature using locally configured keys only.</p>
   </div>
   
 
@@ -1790,7 +1269,8 @@ RS256, RS384, RS512.</p>
 
   <h2>Parameters</h2>
 
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
         <tr>
         <th>Name</th>
         <th>Pass type</th>
@@ -1798,7 +1278,7 @@ RS256, RS384, RS512.</p>
         <th>Default value</th>
         <th>Description</th>
         </tr>
-        
+
         
         <tr>
             <td>
@@ -1808,13 +1288,13 @@ RS256, RS384, RS512.</p>
                 by value
             </td>
             <td>
-                ?string
+                <code class="php-type">?string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The jwt access token.</p>
+                <p>A compact signed access token; null and empty strings are rejected.</p>
             </td>
         </tr>
         
@@ -1826,25 +1306,26 @@ RS256, RS384, RS512.</p>
                 by value
             </td>
             <td>
-                bool
+                <code class="php-type">bool</code>
             </td>
             <td>
                 true
             </td>
             <td class="description_column">
-                <p>The flag to control whether the signature should be verified or not.</p>
+                <p>Must be true; unverified extraction is deliberately unavailable.</p>
             </td>
         </tr>
         
-        
+
     </table>
+  </div>
 
   
   <h2>Returns</h2>
   <div class="item_list">
-  array<br>
+  <code class="php-type">array&lt;string, mixed&gt;</code><br>
   
-  <div class="item_description"><p>Returns the extracted payload array.</p></div>
+  <div class="item_description"><p>Returns an object-shaped payload after successful signature verification.</p></div>
   
   </div>
   
@@ -1852,22 +1333,19 @@ RS256, RS384, RS512.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-  \Exception<br>
+  <code class="php-type"><a href="class-OAuth2.MissingParametersException.html">MissingParametersException</a></code><br>
   
-  <div class="item_description"><p>It might throw an exception in the case of any errors:</p>
-<ul>
-<li>if any required initialization parameters are empty.</li>
-<li>if any initialization parameters are invalid.</li>
-<li>if token_storage does not implement <a href='interface-OAuth2.Interfaces.ITokenStorage.html'>\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>if user_authenticator does not implement <a href='interface-OAuth2.Interfaces.IUserAuthenticator.html'>\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
-<li>if the public key is invalid.</li>
-<li>if the ssl verification cannot be performed due to system errors.</li>
-</ul></div>
+  <div class="item_description"><p>If the JWT is null or empty.</p></div>
   
   
-  <a href='class-OAuth2.InvalidTokenException.html'>\OAuth2\InvalidTokenException</a><br>
+  <code class="php-type"><a href="class-OAuth2.InvalidTokenException.html">InvalidTokenException</a></code><br>
   
-  <div class="item_description"><p>It might throw the InvalidTokenException if the jwt access token is invalid.</p></div>
+  <div class="item_description"><p>If encoding, JSON objects, header, key ID, algorithm or signature is invalid.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">AuthSystemException</a></code><br>
+  
+  <div class="item_description"><p>If the manager is uninitialized or cryptographic verification fails internally.</p></div>
   
   
   </div>
@@ -1888,7 +1366,80 @@ RS256, RS384, RS512.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#459'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#497'>OAuth2/OAuthManager.php</a>
+  </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <hr id="getStorage">
+
+  <h1>Method: OAuthManager::getStorage()</h1>
+
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> getStorage(): ITokenStorage;</div>
+  
+
+  
+  <div class="short-description">
+  <p>Returns storage for operations requiring server-side session state.</p>
+  </div>
+  
+
+  
+
+  
+
+  
+
+  
+  <h2>Returns</h2>
+  <div class="item_list">
+  <code class="php-type"><a href="interface-OAuth2.Interfaces.ITokenStorage.html">ITokenStorage</a></code><br>
+  
+  <div class="item_description"><p>Returns the collaborator supplied by the caller.</p></div>
+  
+  </div>
+  
+
+  <h2>Throws</h2>
+  <div class="item_list">
+  
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">AuthSystemException</a></code><br>
+  
+  <div class="item_description"><p>If the manager is uninitialized or storage was not configured.</p></div>
+  
+  
+  </div>
+
+  
+
+  <h2>Authors</h2>
+  <div class="item_list">
+  
+  <div class='item'>Oleg Schildt</div>
+  
+  </div>
+
+  
+
+  
+
+  
+  <h2>Source code</h2>
+  <div class="item_list">
+  <a href='source-OAuth2.OAuthManager.php.html#687'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -1907,24 +1458,31 @@ RS256, RS384, RS512.</p>
   
 
   <hr id="init">
-  
+
   <h1>Method: OAuthManager::init()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> init(<span class="php-keyword1">array</span> <span class="php-var">$parameters</span>): void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> init(<span class="php-keyword1">array</span> <span class="php-var">$parameters</span>): <span class="php-keyword1">void</span>;</div>
+  
 
   
   <div class="short-description">
-  <p>Initializes the authentication manager with parameters.</p>
+  <p>Configures signing, verification, lifetimes and optional collaborators.</p>
   </div>
   
 
+  
+  <div class="long_description">
+  <h2>Details</h2>
+  <p>Each call replaces all settings. Failed initialization preserves the previous configuration.</p>
+  </div>
   
 
   
 
   <h2>Parameters</h2>
 
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
         <tr>
         <th>Name</th>
         <th>Pass type</th>
@@ -1932,7 +1490,7 @@ RS256, RS384, RS512.</p>
         <th>Default value</th>
         <th>Description</th>
         </tr>
-        
+
         
         <tr>
             <td>
@@ -1942,52 +1500,34 @@ RS256, RS384, RS512.</p>
                 by value
             </td>
             <td>
-                array
+                <code class="php-type">array&lt;string, mixed&gt;</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The parameters are:</p>
-<ul>
-<li>
-<p>$parameters["access_token_ttl_minutes"] - time to live in minutes for the access token.</p>
-</li>
-<li>
-<p>$parameters["refresh_token_ttl_days"] - time to live in days for the refresh token.</p>
-</li>
-<li>
-<p>$parameters["encryption_algorithm"] - the encryption algorithm used for signing. The following
-algorithms are supported: HS256, HS384, HS512, RS256, RS384, RS512.</p>
-</li>
-<li>
-<p>$parameters["public_key"] - location of the public key file. Required for the algorithms: RS256, RS384, RS512.</p>
-</li>
-<li>
-<p>$parameters["private_key"] - location of the private key file. Required for the algorithms: RS256, RS384, RS512.</p>
-</li>
-<li>
-<p>$parameters["pass_phrase"] - the pass phrase for the private key if necessary.</p>
-</li>
-<li>
-<p>$parameters["token_storage"] - the object implementing the interface <a href='interface-OAuth2.Interfaces.ITokenStorage.html'>\OAuth2\Interfaces\ITokenStorage</a>. It is used for storing and
-validating of the stored tokens.</p>
-</li>
-<li>
-<p>$parameters["user_authenticator"] - the object implementing the interface <a href='interface-OAuth2.Interfaces.IUserAuthenticator.html'>\OAuth2\Interfaces\IUserAuthenticator</a>. It is used for authentication
-of the user upon his credentials before generation of the tokens.</p>
-</li>
-</ul>
+                <p>Supported keys are encryption_algorithm (HS256/384/512 or RS256/384/512), secret_key (raw HMAC
+bytes), public_key/private_key (local PEM paths), pass_phrase (private-key password),
+access_token_ttl_minutes (integer or decimal integer string, 1..525600, default 10),
+refresh_token_ttl_days (same format, 1..3650, default 14), token_storage (ITokenStorage),
+user_authenticator (IUserAuthenticator), issuer (nonempty string), audience (string or nonempty
+list of strings), key_id (nonempty string), and verification_keys (map of IDs to
+encryption_algorithm and secret_key or public_key). Collaborators are optional for offline
+verification; RSA verification needs no private key. Issuer and audience restrictions are
+enforced when configured; production callers should configure both.</p>
             </td>
         </tr>
         
-        
+
     </table>
+  </div>
 
   
   <h2>Returns</h2>
   <div class="item_list">
-  void<br>
+  <code class="php-type">void</code><br>
+  
+  <div class="item_description"><p>Publishes validated settings and parsed keys together.</p></div>
   
   </div>
   
@@ -1995,15 +1535,11 @@ of the user upon his credentials before generation of the tokens.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-  \Exception<br>
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">AuthSystemException</a></code><br>
   
-  <div class="item_description"><p>It might throw an exception in the case of any system errors:</p>
-<ul>
-<li>if any required initialization parameters are empty.</li>
-<li>if any initialization parameters are invalid.</li>
-<li>if token_storage does not implement <a href='interface-OAuth2.Interfaces.ITokenStorage.html'>\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>if user_authenticator does not implement <a href='interface-OAuth2.Interfaces.IUserAuthenticator.html'>\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
-</ul></div>
+  <div class="item_description"><p>If an unknown or invalid parameter is supplied, a key cannot be loaded, its type or strength is
+invalid, its public and private parts do not match, or the same key is assigned to
+different algorithms.</p></div>
   
   
   </div>
@@ -2011,7 +1547,7 @@ of the user upon his credentials before generation of the tokens.</p>
   
   <h2>Overrides</h2>
   <div class="item_list">
-  <a href='interface-OAuth2.Interfaces.IOAuthManager.html#init'>\OAuth2\Interfaces\IOAuthManager::init()</a>
+  <a href="interface-OAuth2.Interfaces.IOAuthManager.html#init">\OAuth2\Interfaces\IOAuthManager::init()</a>
   </div>
   
 
@@ -2029,20 +1565,11 @@ of the user upon his credentials before generation of the tokens.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#660'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#55'>OAuth2/OAuthManager.php</a>
   </div>
   
 
-  <h2>See also</h2>
-  <div class="item_list">
   
-  <a href='interface-OAuth2.Interfaces.ITokenStorage.html'>\OAuth2\Interfaces\ITokenStorage</a><br>
-  
-  
-  <a href='interface-OAuth2.Interfaces.IUserAuthenticator.html'>\OAuth2\Interfaces\IUserAuthenticator</a><br>
-  
-  
-  </div>
 
   
 
@@ -2057,32 +1584,26 @@ of the user upon his credentials before generation of the tokens.</p>
   
 
   <hr id="invalidateClient">
-  
+
   <h1>Method: OAuthManager::invalidateClient()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateClient(?string <span class="php-var">$user_id</span>, ?string <span class="php-var">$client_id</span>, ?string <span class="php-var">$refresh_token</span>): void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateClient(?<span class="php-keyword1">string</span> <span class="php-var">$user_id</span>, ?<span class="php-keyword1">string</span> <span class="php-var">$client_id</span>, ?<span class="php-keyword1">string</span> <span class="php-var">$refresh_token</span>): <span class="php-keyword1">void</span>;</div>
+  
 
   
   <div class="short-description">
-  <p>Invalidates all token records for the client.</p>
+  <p>Atomically authorizes revocation using a current refresh token.</p>
   </div>
   
 
-  
-  <div class="long_description">
-  <h2>Details</h2>
-  <p>The invalidation by the client id is asserted by a valid client id and
-a valid refresh token. If the refresh token is expired, the invalidation
-can be done only after authentication.</p>
-<p>The invalidation is done by using <a href='interface-OAuth2.Interfaces.ITokenStorage.html#deleteTokenRecordByKey'>\OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()</a> with the key 'client_id'.</p>
-  </div>
   
 
   
 
   <h2>Parameters</h2>
 
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
         <tr>
         <th>Name</th>
         <th>Pass type</th>
@@ -2090,7 +1611,7 @@ can be done only after authentication.</p>
         <th>Default value</th>
         <th>Description</th>
         </tr>
-        
+
         
         <tr>
             <td>
@@ -2100,13 +1621,13 @@ can be done only after authentication.</p>
                 by value
             </td>
             <td>
-                ?string
+                <code class="php-type">?string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The user id for which the refresh token was issued.</p>
+                <p>The user owning the sessions.</p>
             </td>
         </tr>
         
@@ -2118,13 +1639,13 @@ can be done only after authentication.</p>
                 by value
             </td>
             <td>
-                ?string
+                <code class="php-type">?string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The client id for which the refresh token was issued.</p>
+                <p>The client used to authorize the operation.</p>
             </td>
         </tr>
         
@@ -2136,23 +1657,26 @@ can be done only after authentication.</p>
                 by value
             </td>
             <td>
-                ?string
+                <code class="php-type">?string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The refresh token generated upon successful authentication.</p>
+                <p>A current refresh token bound to this exact user/client pair.</p>
             </td>
         </tr>
         
-        
+
     </table>
+  </div>
 
   
   <h2>Returns</h2>
   <div class="item_list">
-  void<br>
+  <code class="php-type">void</code><br>
+  
+  <div class="item_description"><p>Revokes only this user/client session; other users with the same client_id are preserved.</p></div>
   
   </div>
   
@@ -2160,33 +1684,29 @@ can be done only after authentication.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-  \Exception<br>
+  <code class="php-type"><a href="class-OAuth2.MissingParametersException.html">MissingParametersException</a></code><br>
   
-  <div class="item_description"><p>It might throw an exception in the case of any system errors:</p>
-<ul>
-<li>if the token storage fails to verify the token record.</li>
-<li>if the token storage fails to delete the token record.</li>
-</ul></div>
+  <div class="item_description"><p>If a required argument is null or empty.</p></div>
   
   
-  <a href='class-OAuth2.InvalidTokenException.html'>\OAuth2\InvalidTokenException</a><br>
+  <code class="php-type"><a href="class-OAuth2.InvalidTokenException.html">InvalidTokenException</a></code><br>
   
-  <div class="item_description"><p>It might throw the InvalidTokenException if the refresh token is invalid or expired.</p></div>
-  
-  
-  <a href='class-OAuth2.TokenExpiredException.html'>\OAuth2\TokenExpiredException</a><br>
-  
-  <div class="item_description"><p>It might throw the TokenExpiredException if the jwt refresh token is expired.</p></div>
+  <div class="item_description"><p>If an argument is invalid, the token is unknown, or reuse is detected.</p></div>
   
   
-  <a href='class-OAuth2.AuthSystemException.html'>\OAuth2\AuthSystemException</a><br>
+  <code class="php-type"><a href="class-OAuth2.TokenExpiredException.html">TokenExpiredException</a></code><br>
   
-  <div class="item_description"><p>It might throw the AuthSystemException if some system error occurs.</p></div>
+  <div class="item_description"><p>If the refresh token has reached its expiration time.</p></div>
   
   
-  <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">AuthSystemException</a></code><br>
   
-  <div class="item_description"><p>It might throw the MissingParametersException if any required parameters are empty.</p></div>
+  <div class="item_description"><p>If configuration, signing, random generation or storage access fails.</p></div>
+  
+  
+  <code class="php-type">\Exception</code><br>
+  
+  <div class="item_description"><p>If the storage collaborator cannot complete its operation.</p></div>
   
   
   </div>
@@ -2194,7 +1714,7 @@ can be done only after authentication.</p>
   
   <h2>Overrides</h2>
   <div class="item_list">
-  <a href='interface-OAuth2.Interfaces.IOAuthManager.html#invalidateClient'>\OAuth2\Interfaces\IOAuthManager::invalidateClient()</a>
+  <a href="interface-OAuth2.Interfaces.IOAuthManager.html#invalidateClient">\OAuth2\Interfaces\IOAuthManager::invalidateClient()</a>
   </div>
   
 
@@ -2212,7 +1732,7 @@ can be done only after authentication.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#1058'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#1069'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -2220,16 +1740,7 @@ can be done only after authentication.</p>
 
   
 
-  <h2>Uses</h2>
-  <div class="item_list">
   
-  <a href='class-OAuth2.OAuthManager.html#verifyRefreshToken'>\OAuth2\OAuthManager::verifyRefreshToken()</a><br>
-  
-  
-  <a href='interface-OAuth2.Interfaces.ITokenStorage.html#deleteTokenRecordByKey'>\OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()</a><br>
-  
-  
-  </div>
 
   
 
@@ -2240,30 +1751,26 @@ can be done only after authentication.</p>
   
 
   <hr id="invalidateJwtAccessToken">
-  
+
   <h1>Method: OAuthManager::invalidateJwtAccessToken()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateJwtAccessToken(?string <span class="php-var">$jwt_access_token</span>): void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateJwtAccessToken(?<span class="php-keyword1">string</span> <span class="php-var">$jwt_access_token</span>): <span class="php-keyword1">void</span>;</div>
+  
 
   
   <div class="short-description">
-  <p>Invalidates the token record for the jwt access token.</p>
+  <p>Revokes a session identified by a correctly signed JWT, including an expired JWT.</p>
   </div>
   
 
-  
-  <div class="long_description">
-  <h2>Details</h2>
-  <p>The invalidation is done by using <a href='interface-OAuth2.Interfaces.ITokenStorage.html#deleteTokenRecordByKey'>\OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()</a> with the key 'access_token'.</p>
-<p>The origin access token is extracted from the jwt payload.</p>
-  </div>
   
 
   
 
   <h2>Parameters</h2>
 
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
         <tr>
         <th>Name</th>
         <th>Pass type</th>
@@ -2271,7 +1778,7 @@ can be done only after authentication.</p>
         <th>Default value</th>
         <th>Description</th>
         </tr>
-        
+
         
         <tr>
             <td>
@@ -2281,23 +1788,26 @@ can be done only after authentication.</p>
                 by value
             </td>
             <td>
-                ?string
+                <code class="php-type">?string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The jwt access token generated upon successful authentication.</p>
+                <p>The signed token whose opaque access ID identifies the session.</p>
             </td>
         </tr>
         
-        
+
     </table>
+  </div>
 
   
   <h2>Returns</h2>
   <div class="item_list">
-  void<br>
+  <code class="php-type">void</code><br>
+  
+  <div class="item_description"><p>Removes the matching access/refresh pair; already absent records are ignored.</p></div>
   
   </div>
   
@@ -2305,23 +1815,24 @@ can be done only after authentication.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-  \Exception<br>
+  <code class="php-type"><a href="class-OAuth2.MissingParametersException.html">MissingParametersException</a></code><br>
   
-  <div class="item_description"><p>It might throw an exception in the case of any errors:</p>
-<ul>
-<li>if any required initialization parameters are empty.</li>
-<li>if any initialization parameters are invalid.</li>
-<li>if token_storage does not implement <a href='interface-OAuth2.Interfaces.ITokenStorage.html'>\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>if user_authenticator does not implement <a href='interface-OAuth2.Interfaces.IUserAuthenticator.html'>\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
-<li>if the public key is invalid.</li>
-<li>if the ssl verification cannot be performed due to system errors.</li>
-<li>if the token storage fails to delete the token record.</li>
-</ul></div>
+  <div class="item_description"><p>If the JWT is null or empty.</p></div>
   
   
-  <a href='class-OAuth2.InvalidTokenException.html'>\OAuth2\InvalidTokenException</a><br>
+  <code class="php-type"><a href="class-OAuth2.InvalidTokenException.html">InvalidTokenException</a></code><br>
   
-  <div class="item_description"><p>It might throw the InvalidTokenException if the jwt access token is invalid.</p></div>
+  <div class="item_description"><p>If its signature, format or session claims are invalid.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">AuthSystemException</a></code><br>
+  
+  <div class="item_description"><p>If configuration, cryptographic verification or storage access fails.</p></div>
+  
+  
+  <code class="php-type">\Exception</code><br>
+  
+  <div class="item_description"><p>If the storage collaborator cannot persist revocation.</p></div>
   
   
   </div>
@@ -2329,7 +1840,7 @@ can be done only after authentication.</p>
   
   <h2>Overrides</h2>
   <div class="item_list">
-  <a href='interface-OAuth2.Interfaces.IOAuthManager.html#invalidateJwtAccessToken'>\OAuth2\Interfaces\IOAuthManager::invalidateJwtAccessToken()</a>
+  <a href="interface-OAuth2.Interfaces.IOAuthManager.html#invalidateJwtAccessToken">\OAuth2\Interfaces\IOAuthManager::invalidateJwtAccessToken()</a>
   </div>
   
 
@@ -2347,7 +1858,7 @@ can be done only after authentication.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#1107'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#1102'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -2355,13 +1866,7 @@ can be done only after authentication.</p>
 
   
 
-  <h2>Uses</h2>
-  <div class="item_list">
   
-  <a href='interface-OAuth2.Interfaces.ITokenStorage.html#deleteTokenRecordByKey'>\OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()</a><br>
-  
-  
-  </div>
 
   
 
@@ -2372,29 +1877,26 @@ can be done only after authentication.</p>
   
 
   <hr id="invalidateRefreshToken">
-  
+
   <h1>Method: OAuthManager::invalidateRefreshToken()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateRefreshToken(?string <span class="php-var">$refresh_token</span>): void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateRefreshToken(?<span class="php-keyword1">string</span> <span class="php-var">$refresh_token</span>): <span class="php-keyword1">void</span>;</div>
+  
 
   
   <div class="short-description">
-  <p>Invalidates all token records for the refresh token.</p>
+  <p>Revokes a session by possession of a current or previously consumed refresh token.</p>
   </div>
   
 
-  
-  <div class="long_description">
-  <h2>Details</h2>
-  <p>The invalidation is done by using <a href='interface-OAuth2.Interfaces.ITokenStorage.html#deleteTokenRecordByKey'>\OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()</a> with the key 'refresh_token'.</p>
-  </div>
   
 
   
 
   <h2>Parameters</h2>
 
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
         <tr>
         <th>Name</th>
         <th>Pass type</th>
@@ -2402,7 +1904,7 @@ can be done only after authentication.</p>
         <th>Default value</th>
         <th>Description</th>
         </tr>
-        
+
         
         <tr>
             <td>
@@ -2412,23 +1914,26 @@ can be done only after authentication.</p>
                 by value
             </td>
             <td>
-                ?string
+                <code class="php-type">?string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The refresh token generated upon successful authentication.</p>
+                <p>The nonempty refresh token identifying the family; it need not be unexpired.</p>
             </td>
         </tr>
         
-        
+
     </table>
+  </div>
 
   
   <h2>Returns</h2>
   <div class="item_list">
-  void<br>
+  <code class="php-type">void</code><br>
+  
+  <div class="item_description"><p>Removes its active token family. Unknown tokens are ignored for idempotent revocation.</p></div>
   
   </div>
   
@@ -2436,17 +1941,24 @@ can be done only after authentication.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-  \Exception<br>
+  <code class="php-type"><a href="class-OAuth2.MissingParametersException.html">MissingParametersException</a></code><br>
   
-  <div class="item_description"><p>It might throw an exception in the case of any system errors:</p>
-<ul>
-<li>if the token storage fails to delete the token record.</li>
-</ul></div>
+  <div class="item_description"><p>If the refresh token is null or empty.</p></div>
   
   
-  <a href='class-OAuth2.InvalidTokenException.html'>\OAuth2\InvalidTokenException</a><br>
+  <code class="php-type"><a href="class-OAuth2.InvalidTokenException.html">InvalidTokenException</a></code><br>
   
-  <div class="item_description"><p>It should throw the InvalidTokenException if the refresh token is invalid.</p></div>
+  <div class="item_description"><p>If the token contains invalid characters or exceeds the size limit.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">AuthSystemException</a></code><br>
+  
+  <div class="item_description"><p>If configuration or storage access fails.</p></div>
+  
+  
+  <code class="php-type">\Exception</code><br>
+  
+  <div class="item_description"><p>If the storage collaborator cannot persist revocation.</p></div>
   
   
   </div>
@@ -2454,7 +1966,7 @@ can be done only after authentication.</p>
   
   <h2>Overrides</h2>
   <div class="item_list">
-  <a href='interface-OAuth2.Interfaces.IOAuthManager.html#invalidateRefreshToken'>\OAuth2\Interfaces\IOAuthManager::invalidateRefreshToken()</a>
+  <a href="interface-OAuth2.Interfaces.IOAuthManager.html#invalidateRefreshToken">\OAuth2\Interfaces\IOAuthManager::invalidateRefreshToken()</a>
   </div>
   
 
@@ -2472,7 +1984,7 @@ can be done only after authentication.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#1144'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#1134'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -2480,13 +1992,7 @@ can be done only after authentication.</p>
 
   
 
-  <h2>Uses</h2>
-  <div class="item_list">
   
-  <a href='interface-OAuth2.Interfaces.ITokenStorage.html#deleteTokenRecordByKey'>\OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()</a><br>
-  
-  
-  </div>
 
   
 
@@ -2497,32 +2003,26 @@ can be done only after authentication.</p>
   
 
   <hr id="invalidateUser">
-  
+
   <h1>Method: OAuthManager::invalidateUser()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateUser(?string <span class="php-var">$user_id</span>, ?string <span class="php-var">$client_id</span>, ?string <span class="php-var">$refresh_token</span>): void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> invalidateUser(?<span class="php-keyword1">string</span> <span class="php-var">$user_id</span>, ?<span class="php-keyword1">string</span> <span class="php-var">$client_id</span>, ?<span class="php-keyword1">string</span> <span class="php-var">$refresh_token</span>): <span class="php-keyword1">void</span>;</div>
+  
 
   
   <div class="short-description">
-  <p>Invalidates all token records for the user.</p>
+  <p>Atomically authorizes revocation using a current refresh token.</p>
   </div>
   
 
-  
-  <div class="long_description">
-  <h2>Details</h2>
-  <p>The invalidation by the user id is asserted by a valid client id and
-a valid refresh token. If the refresh token is expired, the invalidation
-can be done only after authentication.</p>
-<p>The invalidation is done by using <a href='interface-OAuth2.Interfaces.ITokenStorage.html#deleteTokenRecordByKey'>\OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()</a> with the key 'user_id'.</p>
-  </div>
   
 
   
 
   <h2>Parameters</h2>
 
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
         <tr>
         <th>Name</th>
         <th>Pass type</th>
@@ -2530,7 +2030,7 @@ can be done only after authentication.</p>
         <th>Default value</th>
         <th>Description</th>
         </tr>
-        
+
         
         <tr>
             <td>
@@ -2540,13 +2040,13 @@ can be done only after authentication.</p>
                 by value
             </td>
             <td>
-                ?string
+                <code class="php-type">?string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The user id for which the refresh token was issued.</p>
+                <p>The user owning the sessions.</p>
             </td>
         </tr>
         
@@ -2558,13 +2058,13 @@ can be done only after authentication.</p>
                 by value
             </td>
             <td>
-                ?string
+                <code class="php-type">?string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The client id for which the refresh token was issued.</p>
+                <p>The client used to authorize the operation.</p>
             </td>
         </tr>
         
@@ -2576,23 +2076,26 @@ can be done only after authentication.</p>
                 by value
             </td>
             <td>
-                ?string
+                <code class="php-type">?string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The refresh token generated upon successful authentication.</p>
+                <p>A current refresh token bound to this exact user/client pair.</p>
             </td>
         </tr>
         
-        
+
     </table>
+  </div>
 
   
   <h2>Returns</h2>
   <div class="item_list">
-  void<br>
+  <code class="php-type">void</code><br>
+  
+  <div class="item_description"><p>Revokes all sessions of this user.</p></div>
   
   </div>
   
@@ -2600,33 +2103,29 @@ can be done only after authentication.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-  \Exception<br>
+  <code class="php-type"><a href="class-OAuth2.MissingParametersException.html">MissingParametersException</a></code><br>
   
-  <div class="item_description"><p>It might throw an exception in the case of any system errors:</p>
-<ul>
-<li>if the token storage fails to verify the token record.</li>
-<li>if the token storage fails to delete the token record.</li>
-</ul></div>
+  <div class="item_description"><p>If a required argument is null or empty.</p></div>
   
   
-  <a href='class-OAuth2.InvalidTokenException.html'>\OAuth2\InvalidTokenException</a><br>
+  <code class="php-type"><a href="class-OAuth2.InvalidTokenException.html">InvalidTokenException</a></code><br>
   
-  <div class="item_description"><p>It might throw the InvalidTokenException if the refresh token is invalid or expired.</p></div>
-  
-  
-  <a href='class-OAuth2.TokenExpiredException.html'>\OAuth2\TokenExpiredException</a><br>
-  
-  <div class="item_description"><p>It might throw the TokenExpiredException if the jwt refresh token is expired.</p></div>
+  <div class="item_description"><p>If an argument is invalid, the token is unknown, or reuse is detected.</p></div>
   
   
-  <a href='class-OAuth2.AuthSystemException.html'>\OAuth2\AuthSystemException</a><br>
+  <code class="php-type"><a href="class-OAuth2.TokenExpiredException.html">TokenExpiredException</a></code><br>
   
-  <div class="item_description"><p>It might throw the AuthSystemException if some system error occurs.</p></div>
+  <div class="item_description"><p>If the refresh token has reached its expiration time.</p></div>
   
   
-  <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">AuthSystemException</a></code><br>
   
-  <div class="item_description"><p>It might throw the MissingParametersException if any required parameters are empty.</p></div>
+  <div class="item_description"><p>If configuration, signing, random generation or storage access fails.</p></div>
+  
+  
+  <code class="php-type">\Exception</code><br>
+  
+  <div class="item_description"><p>If the storage collaborator cannot complete its operation.</p></div>
   
   
   </div>
@@ -2634,7 +2133,7 @@ can be done only after authentication.</p>
   
   <h2>Overrides</h2>
   <div class="item_list">
-  <a href='interface-OAuth2.Interfaces.IOAuthManager.html#invalidateUser'>\OAuth2\Interfaces\IOAuthManager::invalidateUser()</a>
+  <a href="interface-OAuth2.Interfaces.IOAuthManager.html#invalidateUser">\OAuth2\Interfaces\IOAuthManager::invalidateUser()</a>
   </div>
   
 
@@ -2652,7 +2151,7 @@ can be done only after authentication.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#996'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#1027'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -2660,16 +2159,7 @@ can be done only after authentication.</p>
 
   
 
-  <h2>Uses</h2>
-  <div class="item_list">
   
-  <a href='class-OAuth2.OAuthManager.html#verifyRefreshToken'>\OAuth2\OAuthManager::verifyRefreshToken()</a><br>
-  
-  
-  <a href='interface-OAuth2.Interfaces.ITokenStorage.html#deleteTokenRecordByKey'>\OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()</a><br>
-  
-  
-  </div>
 
   
 
@@ -2679,15 +2169,16 @@ can be done only after authentication.</p>
 
   
 
-  <hr id="refreshTokens">
-  
-  <h1>Method: OAuthManager::refreshTokens()</h1>
+  <hr id="isIdentifier">
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> refreshTokens(?string <span class="php-var">$refresh_token</span>, ?string <span class="php-var">$user_id</span>, ?string <span class="php-var">$client_id</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>): void;</div>
+  <h1>Method: OAuthManager::isIdentifier()</h1>
+
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> isIdentifier(<span class="php-keyword1">mixed</span> <span class="php-var">$value</span>): <span class="php-keyword1">bool</span>;</div>
+  
 
   
   <div class="short-description">
-  <p>Refreshes the access and refresh tokens by using the valid refresh token.</p>
+  <p>Checks identifiers before JSON serialization or storage access.</p>
   </div>
   
 
@@ -2697,7 +2188,8 @@ can be done only after authentication.</p>
 
   <h2>Parameters</h2>
 
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
         <tr>
         <th>Name</th>
         <th>Pass type</th>
@@ -2705,874 +2197,42 @@ can be done only after authentication.</p>
         <th>Default value</th>
         <th>Description</th>
         </tr>
-        
+
         
         <tr>
             <td>
-                $refresh_token
+                $value
             </td>
             <td>
                 by value
             </td>
             <td>
-                ?string
+                <code class="php-type">mixed</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The refresh token generated upon successful authentication.</p>
+                <p>The proposed identifier.</p>
             </td>
         </tr>
         
-        <tr>
-            <td>
-                $user_id
-            </td>
-            <td>
-                by value
-            </td>
-            <td>
-                ?string
-            </td>
-            <td>
-                
-            </td>
-            <td class="description_column">
-                <p>The user id for which the refresh token was issued.</p>
-            </td>
-        </tr>
-        
-        <tr>
-            <td>
-                $client_id
-            </td>
-            <td>
-                by value
-            </td>
-            <td>
-                ?string
-            </td>
-            <td>
-                
-            </td>
-            <td class="description_column">
-                <p>The client id for which the refresh token was issued.</p>
-            </td>
-        </tr>
-        
-        <tr>
-            <td>
-                $response
-            </td>
-            <td>
-                by reference
-            </td>
-            <td>
-                array
-            </td>
-            <td>
-                
-            </td>
-            <td class="description_column">
-                <p>The response upon successful refresh. The expected properties are:</p>
-<ul>
-<li>$response["user_id"] - id of the user.</li>
-<li>$response["client_id"] - id of the client (device token etc.).</li>
-<li>$response["access_token"] - access token generated upon successful authentication.</li>
-<li>$response["access_token_expire"] - expiration time of the access token.</li>
-<li>$response["refresh_token"] - refresh token generated upon successful authentication.</li>
-<li>$response["refresh_token_expire"] - expiration time of the refresh token.</li>
-<li>$response["last_activity"] - last activity time of the user of this token.</li>
-<li>$response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
-token is the access token encoded and signed by the JWT standard approach.</li>
-</ul>
-            </td>
-        </tr>
-        
-        
+
     </table>
+  </div>
 
   
   <h2>Returns</h2>
   <div class="item_list">
-  void<br>
+  <code class="php-type">bool</code><br>
   
-  </div>
-  
-
-  <h2>Throws</h2>
-  <div class="item_list">
-  
-  \Exception<br>
-  
-  <div class="item_description"><p>It might throw an exception in the case of any system errors:</p>
-<ul>
-<li>if any required initialization parameters are empty.</li>
-<li>if any initialization parameters are invalid.</li>
-<li>if token_storage does not implement <a href='interface-OAuth2.Interfaces.ITokenStorage.html'>\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>if user_authenticator does not implement <a href='interface-OAuth2.Interfaces.IUserAuthenticator.html'>\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
-<li>if the private key is invalid.</li>
-<li>if ssl signing fails due to system errors.</li>
-<li>if the token storage fails to verify the token record.</li>
-<li>if the token storage fails to save the token record.</li>
-</ul></div>
-  
-  
-  <a href='class-OAuth2.InvalidTokenException.html'>\OAuth2\InvalidTokenException</a><br>
-  
-  <div class="item_description"><p>It might throw the InvalidTokenException if the refresh token is invalid or expired.</p></div>
-  
-  
-  <a href='class-OAuth2.TokenExpiredException.html'>\OAuth2\TokenExpiredException</a><br>
-  
-  <div class="item_description"><p>It might throw the TokenExpiredException if the refresh token is expired.</p></div>
-  
-  
-  <a href='class-OAuth2.AuthSystemException.html'>\OAuth2\AuthSystemException</a><br>
-  
-  <div class="item_description"><p>It might throw the AuthSystemException if some system error occurs.</p></div>
-  
-  
-  <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
-  
-  <div class="item_description"><p>It might throw the MissingParametersException if any required paramters are empty.</p></div>
-  
-  
-  </div>
-
-  
-  <h2>Overrides</h2>
-  <div class="item_list">
-  <a href='interface-OAuth2.Interfaces.IOAuthManager.html#refreshTokens'>\OAuth2\Interfaces\IOAuthManager::refreshTokens()</a>
-  </div>
-  
-
-  <h2>Authors</h2>
-  <div class="item_list">
-  
-  <div class='item'>Oleg Schildt</div>
-  
-  </div>
-
-  
-
-  
-
-  
-  <h2>Source code</h2>
-  <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#815'>OAuth2/OAuthManager.php</a>
-  </div>
-  
-
-  
-
-  
-
-  <h2>Uses</h2>
-  <div class="item_list">
-  
-  <a href='class-OAuth2.OAuthManager.html#createTokenRecord'>\OAuth2\OAuthManager::createTokenRecord()</a><br>
-  
-  
-  <a href='class-OAuth2.OAuthManager.html#verifyRefreshToken'>\OAuth2\OAuthManager::verifyRefreshToken()</a><br>
-  
-  
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  <hr id="urlSafeB64Decode">
-  
-  <h1>Method: OAuthManager::urlSafeB64Decode()</h1>
-
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> urlSafeB64Decode(string <span class="php-var">$b64</span>): string;</div>
-
-  
-  <div class="short-description">
-  <p>Internal auxiliary function for safe base64 decoding.</p>
-  </div>
-  
-
-  
-
-  
-
-  <h2>Parameters</h2>
-
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
-        <tr>
-        <th>Name</th>
-        <th>Pass type</th>
-        <th>Value type</th>
-        <th>Default value</th>
-        <th>Description</th>
-        </tr>
-        
-        
-        <tr>
-            <td>
-                $b64
-            </td>
-            <td>
-                by value
-            </td>
-            <td>
-                string
-            </td>
-            <td>
-                
-            </td>
-            <td class="description_column">
-                <p>Data to be decoded.</p>
-            </td>
-        </tr>
-        
-        
-    </table>
-
-  
-  <h2>Returns</h2>
-  <div class="item_list">
-  string<br>
-  
-  <div class="item_description"><p>Returns the base64 decoded data string.</p></div>
+  <div class="item_description"><p>Returns true for a nonempty UTF-8 string up to 4096 bytes without control characters. The string
+"0" is valid; values are never trimmed or changed.</p></div>
   
   </div>
   
 
   
-
-  
-
-  <h2>Authors</h2>
-  <div class="item_list">
-  
-  <div class='item'>Oleg Schildt</div>
-  
-  </div>
-
-  
-
-  
-
-  
-  <h2>Source code</h2>
-  <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#161'>OAuth2/OAuthManager.php</a>
-  </div>
-  
-
-  <h2>See also</h2>
-  <div class="item_list">
-  
-  <a href='class-OAuth2.OAuthManager.html#urlSafeB64Encode'>\OAuth2\OAuthManager::urlSafeB64Encode()</a><br>
-  
-  
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  <hr id="urlSafeB64Encode">
-  
-  <h1>Method: OAuthManager::urlSafeB64Encode()</h1>
-
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> urlSafeB64Encode(string <span class="php-var">$data</span>): string;</div>
-
-  
-  <div class="short-description">
-  <p>Internal auxiliary function for safe base64 encoding.</p>
-  </div>
-  
-
-  
-
-  
-
-  <h2>Parameters</h2>
-
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
-        <tr>
-        <th>Name</th>
-        <th>Pass type</th>
-        <th>Value type</th>
-        <th>Default value</th>
-        <th>Description</th>
-        </tr>
-        
-        
-        <tr>
-            <td>
-                $data
-            </td>
-            <td>
-                by value
-            </td>
-            <td>
-                string
-            </td>
-            <td>
-                
-            </td>
-            <td class="description_column">
-                <p>Data to be encoded.</p>
-            </td>
-        </tr>
-        
-        
-    </table>
-
-  
-  <h2>Returns</h2>
-  <div class="item_list">
-  string<br>
-  
-  <div class="item_description"><p>Returns the base64 encoded data string.</p></div>
-  
-  </div>
-  
-
-  
-
-  
-
-  <h2>Authors</h2>
-  <div class="item_list">
-  
-  <div class='item'>Oleg Schildt</div>
-  
-  </div>
-
-  
-
-  
-
-  
-  <h2>Source code</h2>
-  <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#140'>OAuth2/OAuthManager.php</a>
-  </div>
-  
-
-  <h2>See also</h2>
-  <div class="item_list">
-  
-  <a href='class-OAuth2.OAuthManager.html#urlSafeB64Decode'>\OAuth2\OAuthManager::urlSafeB64Decode()</a><br>
-  
-  
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  <hr id="validateParameters">
-  
-  <h1>Method: OAuthManager::validateParameters()</h1>
-
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> validateParameters(): void;</div>
-
-  
-  <div class="short-description">
-  <p>Internal auxiliary function for validation of the parameters.</p>
-  </div>
-  
-
-  
-
-  
-
-  
-
-  
-  <h2>Returns</h2>
-  <div class="item_list">
-  void<br>
-  
-  </div>
-  
-
-  <h2>Throws</h2>
-  <div class="item_list">
-  
-  \Exception<br>
-  
-  <div class="item_description"><p>It might throw an exception in the case of any system errors:</p>
-<ul>
-<li>if any required initialization parameters are empty.</li>
-<li>if any initialization parameters are invalid.</li>
-<li>if token_storage does not implement <a href='interface-OAuth2.Interfaces.ITokenStorage.html'>\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>if user_authenticator does not implement <a href='interface-OAuth2.Interfaces.IUserAuthenticator.html'>\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
-</ul></div>
-  
-  
-  </div>
-
-  
-
-  <h2>Authors</h2>
-  <div class="item_list">
-  
-  <div class='item'>Oleg Schildt</div>
-  
-  </div>
-
-  
-
-  
-
-  
-  <h2>Source code</h2>
-  <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#519'>OAuth2/OAuthManager.php</a>
-  </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  <hr id="verifyJwtAccessToken">
-  
-  <h1>Method: OAuthManager::verifyJwtAccessToken()</h1>
-
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyJwtAccessToken(?string <span class="php-var">$jwt_access_token</span>, bool <span class="php-var">$check_on_server</span> = <span class="php-keyword1">true</span>): <span class="php-keyword1">array</span>|<span class="php-keyword1">false</span>;</div>
-
-  
-  <div class="short-description">
-  <p>Verifies the jwt access token.</p>
-  </div>
-  
-
-  
-
-  
-
-  <h2>Parameters</h2>
-
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
-        <tr>
-        <th>Name</th>
-        <th>Pass type</th>
-        <th>Value type</th>
-        <th>Default value</th>
-        <th>Description</th>
-        </tr>
-        
-        
-        <tr>
-            <td>
-                $jwt_access_token
-            </td>
-            <td>
-                by value
-            </td>
-            <td>
-                ?string
-            </td>
-            <td>
-                
-            </td>
-            <td class="description_column">
-                <p>The jwt access token generated upon successful authentication.</p>
-            </td>
-        </tr>
-        
-        <tr>
-            <td>
-                $check_on_server
-            </td>
-            <td>
-                by value
-            </td>
-            <td>
-                bool
-            </td>
-            <td>
-                true
-            </td>
-            <td class="description_column">
-                <p>This flag defines whether only the signatire should be checked or also the
-authentication server should be asked.</p>
-            </td>
-        </tr>
-        
-        
-    </table>
-
-  
-  <h2>Returns</h2>
-  <div class="item_list">
-  array|false<br>
-  
-  <div class="item_description"><p>Returns the payload array on successful verification, otherwise false.</p></div>
-  
-  </div>
-  
-
-  <h2>Throws</h2>
-  <div class="item_list">
-  
-  \Exception<br>
-  
-  <div class="item_description"><p>It might throw an exception in the case of any system errors:</p>
-<ul>
-<li>if any required initialization parameters are empty.</li>
-<li>if any initialization parameters are invalid.</li>
-<li>if token_storage does not implement <a href='interface-OAuth2.Interfaces.ITokenStorage.html'>\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>if user_authenticator does not implement <a href='interface-OAuth2.Interfaces.IUserAuthenticator.html'>\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
-<li>if the public key is invalid.</li>
-<li>if the ssl verification cannot be performed due to system errors.</li>
-<li>if the token storage fails to verify the token record.</li>
-</ul></div>
-  
-  
-  <a href='class-OAuth2.InvalidTokenException.html'>\OAuth2\InvalidTokenException</a><br>
-  
-  <div class="item_description"><p>It might throw the InvalidTokenException if the jwt access token is invalid.</p></div>
-  
-  
-  <a href='class-OAuth2.TokenExpiredException.html'>\OAuth2\TokenExpiredException</a><br>
-  
-  <div class="item_description"><p>It might throw the TokenExpiredException if the jwt access token is expired.</p></div>
-  
-  
-  <a href='class-OAuth2.AuthSystemException.html'>\OAuth2\AuthSystemException</a><br>
-  
-  <div class="item_description"><p>It might throw the AuthSystemException if some system error occurs.</p></div>
-  
-  
-  <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
-  
-  <div class="item_description"><p>It might throw the MissingParametersException if any required paramters are empty.</p></div>
-  
-  
-  </div>
-
-  
-  <h2>Overrides</h2>
-  <div class="item_list">
-  <a href='interface-OAuth2.Interfaces.IOAuthManager.html#verifyJwtAccessToken'>\OAuth2\Interfaces\IOAuthManager::verifyJwtAccessToken()</a>
-  </div>
-  
-
-  <h2>Authors</h2>
-  <div class="item_list">
-  
-  <div class='item'>Oleg Schildt</div>
-  
-  </div>
-
-  
-
-  
-
-  
-  <h2>Source code</h2>
-  <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#862'>OAuth2/OAuthManager.php</a>
-  </div>
-  
-
-  
-
-  
-
-  <h2>Uses</h2>
-  <div class="item_list">
-  
-  <a href='interface-OAuth2.Interfaces.ITokenStorage.html#loadTokenRecord'>\OAuth2\Interfaces\ITokenStorage::loadTokenRecord()</a><br>
-  
-  
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  <hr id="verifyJwtSignature">
-  
-  <h1>Method: OAuthManager::verifyJwtSignature()</h1>
-
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> verifyJwtSignature(string <span class="php-var">$input</span>, string <span class="php-var">$signature</span>): void;</div>
-
-  
-  <div class="short-description">
-  <p>Internal auxiliary function for verification of the signature of the data for all supported algorithms.</p>
-  </div>
-  
-
-  
-
-  
-
-  <h2>Parameters</h2>
-
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
-        <tr>
-        <th>Name</th>
-        <th>Pass type</th>
-        <th>Value type</th>
-        <th>Default value</th>
-        <th>Description</th>
-        </tr>
-        
-        
-        <tr>
-            <td>
-                $input
-            </td>
-            <td>
-                by value
-            </td>
-            <td>
-                string
-            </td>
-            <td>
-                
-            </td>
-            <td class="description_column">
-                <p>Data which was signed.</p>
-            </td>
-        </tr>
-        
-        <tr>
-            <td>
-                $signature
-            </td>
-            <td>
-                by value
-            </td>
-            <td>
-                string
-            </td>
-            <td>
-                
-            </td>
-            <td class="description_column">
-                <p>Signature used for signing.</p>
-            </td>
-        </tr>
-        
-        
-    </table>
-
-  
-  <h2>Returns</h2>
-  <div class="item_list">
-  void<br>
-  
-  </div>
-  
-
-  <h2>Throws</h2>
-  <div class="item_list">
-  
-  \Exception<br>
-  
-  <div class="item_description"><p>It might throw an exception in the case of any errors:</p>
-<ul>
-<li>if any required initialization parameters are empty.</li>
-<li>if any initialization parameters are invalid.</li>
-<li>if token_storage does not implement <a href='interface-OAuth2.Interfaces.ITokenStorage.html'>\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>if user_authenticator does not implement <a href='interface-OAuth2.Interfaces.IUserAuthenticator.html'>\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
-<li>if the public key is invalid.</li>
-<li>if the ssl verification cannot be performed due to system errors.</li>
-</ul></div>
-  
-  
-  </div>
-
-  
-
-  <h2>Authors</h2>
-  <div class="item_list">
-  
-  <div class='item'>Oleg Schildt</div>
-  
-  </div>
-
-  
-
-  
-
-  
-  <h2>Source code</h2>
-  <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#335'>OAuth2/OAuthManager.php</a>
-  </div>
-  
-
-  
-
-  
-
-  <h2>Uses</h2>
-  <div class="item_list">
-  
-  <a href='class-OAuth2.OAuthManager.html#verifyRSASignature'>\OAuth2\OAuthManager::verifyRSASignature()</a><br>
-  
-  
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  <hr id="verifyRSASignature">
-  
-  <h1>Method: OAuthManager::verifyRSASignature()</h1>
-
-  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> verifyRSASignature(string <span class="php-var">$input</span>, string <span class="php-var">$signature</span>, int <span class="php-var">$algorithm_id</span>): void;</div>
-
-  
-  <div class="short-description">
-  <p>Internal auxiliary function for verification of the data signature for the algorithms
-RS256, RS384, RS512.</p>
-  </div>
-  
-
-  
-
-  
-
-  <h2>Parameters</h2>
-
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
-        <tr>
-        <th>Name</th>
-        <th>Pass type</th>
-        <th>Value type</th>
-        <th>Default value</th>
-        <th>Description</th>
-        </tr>
-        
-        
-        <tr>
-            <td>
-                $input
-            </td>
-            <td>
-                by value
-            </td>
-            <td>
-                string
-            </td>
-            <td>
-                
-            </td>
-            <td class="description_column">
-                <p>Data which is signed.</p>
-            </td>
-        </tr>
-        
-        <tr>
-            <td>
-                $signature
-            </td>
-            <td>
-                by value
-            </td>
-            <td>
-                string
-            </td>
-            <td>
-                
-            </td>
-            <td class="description_column">
-                <p>Signature used for signing the data.</p>
-            </td>
-        </tr>
-        
-        <tr>
-            <td>
-                $algorithm_id
-            </td>
-            <td>
-                by value
-            </td>
-            <td>
-                int
-            </td>
-            <td>
-                
-            </td>
-            <td class="description_column">
-                <p>Algorithm used for signing. The supported algorithms are: RS256, RS384, RS512.</p>
-            </td>
-        </tr>
-        
-        
-    </table>
-
-  
-  <h2>Returns</h2>
-  <div class="item_list">
-  void<br>
-  
-  </div>
-  
-
-  <h2>Throws</h2>
-  <div class="item_list">
-  
-  \Exception<br>
-  
-  <div class="item_description"><p>It might throw an exception in the case of any system errors:</p>
-<ul>
-<li>if any required initialization parameters are empty.</li>
-<li>if any initialization parameters are invalid.</li>
-<li>if token_storage does not implement <a href='interface-OAuth2.Interfaces.ITokenStorage.html'>\OAuth2\Interfaces\ITokenStorage</a>.</li>
-<li>if user_authenticator does not implement <a href='interface-OAuth2.Interfaces.IUserAuthenticator.html'>\OAuth2\Interfaces\IUserAuthenticator</a>.</li>
-<li>if the public key is invalid.</li>
-<li>if the ssl verification cannot be performed due to system errors.</li>
-</ul></div>
-  
-  
-  </div>
 
   
 
@@ -3598,21 +2258,9 @@ RS256, RS384, RS512.</p>
 
   
 
-  <h2>Uses</h2>
-  <div class="item_list">
   
-  <a href='class-OAuth2.OAuthManager.html#generateRSASignature'>\OAuth2\OAuthManager::generateRSASignature()</a><br>
-  
-  
-  </div>
 
-  <h2>Used by</h2>
-  <div class="item_list">
   
-  <a href='class-OAuth2.OAuthManager.html#verifyJwtSignature'>\OAuth2\OAuthManager::verifyJwtSignature()</a><br>
-  
-  
-  </div>
 
   
 
@@ -3620,15 +2268,16 @@ RS256, RS384, RS512.</p>
 
   
 
-  <hr id="verifyRefreshToken">
-  
-  <h1>Method: OAuthManager::verifyRefreshToken()</h1>
+  <hr id="normalizeTtl">
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyRefreshToken(?string <span class="php-var">$refresh_token</span>, ?string <span class="php-var">$user_id</span>, ?string <span class="php-var">$client_id</span>): void;</div>
+  <h1>Method: OAuthManager::normalizeTtl()</h1>
+
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> normalizeTtl(<span class="php-keyword1">mixed</span> <span class="php-var">$value</span>, <span class="php-keyword1">int</span> <span class="php-var">$maximum</span>): <span class="php-keyword1">int</span>;</div>
+  
 
   
   <div class="short-description">
-  <p>Verifies the refresh token.</p>
+  <p>Validates a bounded integer lifetime without floating-point overflow.</p>
   </div>
   
 
@@ -3638,7 +2287,8 @@ RS256, RS384, RS512.</p>
 
   <h2>Parameters</h2>
 
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
         <tr>
         <th>Name</th>
         <th>Pass type</th>
@@ -3646,7 +2296,365 @@ RS256, RS384, RS512.</p>
         <th>Default value</th>
         <th>Description</th>
         </tr>
+
         
+        <tr>
+            <td>
+                $value
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">mixed</code>
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>An integer or decimal integer string.</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                $maximum
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">int</code>
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The inclusive upper bound in the configured time unit.</p>
+            </td>
+        </tr>
+        
+
+    </table>
+  </div>
+
+  
+  <h2>Returns</h2>
+  <div class="item_list">
+  <code class="php-type">int</code><br>
+  
+  <div class="item_description"><p>Returns the validated positive lifetime.</p></div>
+  
+  </div>
+  
+
+  <h2>Throws</h2>
+  <div class="item_list">
+  
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">AuthSystemException</a></code><br>
+  
+  <div class="item_description"><p>If the value is not a bounded positive integer.</p></div>
+  
+  
+  </div>
+
+  
+
+  <h2>Authors</h2>
+  <div class="item_list">
+  
+  <div class='item'>Oleg Schildt</div>
+  
+  </div>
+
+  
+
+  
+
+  
+  <h2>Source code</h2>
+  <div class="item_list">
+  <a href='source-OAuth2.OAuthManager.php.html#172'>OAuth2/OAuthManager.php</a>
+  </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <hr id="prepareKey">
+
+  <h1>Method: OAuthManager::prepareKey()</h1>
+
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> prepareKey(<span class="php-keyword1">array</span> <span class="php-var">$config</span>, <span class="php-keyword1">bool</span> <span class="php-var">$allow_private</span>): <span class="php-keyword1">array</span>;</div>
+  
+
+  
+  <div class="short-description">
+  <p>Loads keys and binds their validated type and strength to one algorithm.</p>
+  </div>
+  
+
+  
+
+  
+
+  <h2>Parameters</h2>
+
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
+        <tr>
+        <th>Name</th>
+        <th>Pass type</th>
+        <th>Value type</th>
+        <th>Default value</th>
+        <th>Description</th>
+        </tr>
+
+        
+        <tr>
+            <td>
+                $config
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">array&lt;string, mixed&gt;</code>
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The algorithm and raw HMAC bytes or local RSA PEM paths.</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                $allow_private
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">bool</code>
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>Whether a private signing key may be supplied.</p>
+            </td>
+        </tr>
+        
+
+    </table>
+  </div>
+
+  
+  <h2>Returns</h2>
+  <div class="item_list">
+  <code class="php-type">array{
+    algorithm: string,
+    verification: (string | \OpenSSLAsymmetricKey),
+    signing: (string | \OpenSSLAsymmetricKey | null)
+}</code><br>
+  
+  <div class="item_description"><p>Returns parsed keys; signing is null for public-key-only verification.</p></div>
+  
+  </div>
+  
+
+  <h2>Throws</h2>
+  <div class="item_list">
+  
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">AuthSystemException</a></code><br>
+  
+  <div class="item_description"><p>If the algorithm, key material, password, key type, pair or length is invalid.</p></div>
+  
+  
+  </div>
+
+  
+
+  <h2>Authors</h2>
+  <div class="item_list">
+  
+  <div class='item'>Oleg Schildt</div>
+  
+  </div>
+
+  
+
+  
+
+  
+  <h2>Source code</h2>
+  <div class="item_list">
+  <a href='source-OAuth2.OAuthManager.php.html#220'>OAuth2/OAuthManager.php</a>
+  </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <hr id="readKeyFile">
+
+  <h1>Method: OAuthManager::readKeyFile()</h1>
+
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> readKeyFile(<span class="php-keyword1">mixed</span> <span class="php-var">$path</span>): <span class="php-keyword1">string</span>;</div>
+  
+
+  
+  <div class="short-description">
+  <p>Reads a local PEM key without accepting stream wrappers.</p>
+  </div>
+  
+
+  
+
+  
+
+  <h2>Parameters</h2>
+
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
+        <tr>
+        <th>Name</th>
+        <th>Pass type</th>
+        <th>Value type</th>
+        <th>Default value</th>
+        <th>Description</th>
+        </tr>
+
+        
+        <tr>
+            <td>
+                $path
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">mixed</code>
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>A readable local file path.</p>
+            </td>
+        </tr>
+        
+
+    </table>
+  </div>
+
+  
+  <h2>Returns</h2>
+  <div class="item_list">
+  <code class="php-type">string</code><br>
+  
+  <div class="item_description"><p>Returns the complete nonempty PEM contents.</p></div>
+  
+  </div>
+  
+
+  <h2>Throws</h2>
+  <div class="item_list">
+  
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">AuthSystemException</a></code><br>
+  
+  <div class="item_description"><p>If the path is invalid or the key file cannot be read.</p></div>
+  
+  
+  </div>
+
+  
+
+  <h2>Authors</h2>
+  <div class="item_list">
+  
+  <div class='item'>Oleg Schildt</div>
+  
+  </div>
+
+  
+
+  
+
+  
+  <h2>Source code</h2>
+  <div class="item_list">
+  <a href='source-OAuth2.OAuthManager.php.html#297'>OAuth2/OAuthManager.php</a>
+  </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <hr id="refreshTokens">
+
+  <h1>Method: OAuthManager::refreshTokens()</h1>
+
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> refreshTokens(?<span class="php-keyword1">string</span> <span class="php-var">$refresh_token</span>, ?<span class="php-keyword1">string</span> <span class="php-var">$user_id</span>, ?<span class="php-keyword1">string</span> <span class="php-var">$client_id</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$response</span>): <span class="php-keyword1">void</span>;</div>
+  
+
+  
+  <div class="short-description">
+  <p>Atomically consumes a refresh token and replaces its session tokens.</p>
+  </div>
+  
+
+  
+
+  
+
+  <h2>Parameters</h2>
+
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
+        <tr>
+        <th>Name</th>
+        <th>Pass type</th>
+        <th>Value type</th>
+        <th>Default value</th>
+        <th>Description</th>
+        </tr>
+
         
         <tr>
             <td>
@@ -3656,13 +2664,13 @@ RS256, RS384, RS512.</p>
                 by value
             </td>
             <td>
-                ?string
+                <code class="php-type">?string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The refresh token to be verified.</p>
+                <p>The current refresh token.</p>
             </td>
         </tr>
         
@@ -3674,13 +2682,13 @@ RS256, RS384, RS512.</p>
                 by value
             </td>
             <td>
-                ?string
+                <code class="php-type">?string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The user id for which the refresh token was issued.</p>
+                <p>The user identifier bound to the token.</p>
             </td>
         </tr>
         
@@ -3692,23 +2700,44 @@ RS256, RS384, RS512.</p>
                 by value
             </td>
             <td>
-                ?string
+                <code class="php-type">?string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The client id for which the refresh token was issued.</p>
+                <p>The client identifier bound to the token.</p>
             </td>
         </tr>
         
+        <tr>
+            <td>
+                $response
+            </td>
+            <td>
+                by reference
+            </td>
+            <td>
+                <code class="php-type">array&lt;string, mixed&gt;</code>
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>Receives the committed response and remains unchanged on failure.</p>
+            </td>
+        </tr>
         
+
     </table>
+  </div>
 
   
   <h2>Returns</h2>
   <div class="item_list">
-  void<br>
+  <code class="php-type">void</code><br>
+  
+  <div class="item_description"><p>Rotates the token once. Reuse revokes its matching active token family.</p></div>
   
   </div>
   
@@ -3716,29 +2745,29 @@ RS256, RS384, RS512.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-  \Exception<br>
+  <code class="php-type"><a href="class-OAuth2.MissingParametersException.html">MissingParametersException</a></code><br>
   
-  <div class="item_description"><p>It might throw an exception in the case of any system errors.</p></div>
-  
-  
-  <a href='class-OAuth2.InvalidTokenException.html'>\OAuth2\InvalidTokenException</a><br>
-  
-  <div class="item_description"><p>It should throw the InvalidTokenException if the refresh token is invalid.</p></div>
+  <div class="item_description"><p>If a required argument is null or empty.</p></div>
   
   
-  <a href='class-OAuth2.TokenExpiredException.html'>\OAuth2\TokenExpiredException</a><br>
+  <code class="php-type"><a href="class-OAuth2.InvalidTokenException.html">InvalidTokenException</a></code><br>
   
-  <div class="item_description"><p>It might throw the TokenExpiredException if the jwt access token is expired.</p></div>
-  
-  
-  <a href='class-OAuth2.AuthSystemException.html'>\OAuth2\AuthSystemException</a><br>
-  
-  <div class="item_description"><p>It might throw the AuthSystemException if some system error occurs.</p></div>
+  <div class="item_description"><p>If an argument is invalid, the token is unknown, or reuse is detected.</p></div>
   
   
-  <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
+  <code class="php-type"><a href="class-OAuth2.TokenExpiredException.html">TokenExpiredException</a></code><br>
   
-  <div class="item_description"><p>It should throw the MissingParametersException if any required parameters are empty.</p></div>
+  <div class="item_description"><p>If the refresh token has reached its expiration time.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">AuthSystemException</a></code><br>
+  
+  <div class="item_description"><p>If configuration, signing, random generation or storage access fails.</p></div>
+  
+  
+  <code class="php-type">\Exception</code><br>
+  
+  <div class="item_description"><p>If the storage collaborator cannot complete its operation.</p></div>
   
   
   </div>
@@ -3746,7 +2775,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Overrides</h2>
   <div class="item_list">
-  <a href='interface-OAuth2.Interfaces.IOAuthManager.html#verifyRefreshToken'>\OAuth2\Interfaces\IOAuthManager::verifyRefreshToken()</a>
+  <a href="interface-OAuth2.Interfaces.IOAuthManager.html#refreshTokens">\OAuth2\Interfaces\IOAuthManager::refreshTokens()</a>
   </div>
   
 
@@ -3764,7 +2793,7 @@ RS256, RS384, RS512.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.OAuthManager.php.html#936'>OAuth2/OAuthManager.php</a>
+  <a href='source-OAuth2.OAuthManager.php.html#902'>OAuth2/OAuthManager.php</a>
   </div>
   
 
@@ -3772,30 +2801,855 @@ RS256, RS384, RS512.</p>
 
   
 
-  <h2>Uses</h2>
+  
+
+  
+
+  
+
+  
+
+  
+
+  <hr id="requireIdentifier">
+
+  <h1>Method: OAuthManager::requireIdentifier()</h1>
+
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> requireIdentifier(?<span class="php-keyword1">string</span> <span class="php-var">$value</span>, <span class="php-keyword1">string</span> <span class="php-var">$name</span>): <span class="php-keyword1">string</span>;</div>
+  
+
+  
+  <div class="short-description">
+  <p>Validates request identifiers without treating the string "0" as empty.</p>
+  </div>
+  
+
+  
+
+  
+
+  <h2>Parameters</h2>
+
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
+        <tr>
+        <th>Name</th>
+        <th>Pass type</th>
+        <th>Value type</th>
+        <th>Default value</th>
+        <th>Description</th>
+        </tr>
+
+        
+        <tr>
+            <td>
+                $value
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">?string</code>
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The request value to check.</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                $name
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">string</code>
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The parameter name used in error messages.</p>
+            </td>
+        </tr>
+        
+
+    </table>
+  </div>
+
+  
+  <h2>Returns</h2>
+  <div class="item_list">
+  <code class="php-type">string</code><br>
+  
+  <div class="item_description"><p>Returns the original valid UTF-8 string.</p></div>
+  
+  </div>
+  
+
+  <h2>Throws</h2>
   <div class="item_list">
   
-  <a href='interface-OAuth2.Interfaces.ITokenStorage.html#loadTokenRecord'>\OAuth2\Interfaces\ITokenStorage::loadTokenRecord()</a><br>
+  <code class="php-type"><a href="class-OAuth2.MissingParametersException.html">MissingParametersException</a></code><br>
+  
+  <div class="item_description"><p>If the parameter is null or empty.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.InvalidTokenException.html">InvalidTokenException</a></code><br>
+  
+  <div class="item_description"><p>If it contains invalid UTF-8, control characters or too many bytes.</p></div>
   
   
   </div>
 
-  <h2>Used by</h2>
+  
+
+  <h2>Authors</h2>
   <div class="item_list">
   
-  <a href='class-OAuth2.OAuthManager.html#refreshTokens'>\OAuth2\OAuthManager::refreshTokens()</a><br>
+  <div class='item'>Oleg Schildt</div>
+  
+  </div>
+
+  
+
+  
+
+  
+  <h2>Source code</h2>
+  <div class="item_list">
+  <a href='source-OAuth2.OAuthManager.php.html#718'>OAuth2/OAuthManager.php</a>
+  </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <hr id="urlSafeB64Decode">
+
+  <h1>Method: OAuthManager::urlSafeB64Decode()</h1>
+
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> urlSafeB64Decode(<span class="php-keyword1">string</span> <span class="php-var">$b64</span>): <span class="php-keyword1">string</span>;</div>
+  
+
+  
+  <div class="short-description">
+  <p>Decodes a canonical, nonempty Base64URL segment.</p>
+  </div>
+  
+
+  
+
+  
+
+  <h2>Parameters</h2>
+
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
+        <tr>
+        <th>Name</th>
+        <th>Pass type</th>
+        <th>Value type</th>
+        <th>Default value</th>
+        <th>Description</th>
+        </tr>
+
+        
+        <tr>
+            <td>
+                $b64
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">string</code>
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>An unpadded segment containing only the Base64URL alphabet.</p>
+            </td>
+        </tr>
+        
+
+    </table>
+  </div>
+
+  
+  <h2>Returns</h2>
+  <div class="item_list">
+  <code class="php-type">string</code><br>
+  
+  <div class="item_description"><p>Returns the decoded bytes.</p></div>
+  
+  </div>
+  
+
+  <h2>Throws</h2>
+  <div class="item_list">
+  
+  <code class="php-type"><a href="class-OAuth2.InvalidTokenException.html">InvalidTokenException</a></code><br>
+  
+  <div class="item_description"><p>If the alphabet, length or unused trailing bits are invalid.</p></div>
   
   
-  <a href='class-OAuth2.OAuthManager.html#invalidateUser'>\OAuth2\OAuthManager::invalidateUser()</a><br>
+  </div>
+
+  
+
+  <h2>Authors</h2>
+  <div class="item_list">
+  
+  <div class='item'>Oleg Schildt</div>
+  
+  </div>
+
+  
+
+  
+
+  
+  <h2>Source code</h2>
+  <div class="item_list">
+  <a href='source-OAuth2.OAuthManager.php.html#360'>OAuth2/OAuthManager.php</a>
+  </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <hr id="urlSafeB64Encode">
+
+  <h1>Method: OAuthManager::urlSafeB64Encode()</h1>
+
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> urlSafeB64Encode(<span class="php-keyword1">string</span> <span class="php-var">$data</span>): <span class="php-keyword1">string</span>;</div>
+  
+
+  
+  <div class="short-description">
+  <p>Encodes bytes using unpadded Base64URL.</p>
+  </div>
+  
+
+  
+
+  
+
+  <h2>Parameters</h2>
+
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
+        <tr>
+        <th>Name</th>
+        <th>Pass type</th>
+        <th>Value type</th>
+        <th>Default value</th>
+        <th>Description</th>
+        </tr>
+
+        
+        <tr>
+            <td>
+                $data
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">string</code>
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The binary or UTF-8 data to encode.</p>
+            </td>
+        </tr>
+        
+
+    </table>
+  </div>
+
+  
+  <h2>Returns</h2>
+  <div class="item_list">
+  <code class="php-type">string</code><br>
+  
+  <div class="item_description"><p>Returns the URL-safe encoding without padding or line breaks.</p></div>
+  
+  </div>
+  
+
+  
+
+  
+
+  <h2>Authors</h2>
+  <div class="item_list">
+  
+  <div class='item'>Oleg Schildt</div>
+  
+  </div>
+
+  
+
+  
+
+  
+  <h2>Source code</h2>
+  <div class="item_list">
+  <a href='source-OAuth2.OAuthManager.php.html#341'>OAuth2/OAuthManager.php</a>
+  </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <hr id="validateParameters">
+
+  <h1>Method: OAuthManager::validateParameters()</h1>
+
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> validateParameters(): <span class="php-keyword1">void</span>;</div>
+  
+
+  
+  <div class="short-description">
+  <p>Ensures that configuration was successfully initialized.</p>
+  </div>
+  
+
+  
+
+  
+
+  
+
+  
+  <h2>Returns</h2>
+  <div class="item_list">
+  <code class="php-type">void</code><br>
+  
+  <div class="item_description"><p>Permits operations on an initialized manager.</p></div>
+  
+  </div>
+  
+
+  <h2>Throws</h2>
+  <div class="item_list">
+  
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">AuthSystemException</a></code><br>
+  
+  <div class="item_description"><p>If init() has not completed successfully.</p></div>
   
   
-  <a href='class-OAuth2.OAuthManager.html#invalidateClient'>\OAuth2\OAuthManager::invalidateClient()</a><br>
+  </div>
+
+  
+
+  <h2>Authors</h2>
+  <div class="item_list">
+  
+  <div class='item'>Oleg Schildt</div>
+  
+  </div>
+
+  
+
+  
+
+  
+  <h2>Source code</h2>
+  <div class="item_list">
+  <a href='source-OAuth2.OAuthManager.php.html#323'>OAuth2/OAuthManager.php</a>
+  </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <hr id="validatePayload">
+
+  <h1>Method: OAuthManager::validatePayload()</h1>
+
+  <div class="definition"><span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> validatePayload(<span class="php-keyword1">array</span> <span class="php-var">$payload</span>, <span class="php-keyword1">bool</span> <span class="php-var">$check_time</span>): <span class="php-keyword1">void</span>;</div>
+  
+
+  
+  <div class="short-description">
+  <p>Validates session claims and configured issuer and audience restrictions.</p>
+  </div>
+  
+
+  
+
+  
+
+  <h2>Parameters</h2>
+
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
+        <tr>
+        <th>Name</th>
+        <th>Pass type</th>
+        <th>Value type</th>
+        <th>Default value</th>
+        <th>Description</th>
+        </tr>
+
+        
+        <tr>
+            <td>
+                $payload
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">array&lt;string, mixed&gt;</code>
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The signature-verified JWT claims.</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                $check_time
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">bool</code>
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>Whether to enforce expiry and not-before time; revocation may inspect expired JWTs.</p>
+            </td>
+        </tr>
+        
+
+    </table>
+  </div>
+
+  
+  <h2>Returns</h2>
+  <div class="item_list">
+  <code class="php-type">void</code><br>
+  
+  <div class="item_description"><p>Accepts consistent string identifiers and integer Unix timestamps.</p></div>
+  
+  </div>
+  
+
+  <h2>Throws</h2>
+  <div class="item_list">
+  
+  <code class="php-type"><a href="class-OAuth2.InvalidTokenException.html">InvalidTokenException</a></code><br>
+  
+  <div class="item_description"><p>If required claims, their types, relationships, issuer or audience are invalid.</p></div>
   
   
+  <code class="php-type"><a href="class-OAuth2.TokenExpiredException.html">TokenExpiredException</a></code><br>
+  
+  <div class="item_description"><p>If time checking is enabled and the access token has reached its expiration time.</p></div>
+  
+  
+  </div>
+
+  
+
+  <h2>Authors</h2>
+  <div class="item_list">
+  
+  <div class='item'>Oleg Schildt</div>
+  
+  </div>
+
+  
+
+  
+
+  
+  <h2>Source code</h2>
+  <div class="item_list">
+  <a href='source-OAuth2.OAuthManager.php.html#597'>OAuth2/OAuthManager.php</a>
+  </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <hr id="verifyJwtAccessToken">
+
+  <h1>Method: OAuthManager::verifyJwtAccessToken()</h1>
+
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyJwtAccessToken(?<span class="php-keyword1">string</span> <span class="php-var">$jwt_access_token</span>, <span class="php-keyword1">bool</span> <span class="php-var">$check_on_server</span> = <span class="php-keyword1">true</span>): <span class="php-keyword1">array</span>;</div>
+  
+
+  
+  <div class="short-description">
+  <p>Verifies JWT encoding, signature, claims and optionally its stored session.</p>
+  </div>
+  
+
+  
+
+  
+
+  <h2>Parameters</h2>
+
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
+        <tr>
+        <th>Name</th>
+        <th>Pass type</th>
+        <th>Value type</th>
+        <th>Default value</th>
+        <th>Description</th>
+        </tr>
+
+        
+        <tr>
+            <td>
+                $jwt_access_token
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">?string</code>
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The signed access JWT.</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                $check_on_server
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">bool</code>
+            </td>
+            <td>
+                true
+            </td>
+            <td class="description_column">
+                <p>Whether to enforce server-side revocation. Offline verification cannot observe logout or
+refresh-token reuse immediately.</p>
+            </td>
+        </tr>
+        
+
+    </table>
+  </div>
+
+  
+  <h2>Returns</h2>
+  <div class="item_list">
+  <code class="php-type">array&lt;string, mixed&gt;</code><br>
+  
+  <div class="item_description"><p>Returns validated claims; failures throw and never return false.</p></div>
+  
+  </div>
+  
+
+  <h2>Throws</h2>
+  <div class="item_list">
+  
+  <code class="php-type"><a href="class-OAuth2.MissingParametersException.html">MissingParametersException</a></code><br>
+  
+  <div class="item_description"><p>If the JWT is null or empty.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.InvalidTokenException.html">InvalidTokenException</a></code><br>
+  
+  <div class="item_description"><p>If encoding, signature, claims or the stored session are invalid.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.TokenExpiredException.html">TokenExpiredException</a></code><br>
+  
+  <div class="item_description"><p>If the JWT or stored access token has reached its expiration time.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">AuthSystemException</a></code><br>
+  
+  <div class="item_description"><p>If initialization or a required cryptographic or storage service fails.</p></div>
+  
+  
+  <code class="php-type">\Exception</code><br>
+  
+  <div class="item_description"><p>If storage cannot check the session.</p></div>
+  
+  
+  </div>
+
+  
+  <h2>Overrides</h2>
+  <div class="item_list">
+  <a href="interface-OAuth2.Interfaces.IOAuthManager.html#verifyJwtAccessToken">\OAuth2\Interfaces\IOAuthManager::verifyJwtAccessToken()</a>
+  </div>
+  
+
+  <h2>Authors</h2>
+  <div class="item_list">
+  
+  <div class='item'>Oleg Schildt</div>
+  
+  </div>
+
+  
+
+  
+
+  
+  <h2>Source code</h2>
+  <div class="item_list">
+  <a href='source-OAuth2.OAuthManager.php.html#941'>OAuth2/OAuthManager.php</a>
+  </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <hr id="verifyRefreshToken">
+
+  <h1>Method: OAuthManager::verifyRefreshToken()</h1>
+
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyRefreshToken(?<span class="php-keyword1">string</span> <span class="php-var">$refresh_token</span>, ?<span class="php-keyword1">string</span> <span class="php-var">$user_id</span>, ?<span class="php-keyword1">string</span> <span class="php-var">$client_id</span>): <span class="php-keyword1">void</span>;</div>
+  
+
+  
+  <div class="short-description">
+  <p>Checks a refresh token without extending its expiry or rotating it.</p>
+  </div>
+  
+
+  
+
+  
+
+  <h2>Parameters</h2>
+
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
+        <tr>
+        <th>Name</th>
+        <th>Pass type</th>
+        <th>Value type</th>
+        <th>Default value</th>
+        <th>Description</th>
+        </tr>
+
+        
+        <tr>
+            <td>
+                $refresh_token
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">?string</code>
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The current refresh token.</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                $user_id
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">?string</code>
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The user identifier bound to it.</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                $client_id
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">?string</code>
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The client identifier bound to it.</p>
+            </td>
+        </tr>
+        
+
+    </table>
+  </div>
+
+  
+  <h2>Returns</h2>
+  <div class="item_list">
+  <code class="php-type">void</code><br>
+  
+  <div class="item_description"><p>Returns for a matching unexpired token; detected reuse revokes its family.</p></div>
+  
+  </div>
+  
+
+  <h2>Throws</h2>
+  <div class="item_list">
+  
+  <code class="php-type"><a href="class-OAuth2.MissingParametersException.html">MissingParametersException</a></code><br>
+  
+  <div class="item_description"><p>If a required argument is null or empty.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.InvalidTokenException.html">InvalidTokenException</a></code><br>
+  
+  <div class="item_description"><p>If an argument is invalid, the token is unknown, or reuse is detected.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.TokenExpiredException.html">TokenExpiredException</a></code><br>
+  
+  <div class="item_description"><p>If the refresh token has reached its expiration time.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">AuthSystemException</a></code><br>
+  
+  <div class="item_description"><p>If configuration, signing, random generation or storage access fails.</p></div>
+  
+  
+  <code class="php-type">\Exception</code><br>
+  
+  <div class="item_description"><p>If the storage collaborator cannot complete its operation.</p></div>
+  
+  
+  </div>
+
+  
+  <h2>Overrides</h2>
+  <div class="item_list">
+  <a href="interface-OAuth2.Interfaces.IOAuthManager.html#verifyRefreshToken">\OAuth2\Interfaces\IOAuthManager::verifyRefreshToken()</a>
+  </div>
+  
+
+  <h2>Authors</h2>
+  <div class="item_list">
+  
+  <div class='item'>Oleg Schildt</div>
+  
+  </div>
+
+  
+
+  
+
+  
+  <h2>Source code</h2>
+  <div class="item_list">
+  <a href='source-OAuth2.OAuthManager.php.html#986'>OAuth2/OAuthManager.php</a>
   </div>
                     
                     <div id="footer">
-                        Generated on 2025-11-25 16:57 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
+                        Generated on 2026-11-23 01:21 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
                     </div>                    
                 </div>
             </div>

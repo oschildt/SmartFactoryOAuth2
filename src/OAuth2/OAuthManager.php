@@ -1,1148 +1,1138 @@
 <?php
-/**
- * This file contains the implementation of the interface IOAuthManager for secure user authentication.
- *
- * @author Oleg Schildt
- */
 
 namespace OAuth2;
 
-use \OAuth2\Interfaces\IOAuthManager;
-use \OAuth2\Interfaces\ITokenStorage;
-use \OAuth2\Interfaces\IUserAuthenticator;
-
-use \SmartFactory\SmartException;
+use OAuth2\Interfaces\IOAuthManager;
+use OAuth2\Interfaces\ITokenStorage;
+use OAuth2\Interfaces\IUserAuthenticator;
+use SmartFactory\SmartException;
 
 /**
- * Class for secure user authentication.
+ * Issues signed JWTs and delegates atomic session operations to token storage.
+ *
+ * Standard JWT claims coexist with historical session claims. Revocation is
+ * immediate only when verification includes storage. HTTP grants, client
+ * registration, consent and endpoint transport belong to the calling application.
  *
  * @author Oleg Schildt
  */
 class OAuthManager implements IOAuthManager
 {
     /**
-     * Internal reference to the token storage object.
+     * Stores validated settings, parsed keys and optional collaborators.
      *
-     * It must implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     *
-     * @var ?\OAuth2\Interfaces\ITokenStorage
+     * @var array<string, mixed>
      *
      * @author Oleg Schildt
      */
-    protected ?\OAuth2\Interfaces\ITokenStorage $token_storage = null;
+    protected array $configuration = [];
 
     /**
-     * Internal reference to the user authenticator object.
+     * Configures signing, verification, lifetimes and optional collaborators.
+     * Each call replaces all settings. Failed initialization preserves the previous configuration.
      *
-     * It must implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
-     *
-     * @var ?\OAuth2\Interfaces\IUserAuthenticator
-     *
-     * @author Oleg Schildt
-     */
-    protected ?\OAuth2\Interfaces\IUserAuthenticator $user_authenticator = null;
-
-    /**
-     * Internal property for storing the secret key.
-     *
-     * The secret key is required for the algorithms HS256, HS384, HS512.
-     *
-     * @var ?string
-     *
-     * @author Oleg Schildt
-     */
-    protected ?string $secret_key = null;
-
-    /**
-     * Internal property for storing the encryption algorithm.
-     *
-     * The supported algorithms are HS256, HS384, HS512, RS256, RS384, RS512.
-     *
-     * @var ?string
-     *
-     * @author Oleg Schildt
-     */
-    protected ?string $encryption_algorithm = null;
-
-    /**
-     * Internal property for storing the time to live of the access token.
-     *
-     * @var ?string
-     *
-     * @author Oleg Schildt
-     */
-    protected ?string $access_token_ttl_minutes = null;
-
-    /**
-     * Internal property for storing the time to live of the refresh token.
-     *
-     * @var ?string
-     *
-     * @author Oleg Schildt
-     */
-    protected ?string $refresh_token_ttl_days = null;
-
-    /**
-     * Internal property for storing the path to the public key file.
-     *
-     * Required for the algorithms: RS256, RS384, RS512.
-     *
-     * @var ?string
-     *
-     * @author Oleg Schildt
-     */
-    protected ?string $public_key = null;
-
-    /**
-     * Internal property for storing the path to the private key file.
-     *
-     * Required for the algorithms: RS256, RS384, RS512.
-     *
-     * @var ?string
-     *
-     * @author Oleg Schildt
-     */
-    protected ?string $private_key = null;
-
-    /**
-     * Internal property for storing the pass phrase for the private key.
-     *
-     * Only required, if the private key was generated with a pass phrase.
-     *
-     * @var string
-     *
-     * @author Oleg Schildt
-     */
-    protected string $pass_phrase = "";
-
-    /**
-     * Internal property for the list of supported algorithms.
-     *
-     * @var array
-     *
-     * @author Oleg Schildt
-     */
-    protected array $supported_algorithms = ['HS256', 'HS384', 'HS512', 'RS256', 'RS384', 'RS512'];
-
-    /**
-     * Internal auxiliary function for safe base64 encoding.
-     *
-     * @param string $data
-     * Data to be encoded.
-     *
-     * @return string
-     * Returns the base64 encoded data string.
-     *
-     * @see OAuthManager::urlSafeB64Decode()
-     *
-     * @author Oleg Schildt
-     */
-    protected function urlSafeB64Encode(string $data): string
-    {
-        $b64 = base64_encode($data);
-        $b64 = str_replace(array('+', '/', "\r", "\n", '='), array('-', '_'), $b64);
-
-        return $b64;
-    }
-
-    /**
-     * Internal auxiliary function for safe base64 decoding.
-     *
-     * @param string $b64
-     * Data to be decoded.
-     *
-     * @return string
-     * Returns the base64 decoded data string.
-     *
-     * @see OAuthManager::urlSafeB64Encode()
-     *
-     * @author Oleg Schildt
-     */
-    protected function urlSafeB64Decode(string $b64): string
-    {
-        $b64 = str_replace(array('-', '_'), array('+', '/'), $b64);
-
-        return base64_decode($b64);
-    }
-
-    /**
-     * Internal auxiliary function for verification of the data signature for the algorithms
-     * RS256, RS384, RS512.
-     *
-     * @param string $input
-     * Data which is signed.
-     *
-     * @param string $signature
-     * Signature used for signing the data.
-     *
-     * @param int $algorithm_id
-     * Algorithm used for signing. The supported algorithms are: RS256, RS384, RS512.
+     * @param array<string, mixed> $parameters
+     * Supported keys are encryption_algorithm (HS256/384/512 or RS256/384/512), secret_key (raw HMAC
+     * bytes), public_key/private_key (local PEM paths), pass_phrase (private-key password),
+     * access_token_ttl_minutes (integer or decimal integer string, 1..525600, default 10),
+     * refresh_token_ttl_days (same format, 1..3650, default 14), token_storage (ITokenStorage),
+     * user_authenticator (IUserAuthenticator), issuer (nonempty string), audience (string or nonempty
+     * list of strings), key_id (nonempty string), and verification_keys (map of IDs to
+     * encryption_algorithm and secret_key or public_key). Collaborators are optional for offline
+     * verification; RSA verification needs no private key. Issuer and audience restrictions are
+     * enforced when configured; production callers should configure both.
      *
      * @return void
+     * Publishes validated settings and parsed keys together.
      *
-     * @throws \Exception
-     * It might throw an exception in the case of any system errors:
-     *
-     * - if any required initialization parameters are empty.
-     * - if any initialization parameters are invalid.
-     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
-     * - if the public key is invalid.
-     * - if the ssl verification cannot be performed due to system errors.
-     *
-     * @uses OAuthManager::generateRSASignature()
-     *
-     * @author Oleg Schildt
-     */
-    protected function verifyRSASignature(string $input, string $signature, int $algorithm_id): void
-    {
-        $this->validateParameters();
-
-        $public_key = @openssl_pkey_get_public("file://" . $this->public_key);
-        if ($public_key === false) {
-            throw new AuthSystemException(sprintf("The public key file '%s' is not valid!\n\nError: %s", $this->public_key, openssl_error_string()), SmartException::ERR_CODE_SYSTEM_ERROR);
-        }
-
-        $result = @openssl_verify($input, $signature, $public_key, $algorithm_id);
-
-        if ($result === -1 || $result === false) {
-            throw new AuthSystemException(sprintf("Error by data verification:\n\n%s", openssl_error_string()), SmartException::ERR_CODE_SYSTEM_ERROR);
-        }
-
-        if ($result === 0) {
-            throw new InvalidTokenException("The signature of the JWT access token is invalid!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
-        }
-    }
-
-    /**
-     * Internal auxiliary function for generation of the signature of the data for the algorithms
-     * RS256, RS384, RS512.
-     *
-     * @param string $input
-     * Data which is signed.
-     *
-     * @param int $algorithm_id
-     * Algorithm to use for signing. The supported algorithms are: RS256, RS384, RS512.
-     *
-     * @return string
-     * Returns the signature of the data.
-     *
-     * @throws \Exception
-     * It might throw an exception in the case of any system errors:
-     *
-     * - if any required initialization parameters are empty.
-     * - if any initialization parameters are invalid.
-     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
-     * - if the private key is invalid.
-     * - if ssl signing fails due to system errors.
-     *
-     * @see OAuthManager::verifyRSASignature()
-     *
-     * @author Oleg Schildt
-     */
-    protected function generateRSASignature(string $input, int $algorithm_id): string
-    {
-        $this->validateParameters();
-
-        $private_key = @openssl_pkey_get_private("file://" . $this->private_key, $this->pass_phrase);
-        if ($private_key === false) {
-            throw new AuthSystemException(sprintf("The private key file '%s' or the pass phrase is not valid!\n\nError: %s", $this->private_key, openssl_error_string()), SmartException::ERR_CODE_SYSTEM_ERROR);
-        }
-
-        $signature = "";
-        if (!@openssl_sign($input, $signature, $private_key, $algorithm_id)) {
-            throw new AuthSystemException(sprintf("Error by signing data:\n\n%s", openssl_error_string()), SmartException::ERR_CODE_SYSTEM_ERROR);
-        }
-
-        return $signature;
-    }
-
-    /**
-     * Internal auxiliary function for generation of the signature of the data for all supported algorithms.
-     *
-     * @param string $input
-     * Data to be signed.
-     *
-     * @return string
-     * Returns the signature of the data.
-     *
-     * @throws \Exception
-     * It might throw an exception in the case of any system errors:
-     *
-     * - if any required initialization parameters are empty.
-     * - if any initialization parameters are invalid.
-     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
-     * - if the private key is invalid.
-     * - if ssl signing fails due to system errors.
-     *
-     * @uses OAuthManager::generateRSASignature()
-     *
-     * @author Oleg Schildt
-     */
-    protected function generateJwtSignature(string $input): string
-    {
-        switch ($this->encryption_algorithm) {
-            case 'HS256':
-                return hash_hmac('sha256', $input, $this->secret_key, true);
-
-            case 'HS384':
-                return hash_hmac('sha384', $input, $this->secret_key, true);
-
-            case 'HS512':
-                return hash_hmac('sha512', $input, $this->secret_key, true);
-
-            case 'RS256':
-                return $this->generateRSASignature($input, OPENSSL_ALGO_SHA256);
-
-            case 'RS384':
-                return $this->generateRSASignature($input, OPENSSL_ALGO_SHA384);
-
-            case 'RS512':
-                return $this->generateRSASignature($input, OPENSSL_ALGO_SHA512);
-
-            default:
-                throw new AuthSystemException(sprintf("Unsupported or invalid signing algorithm '%s'.", $this->encryption_algorithm), SmartException::ERR_CODE_SYSTEM_ERROR);
-        }
-    }
-
-    /**
-     * Internal auxiliary function for verification of the signature of the data for all supported algorithms.
-     *
-     * @param string $input
-     * Data which was signed.
-     *
-     * @param string $signature
-     * Signature used for signing.
-     *
-     * @return void
-     *
-     * @throws \Exception
-     * It might throw an exception in the case of any errors:
-     *
-     * - if any required initialization parameters are empty.
-     * - if any initialization parameters are invalid.
-     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
-     * - if the public key is invalid.
-     * - if the ssl verification cannot be performed due to system errors.
-     *
-     * @uses OAuthManager::verifyRSASignature()
-     *
-     * @author Oleg Schildt
-     */
-    protected function verifyJwtSignature(string $input, string $signature): void
-    {
-        switch ($this->encryption_algorithm) {
-            case'HS256':
-            case'HS384':
-            case'HS512':
-                if (!hash_equals($this->generateJwtSignature($input), $signature)) {
-                    throw new InvalidTokenException("The signature of the JWT access token is invalid!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
-                }
-                break;
-
-            case 'RS256':
-                $this->verifyRSASignature($input, $signature, OPENSSL_ALGO_SHA256);
-                break;
-
-            case 'RS384':
-                $this->verifyRSASignature($input, $signature, OPENSSL_ALGO_SHA384);
-                break;
-
-            case 'RS512':
-                $this->verifyRSASignature($input, $signature, OPENSSL_ALGO_SHA512);
-                break;
-
-            default:
-                throw new AuthSystemException(sprintf("Unsupported or invalid signing algorithm '%s'.", $this->encryption_algorithm), SmartException::ERR_CODE_SYSTEM_ERROR);
-        }
-    }
-
-    /**
-     * Internal auxiliary function for generation of a token string.
-     *
-     * @return string
-     * Returns the token string.
-     *
-     * @throws \Exception
-     * It might throw an exception in the case of any system errors:
-     *
-     * - if ssl funtions fail due to system errors.
-     *
-     * @author Oleg Schildt
-     */
-    protected function generateToken(): string
-    {
-        if (function_exists('random_bytes')) {
-            $randomData = random_bytes(20);
-            if ($randomData !== false && strlen($randomData) === 20) {
-                return bin2hex($randomData);
-            }
-        }
-
-        if (function_exists('openssl_random_pseudo_bytes')) {
-            $randomData = openssl_random_pseudo_bytes(20);
-            if ($randomData !== false && strlen($randomData) === 20) {
-                return bin2hex($randomData);
-            }
-        }
-
-        // last resort which you probably should just get rid of:
-        $randomData = mt_rand() . mt_rand() . mt_rand() . mt_rand() . microtime(true) . uniqid(mt_rand(), true);
-
-        return substr(hash('sha512', $randomData), 0, 40);
-    } // generateToken
-
-    /**
-     * Internal auxiliary function for creation of the jwt token.
-     *
-     * @param array $payload
-     * The payload array.
-     *
-     * @return string
-     * Returns the jwt token string.
-     *
-     * @throws \Exception
-     * It might throw an exception in the case of any system errors:
-     *
-     * - if any required initialization parameters are empty.
-     * - if any initialization parameters are invalid.
-     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
-     * - if the private key is invalid.
-     * - if ssl signing fails due to system errors.
-     *
-     * @author Oleg Schildt
-     */
-    protected function createJwtToken(array $payload): string
-    {
-        $header = ["typ" => "JWT", "alg" => $this->encryption_algorithm];
-
-        $segments = [$this->urlSafeB64Encode(json_encode($header)), $this->urlSafeB64Encode(json_encode($payload))];
-
-        $signature = $this->generateJwtSignature(implode('.', $segments));
-
-        $segments[] = $this->urlsafeB64Encode($signature);
-
-        return implode('.', $segments);
-    }
-
-    /**
-     * Internal auxiliary function for extraction of the payload from the jwt access token.
-     *
-     * @param ?string $jwt_access_token
-     * The jwt access token.
-     *
-     * @param boolean $verify_signature
-     * The flag to control whether the signature should be verified or not.
-     *
-     * @return array
-     * Returns the extracted payload array.
-     *
-     * @throws \Exception
-     * It might throw an exception in the case of any errors:
-     *
-     * - if any required initialization parameters are empty.
-     * - if any initialization parameters are invalid.
-     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
-     * - if the public key is invalid.
-     * - if the ssl verification cannot be performed due to system errors.
-     *
-     * @throws \OAuth2\InvalidTokenException
-     * It might throw the InvalidTokenException if the jwt access token is invalid.
-     *
-     * @author Oleg Schildt
-     */
-    protected function getJwtPayload(?string $jwt_access_token, bool $verify_signature = true): array
-    {
-        if (!strpos($jwt_access_token, '.')) {
-            throw new InvalidTokenException("The format of the JWT access token is invalid!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
-        }
-
-        $segements = explode('.', $jwt_access_token);
-
-        if (count($segements) != 3) {
-            throw new InvalidTokenException("The format of the JWT access token is invalid!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
-        }
-
-        list($headb64, $payloadb64, $cryptob64) = $segements;
-
-        if (null === ($header = json_decode($this->urlSafeB64Decode($headb64), true))) {
-            throw new InvalidTokenException("The header of the JWT access token is invalid!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
-        }
-
-        if (null === $payload = json_decode($this->urlSafeB64Decode($payloadb64), true)) {
-            throw new InvalidTokenException("The payload of the JWT access token is invalid!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
-        }
-
-        if (!$verify_signature) {
-            return $payload;
-        }
-
-        if (empty($header['alg'])) {
-            throw new InvalidTokenException("The signing algorithm of the JWT access token is missing in the header!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
-        }
-
-        $signature = $this->urlSafeB64Decode($cryptob64);
-
-        if (!in_array($header['alg'], $this->supported_algorithms)) {
-            throw new InvalidTokenException("The signing algorithm of the JWT access token is invalid!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
-        }
-
-        $this->verifyJwtSignature("$headb64.$payloadb64", $signature);
-
-        return $payload;
-    }
-
-    /**
-     * Internal auxiliary function for validation of the parameters.
-     *
-     * @return void
-     *
-     * @throws \Exception
-     * It might throw an exception in the case of any system errors:
-     *
-     * - if any required initialization parameters are empty.
-     * - if any initialization parameters are invalid.
-     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
-     *
-     * @used_by verifyRSASignature()
-     * @used_by generateRSASignature()
-     * @used_by init()
-     *
-     * @author Oleg Schildt
-     */
-    protected function validateParameters(): void
-    {
-        if (!function_exists("openssl_pkey_get_private")) {
-            throw new AuthSystemException("The extension 'open_ssl' is not installed!", SmartException::ERR_CODE_SYSTEM_ERROR);
-        }
-
-        if (empty($this->access_token_ttl_minutes) || !is_numeric($this->access_token_ttl_minutes) || $this->access_token_ttl_minutes < 1) {
-            throw new AuthSystemException("The 'access_token_ttl_minutes' is not specified or invalid!", SmartException::ERR_CODE_CONFIG_ERROR);
-        }
-
-        if (empty($this->refresh_token_ttl_days) || !is_numeric($this->refresh_token_ttl_days) || $this->refresh_token_ttl_days < 1) {
-            throw new AuthSystemException("The 'refresh_token_ttl_days' is not specified or invalid!", SmartException::ERR_CODE_CONFIG_ERROR);
-        }
-
-        if (empty($this->token_storage)) {
-            throw new AuthSystemException("The 'token_storage' is not specified!", SmartException::ERR_CODE_CONFIG_ERROR);
-        }
-
-        if (!$this->token_storage instanceof ITokenStorage) {
-            throw new AuthSystemException(sprintf("The 'token_storage' does not implement the interface '%s'!", ITokenStorage::class), SmartException::ERR_CODE_SYSTEM_ERROR);
-        }
-
-        if (empty($this->user_authenticator)) {
-            throw new AuthSystemException("The 'user_authenticator' is not specified!", SmartException::ERR_CODE_CONFIG_ERROR);
-        }
-
-        if (!$this->user_authenticator instanceof IUserAuthenticator) {
-            throw new AuthSystemException(sprintf("The 'user_authenticator' does not implement the interface '%s'!", IUserAuthenticator::class), SmartException::ERR_CODE_SYSTEM_ERROR);
-        }
-
-        if (empty($this->encryption_algorithm)) {
-            throw new AuthSystemException("The encryption algorithm is not specified!", SmartException::ERR_CODE_CONFIG_ERROR);
-        }
-
-        if (!in_array($this->encryption_algorithm, $this->supported_algorithms)) {
-            throw new AuthSystemException(sprintf("The encryption algorithm %s is not supported! The suppoted algoritms are: %s", $this->encryption_algorithm, implode(", ", $this->supported_algorithms)), SmartException::ERR_CODE_CONFIG_ERROR);
-        }
-
-        if (in_array($this->encryption_algorithm, ['HS256', 'HS384', 'HS512']) && empty($this->secret_key)) {
-            throw new AuthSystemException(sprintf("The encryption algorithm %s requires a secret key! Set the parameter 'secret_key'.", $this->encryption_algorithm), SmartException::ERR_CODE_CONFIG_ERROR);
-        }
-
-        if (in_array($this->encryption_algorithm, ['RS256', 'RS384', 'RS512']) && (empty($this->public_key) || empty($this->private_key))) {
-            throw new AuthSystemException(sprintf("The encryption algorithm %s requires a public key and a private key! Set the parameters 'public_key' and 'private_key'.", $this->encryption_algorithm), SmartException::ERR_CODE_CONFIG_ERROR);
-        }
-
-        if (!file_exists($this->private_key)) {
-            throw new AuthSystemException(sprintf("The private key file '%s' does not exists!", $this->private_key), SmartException::ERR_CODE_CONFIG_ERROR);
-        }
-
-        if (!file_exists($this->public_key)) {
-            throw new AuthSystemException(sprintf("The public key file '%s' does not exists!", $this->public_key), SmartException::ERR_CODE_CONFIG_ERROR);
-        }
-    }
-
-    /**
-     * Internal auxiliary function for creation of the token record.
-     *
-     * @param string $user_id
-     * The user id for which the tokens were issued.
-     *
-     * @param string $client_id
-     * The client id for which the tokens were issued.
-     *
-     * @param array &$response
-     * The response to be filled with the user data and tokens.
-     *
-     * @return void
-     *
-     * @throws \Exception
-     * It might throw an exception in the case of any errors:
-     *
-     * - if any required initialization parameters are empty.
-     * - if any initialization parameters are invalid.
-     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
-     * - if the private key is invalid.
-     * - if ssl signing fails due to system errors.
-     * - if the token storage fails to save the token record.
-     *
-     * @uses \OAuth2\Interfaces\ITokenStorage::saveTokenRecord()
-     *
-     * @author Oleg Schildt
-     */
-    protected function createTokenRecord(string $user_id, string $client_id, array &$response): void
-    {
-        $response["user_id"] = $user_id;
-        $response["client_id"] = $client_id;
-
-        $response["last_activity"] = time();
-
-        $response["refresh_token"] = $this->generateToken();
-        $response["refresh_token_expire"] = time() + $this->refresh_token_ttl_days * 24 * 3600;
-
-        $response["access_token"] = $this->generateToken();
-        $response["access_token_expire"] = time() + $this->access_token_ttl_minutes * 60;
-
-        $payload = ["access_token" => $response["access_token"], "access_token_expire" => $response["access_token_expire"], "user_id" => $user_id, "client_id" => $client_id];
-
-        $response["jwt_access_token"] = $this->createJwtToken($payload);
-
-        $this->token_storage->saveTokenRecord($response);
-
-        unset($response["access_token"]);
-        unset($response["last_activity"]);
-    }
-
-    /**
-     * Initializes the authentication manager with parameters.
-     *
-     * @param array $parameters
-     * The parameters are:
-     *
-     * - $parameters["access_token_ttl_minutes"] - time to live in minutes for the access token.
-     * - $parameters["refresh_token_ttl_days"] - time to live in days for the refresh token.
-     * - $parameters["encryption_algorithm"] - the encryption algorithm used for signing. The following
-     * algorithms are supported: HS256, HS384, HS512, RS256, RS384, RS512.
-     * - $parameters["public_key"] - location of the public key file. Required for the algorithms: RS256, RS384, RS512.
-     * - $parameters["private_key"] - location of the private key file. Required for the algorithms: RS256, RS384, RS512.
-     * - $parameters["pass_phrase"] - the pass phrase for the private key if necessary.
-     * - $parameters["token_storage"] - the object implementing the interface {@see \OAuth2\Interfaces\ITokenStorage}. It is used for storing and
-     * validating of the stored tokens.
-     *
-     * - $parameters["user_authenticator"] - the object implementing the interface {@see \OAuth2\Interfaces\IUserAuthenticator}. It is used for authentication
-     * of the user upon his credentials before generation of the tokens.
-     *
-     * @return void
-     *
-     * @throws \Exception
-     * It might throw an exception in the case of any system errors:
-     *
-     * - if any required initialization parameters are empty.
-     * - if any initialization parameters are invalid.
-     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
-     *
-     * @see \OAuth2\Interfaces\ITokenStorage
-     * @see \OAuth2\Interfaces\IUserAuthenticator
+     * @throws AuthSystemException
+     * If an unknown or invalid parameter is supplied, a key cannot be loaded, its type or strength is
+     * invalid, its public and private parts do not match, or the same key is assigned to
+     * different algorithms.
      *
      * @author Oleg Schildt
      */
     public function init(array $parameters): void
     {
-        if (!empty($parameters["access_token_ttl_minutes"])) {
-            $this->access_token_ttl_minutes = $parameters["access_token_ttl_minutes"];
+        $defaults = [
+            'encryption_algorithm' => null, 'secret_key' => null, 'public_key' => null,
+            'private_key' => null, 'pass_phrase' => '', 'access_token_ttl_minutes' => 10,
+            'refresh_token_ttl_days' => 14, 'token_storage' => null, 'user_authenticator' => null,
+            'issuer' => null, 'audience' => null, 'key_id' => null, 'verification_keys' => [],
+        ];
+
+        if (array_diff_key($parameters, $defaults) !== []) {
+            throw new AuthSystemException('Unknown OAuth manager configuration parameter.', SmartException::ERR_CODE_CONFIG_ERROR);
         }
 
-        if (!empty($parameters["refresh_token_ttl_days"])) {
-            $this->refresh_token_ttl_days = $parameters["refresh_token_ttl_days"];
+        $config = array_replace($defaults, $parameters);
+        $config['access_token_ttl_minutes'] = $this->normalizeTtl($config['access_token_ttl_minutes'], 525600);
+        $config['refresh_token_ttl_days'] = $this->normalizeTtl($config['refresh_token_ttl_days'], 3650);
+
+        foreach (['token_storage' => ITokenStorage::class, 'user_authenticator' => IUserAuthenticator::class] as $name => $interface) {
+            if ($config[$name] !== null && !$config[$name] instanceof $interface) {
+                throw new AuthSystemException("The '$name' must implement $interface.", SmartException::ERR_CODE_CONFIG_ERROR);
+            }
         }
 
-        if (!empty($parameters["token_storage"])) {
-            $this->token_storage = $parameters["token_storage"];
+        foreach (['issuer', 'key_id'] as $name) {
+            if ($config[$name] !== null && !$this->isIdentifier($config[$name])) {
+                throw new AuthSystemException("The '$name' must be a nonempty UTF-8 string.", SmartException::ERR_CODE_CONFIG_ERROR);
+            }
         }
 
-        if (!empty($parameters["user_authenticator"])) {
-            $this->user_authenticator = $parameters["user_authenticator"];
+        if ($config['audience'] !== null) {
+            $config['audience'] = is_string($config['audience']) ? [$config['audience']] : $config['audience'];
+
+            if (!is_array($config['audience']) || !array_is_list($config['audience']) || $config['audience'] === []) {
+                throw new AuthSystemException('The audience must be a string or a nonempty list of strings.', SmartException::ERR_CODE_CONFIG_ERROR);
+            }
+
+            foreach ($config['audience'] as $audience) {
+                if (!$this->isIdentifier($audience)) {
+                    throw new AuthSystemException('Every audience must be a nonempty UTF-8 string.', SmartException::ERR_CODE_CONFIG_ERROR);
+                }
+            }
+
+            $config['audience'] = array_values(array_unique($config['audience']));
         }
 
-        if (!empty($parameters["encryption_algorithm"])) {
-            $this->encryption_algorithm = $parameters["encryption_algorithm"];
+        $config['active_key'] = $this->prepareKey($config, true);
+
+        if (!is_array($config['verification_keys'])) {
+            throw new AuthSystemException('The verification_keys parameter must be a map.', SmartException::ERR_CODE_CONFIG_ERROR);
         }
 
-        if (!empty($parameters["secret_key"])) {
-            $this->secret_key = $parameters["secret_key"];
+        $keys = [];
+
+        foreach ($config['verification_keys'] as $id => $key) {
+            if (
+                !$this->isIdentifier((string) $id) || !is_array($key)
+                || array_diff_key($key, array_flip(['encryption_algorithm', 'secret_key', 'public_key'])) !== []
+            ) {
+                throw new AuthSystemException('A verification key configuration is invalid.', SmartException::ERR_CODE_CONFIG_ERROR);
+            }
+
+            $keys[(string) $id] = $this->prepareKey($key, false);
         }
 
-        if (!empty($parameters["public_key"])) {
-            $this->public_key = $parameters["public_key"];
+        if ($config['key_id'] !== null) {
+            if (array_key_exists($config['key_id'], $keys)) {
+                throw new AuthSystemException('The active key ID is duplicated in verification_keys.', SmartException::ERR_CODE_CONFIG_ERROR);
+            }
+
+            $keys[$config['key_id']] = $config['active_key'];
         }
 
-        if (!empty($parameters["private_key"])) {
-            $this->private_key = $parameters["private_key"];
+        $algorithms_by_key = [];
+
+        foreach ([$config['active_key'], ...array_values($keys)] as $key) {
+            $material = $key['verification'];
+
+            if ($material instanceof \OpenSSLAsymmetricKey) {
+                $details = openssl_pkey_get_details($material);
+
+                if ($details === false) {
+                    throw new AuthSystemException('A verification key could not be inspected.', SmartException::ERR_CODE_CONFIG_ERROR);
+                }
+
+                $material = $details['key'];
+            }
+
+            $fingerprint = hash('sha256', $material);
+
+            if (isset($algorithms_by_key[$fingerprint]) && $algorithms_by_key[$fingerprint] !== $key['algorithm']) {
+                throw new AuthSystemException('Each key must be bound to exactly one algorithm.', SmartException::ERR_CODE_CONFIG_ERROR);
+            }
+
+            $algorithms_by_key[$fingerprint] = $key['algorithm'];
         }
 
-        if (!empty($parameters["pass_phrase"])) {
-            $this->pass_phrase = $parameters["pass_phrase"];
-        }
-
-        $this->validateParameters();
-    }
+        $config['verification_keys'] = $keys;
+        $this->configuration = $config;
+    } // init
 
     /**
-     * Authenticates the user based on the specified credentials and writes the response.
+     * Validates a bounded integer lifetime without floating-point overflow.
      *
-     * @param array $credentials
-     * The credentials for the authentication. The expected credentials are:
+     * @param mixed $value
+     * An integer or decimal integer string.
      *
-     * - $credentials["client_id"] - id of the client (device token etc.).
-     * - $credentials["user_login"] - the user login.
-     * - $credentials["user_password"] - the user password.
+     * @param int $maximum
+     * The inclusive upper bound in the configured time unit.
      *
-     * @param array &$response
-     * The response upon successful authentication. The expected properties are:
+     * @return int
+     * Returns the validated positive lifetime.
      *
-     * - $response["user_id"] - id of the user.
-     * - $response["client_id"] - id of the client (device token etc.).
-     * - $response["access_token"] - access token generated upon successful authentication.
-     * - $response["access_token_expire"] - expiration time of the access token.
-     * - $response["refresh_token"] - refresh token generated upon successful authentication.
-     * - $response["refresh_token_expire"] - expiration time of the refresh token.
-     * - $response["last_activity"] - last activity time of the user of this token.
-     * - $response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
-     * token is the access token encoded and signed by the JWT standard approach.
+     * @throws AuthSystemException
+     * If the value is not a bounded positive integer.
+     *
+     * @author Oleg Schildt
+     */
+    protected function normalizeTtl(mixed $value, int $maximum): int
+    {
+        if (is_string($value) && preg_match('/^[0-9]{1,10}$/D', $value)) {
+            $value = (int) $value;
+        }
+
+        if (!is_int($value) || $value < 1 || $value > $maximum) {
+            throw new AuthSystemException('A token lifetime is outside its supported integer range.', SmartException::ERR_CODE_CONFIG_ERROR);
+        }
+
+        return $value;
+    } // normalizeTtl
+
+    /**
+     * Checks identifiers before JSON serialization or storage access.
+     *
+     * @param mixed $value
+     * The proposed identifier.
+     *
+     * @return bool
+     * Returns true for a nonempty UTF-8 string up to 4096 bytes without control characters. The string
+     * "0" is valid; values are never trimmed or changed.
+     *
+     * @author Oleg Schildt
+     */
+    protected function isIdentifier(mixed $value): bool
+    {
+        return is_string($value) && $value !== '' && strlen($value) <= 4096
+            && preg_match('//u', $value) === 1 && preg_match('/[\x00-\x1f\x7f]/', $value) === 0;
+    } // isIdentifier
+
+    /**
+     * Loads keys and binds their validated type and strength to one algorithm.
+     *
+     * @param array<string, mixed> $config
+     * The algorithm and raw HMAC bytes or local RSA PEM paths.
+     *
+     * @param bool $allow_private
+     * Whether a private signing key may be supplied.
+     *
+     * @return array{algorithm: string, verification: string|\OpenSSLAsymmetricKey, signing: string|\OpenSSLAsymmetricKey|null}
+     * Returns parsed keys; signing is null for public-key-only verification.
+     *
+     * @throws AuthSystemException
+     * If the algorithm, key material, password, key type, pair or length is invalid.
+     *
+     * @author Oleg Schildt
+     */
+    protected function prepareKey(array $config, bool $allow_private): array
+    {
+        $algorithm = $config['encryption_algorithm'] ?? null;
+        $sizes = ['HS256' => 32, 'HS384' => 48, 'HS512' => 64, 'RS256' => 32, 'RS384' => 48, 'RS512' => 64];
+
+        if (!is_string($algorithm) || !isset($sizes[$algorithm])) {
+            throw new AuthSystemException('An unsupported signing algorithm was configured.', SmartException::ERR_CODE_CONFIG_ERROR);
+        }
+
+        if (str_starts_with($algorithm, 'HS')) {
+            $secret = $config['secret_key'] ?? null;
+
+            if (!is_string($secret) || strlen($secret) < $sizes[$algorithm]) {
+                throw new AuthSystemException('The HMAC key is shorter than the hash output.', SmartException::ERR_CODE_CONFIG_ERROR);
+            }
+
+            return ['algorithm' => $algorithm, 'verification' => $secret, 'signing' => $allow_private ? $secret : null];
+        }
+
+        $private = null;
+        $public = null;
+        $password = $config['pass_phrase'] ?? '';
+
+        if (!is_string($password)) {
+            throw new AuthSystemException('The private-key password must be a string.', SmartException::ERR_CODE_CONFIG_ERROR);
+        }
+
+        if ($allow_private && ($config['private_key'] ?? null) !== null) {
+            $private = @openssl_pkey_get_private($this->readKeyFile($config['private_key']), $password);
+
+            if ($private === false) {
+                throw new AuthSystemException('The private signing key could not be loaded.', SmartException::ERR_CODE_CONFIG_ERROR);
+            }
+
+            $details = openssl_pkey_get_details($private);
+            $public = $details === false ? false : openssl_pkey_get_public($details['key']);
+        }
+
+        if (($config['public_key'] ?? null) !== null) {
+            $public = @openssl_pkey_get_public($this->readKeyFile($config['public_key']));
+        }
+
+        if (!$public instanceof \OpenSSLAsymmetricKey) {
+            throw new AuthSystemException('A valid RSA public verification key is required.', SmartException::ERR_CODE_CONFIG_ERROR);
+        }
+
+        $details = openssl_pkey_get_details($public);
+
+        if ($details === false || $details['type'] !== OPENSSL_KEYTYPE_RSA || $details['bits'] < 2048) {
+            throw new AuthSystemException('RSA keys must have type RSA and at least 2048 bits.', SmartException::ERR_CODE_CONFIG_ERROR);
+        }
+
+        if ($private !== null) {
+            $private_details = openssl_pkey_get_details($private);
+
+            if ($private_details === false || $private_details['type'] !== OPENSSL_KEYTYPE_RSA || $private_details['key'] !== $details['key']) {
+                throw new AuthSystemException('The RSA public and private keys do not form a pair.', SmartException::ERR_CODE_CONFIG_ERROR);
+            }
+        }
+
+        return ['algorithm' => $algorithm, 'verification' => $public, 'signing' => $private];
+    } // prepareKey
+
+    /**
+     * Reads a local PEM key without accepting stream wrappers.
+     *
+     * @param mixed $path
+     * A readable local file path.
+     *
+     * @return string
+     * Returns the complete nonempty PEM contents.
+     *
+     * @throws AuthSystemException
+     * If the path is invalid or the key file cannot be read.
+     *
+     * @author Oleg Schildt
+     */
+    protected function readKeyFile(mixed $path): string
+    {
+        if (!is_string($path) || $path === '' || str_contains($path, "\0") || str_contains($path, '://') || !is_file($path)) {
+            throw new AuthSystemException('A signing-key path is not a local file.', SmartException::ERR_CODE_CONFIG_ERROR);
+        }
+
+        $pem = @file_get_contents($path);
+
+        if ($pem === false || $pem === '') {
+            throw new AuthSystemException('A signing-key file could not be read.', SmartException::ERR_CODE_CONFIG_ERROR);
+        }
+
+        return $pem;
+    } // readKeyFile
+
+    /**
+     * Ensures that configuration was successfully initialized.
      *
      * @return void
+     * Permits operations on an initialized manager.
+     *
+     * @throws AuthSystemException
+     * If init() has not completed successfully.
+     *
+     * @author Oleg Schildt
+     */
+    protected function validateParameters(): void
+    {
+        if ($this->configuration === []) {
+            throw new AuthSystemException('The OAuth manager has not been initialized.', SmartException::ERR_CODE_CONFIG_ERROR);
+        }
+    } // validateParameters
+
+    /**
+     * Encodes bytes using unpadded Base64URL.
+     *
+     * @param string $data
+     * The binary or UTF-8 data to encode.
+     *
+     * @return string
+     * Returns the URL-safe encoding without padding or line breaks.
+     *
+     * @author Oleg Schildt
+     */
+    protected function urlSafeB64Encode(string $data): string
+    {
+        return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+    } // urlSafeB64Encode
+
+    /**
+     * Decodes a canonical, nonempty Base64URL segment.
+     *
+     * @param string $b64
+     * An unpadded segment containing only the Base64URL alphabet.
+     *
+     * @return string
+     * Returns the decoded bytes.
+     *
+     * @throws InvalidTokenException
+     * If the alphabet, length or unused trailing bits are invalid.
+     *
+     * @author Oleg Schildt
+     */
+    protected function urlSafeB64Decode(string $b64): string
+    {
+        if ($b64 === '' || !preg_match('/^[A-Za-z0-9_-]+$/D', $b64) || strlen($b64) % 4 === 1) {
+            throw new InvalidTokenException('A JWT segment has invalid Base64URL encoding.');
+        }
+
+        $decoded = base64_decode(strtr($b64, '-_', '+/'), true);
+
+        if ($decoded === false || $this->urlSafeB64Encode($decoded) !== $b64) {
+            throw new InvalidTokenException('A JWT segment is not canonically encoded.');
+        }
+
+        return $decoded;
+    } // urlSafeB64Decode
+
+    /**
+     * Generates an opaque token using the operating system cryptographic generator.
+     *
+     * @return string
+     * Returns 32 random bytes encoded as 64 lowercase hexadecimal characters.
+     *
+     * @throws AuthSystemException
+     * If the cryptographic generator fails; no weaker fallback is used.
+     *
+     * @author Oleg Schildt
+     */
+    protected function generateToken(): string
+    {
+        try {
+            return bin2hex(random_bytes(32));
+        } catch (\Random\RandomException $exception) {
+            throw new AuthSystemException('A secure token could not be generated.', previous: $exception);
+        }
+    } // generateToken
+
+    /**
+     * Signs a serialized JWT with the configured active key.
+     *
+     * @param string $input
+     * The encoded header and payload separated by a period.
+     *
+     * @return string
+     * Returns the binary HMAC or RSA signature.
+     *
+     * @throws AuthSystemException
+     * If initialization, a private signing key or RSA signing is unavailable.
+     *
+     * @author Oleg Schildt
+     */
+    protected function generateJwtSignature(string $input): string
+    {
+        $this->validateParameters();
+
+        $key = $this->configuration['active_key'];
+        $algorithm = $key['algorithm'];
+        $hash = 'sha' . substr($algorithm, 2);
+
+        if ($key['signing'] === null) {
+            throw new AuthSystemException('This manager has no private signing key.', SmartException::ERR_CODE_CONFIG_ERROR);
+        }
+
+        if (str_starts_with($algorithm, 'HS')) {
+            return hash_hmac($hash, $input, $key['signing'], true);
+        }
+
+        $signature = '';
+
+        if (!@openssl_sign($input, $signature, $key['signing'], $hash)) {
+            throw new AuthSystemException('The access token could not be signed.');
+        }
+
+        return $signature;
+    } // generateJwtSignature
+
+    /**
+     * Serializes and signs claims before any storage update occurs.
+     *
+     * @param array<string, mixed> $payload
+     * JSON-compatible session claims.
+     *
+     * @return string
+     * Returns the compact signed JWT, limited to 16384 bytes.
+     *
+     * @throws AuthSystemException
+     * If serialization or signing fails, or the token exceeds the size limit.
+     *
+     * @author Oleg Schildt
+     */
+    protected function createJwtToken(array $payload): string
+    {
+        $this->validateParameters();
+
+        $header = ['typ' => 'JWT', 'alg' => $this->configuration['encryption_algorithm']];
+
+        if ($this->configuration['key_id'] !== null) {
+            $header['kid'] = $this->configuration['key_id'];
+        }
+
+        try {
+            $input = $this->urlSafeB64Encode(json_encode($header, JSON_THROW_ON_ERROR)) . '.'
+                . $this->urlSafeB64Encode(json_encode($payload, JSON_THROW_ON_ERROR));
+        } catch (\JsonException $exception) {
+            throw new AuthSystemException('The access-token claims could not be serialized.', previous: $exception);
+        }
+
+        $token = $input . '.' . $this->urlSafeB64Encode($this->generateJwtSignature($input));
+
+        if (strlen($token) > 16384) {
+            throw new AuthSystemException('The access token exceeds the supported size.');
+        }
+
+        return $token;
+    } // createJwtToken
+
+    /**
+     * Parses a JWT and verifies its signature using locally configured keys only.
+     *
+     * @param ?string $jwt_access_token
+     * A compact signed access token; null and empty strings are rejected.
+     *
+     * @param bool $verify_signature
+     * Must be true; unverified extraction is deliberately unavailable.
+     *
+     * @return array<string, mixed>
+     * Returns an object-shaped payload after successful signature verification.
+     *
+     * @throws MissingParametersException
+     * If the JWT is null or empty.
+     *
+     * @throws InvalidTokenException
+     * If encoding, JSON objects, header, key ID, algorithm or signature is invalid.
+     *
+     * @throws AuthSystemException
+     * If the manager is uninitialized or cryptographic verification fails internally.
+     *
+     * @author Oleg Schildt
+     */
+    protected function getJwtPayload(?string $jwt_access_token, bool $verify_signature = true): array
+    {
+        $this->validateParameters();
+
+        if ($jwt_access_token === null || $jwt_access_token === '') {
+            throw new MissingParametersException('The access token is not specified.');
+        }
+
+        if (!$verify_signature || strlen($jwt_access_token) > 16384) {
+            throw new InvalidTokenException('The JWT cannot be processed.');
+        }
+
+        $segments = explode('.', $jwt_access_token);
+
+        if (count($segments) !== 3) {
+            throw new InvalidTokenException('The JWT must contain exactly three segments.');
+        }
+
+        [$head, $body, $signature] = $segments;
+        $header_json = $this->urlSafeB64Decode($head);
+        $payload_json = $this->urlSafeB64Decode($body);
+        $signature = $this->urlSafeB64Decode($signature);
+
+        try {
+            $header = json_decode($header_json, false, 64, JSON_THROW_ON_ERROR);
+            $payload = json_decode($payload_json, false, 64, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $exception) {
+            throw new InvalidTokenException('The JWT contains invalid JSON.', previous: $exception);
+        }
+
+        if (!$header instanceof \stdClass || !$payload instanceof \stdClass) {
+            throw new InvalidTokenException('The JWT header and payload must be JSON objects.');
+        }
+
+        if (
+            ($header->typ ?? null) !== 'JWT' || !isset($header->alg) || !is_string($header->alg)
+            || property_exists($header, 'crit') || property_exists($header, 'b64')
+        ) {
+            throw new InvalidTokenException('The JWT header contains unsupported parameters.');
+        }
+
+        $key = $this->configuration['active_key'];
+
+        if (property_exists($header, 'kid')) {
+            if (!$this->isIdentifier($header->kid) || !array_key_exists($header->kid, $this->configuration['verification_keys'])) {
+                throw new InvalidTokenException('The JWT key ID is unknown.');
+            }
+
+            $key = $this->configuration['verification_keys'][$header->kid];
+        } elseif ($this->configuration['key_id'] !== null) {
+            throw new InvalidTokenException('The JWT key ID is missing.');
+        }
+
+        if ($header->alg !== $key['algorithm']) {
+            throw new InvalidTokenException('The JWT algorithm does not match its configured key.');
+        }
+
+        $input = "$head.$body";
+        $hash = 'sha' . substr($key['algorithm'], 2);
+
+        if (str_starts_with($key['algorithm'], 'HS')) {
+            if (!hash_equals(hash_hmac($hash, $input, $key['verification'], true), $signature)) {
+                throw new InvalidTokenException('The JWT signature is invalid.');
+            }
+        } else {
+            $result = @openssl_verify($input, $signature, $key['verification'], $hash);
+
+            if ($result === -1 || $result === false) {
+                throw new AuthSystemException('The JWT signature could not be checked.');
+            }
+
+            if ($result !== 1) {
+                throw new InvalidTokenException('The JWT signature is invalid.');
+            }
+        }
+
+        // Preserve object-shaped roots while exposing nested claims as ordinary arrays.
+        return json_decode($payload_json, true, 64, JSON_THROW_ON_ERROR);
+    } // getJwtPayload
+
+    /**
+     * Validates session claims and configured issuer and audience restrictions.
+     *
+     * @param array<string, mixed> $payload
+     * The signature-verified JWT claims.
+     *
+     * @param bool $check_time
+     * Whether to enforce expiry and not-before time; revocation may inspect expired JWTs.
+     *
+     * @return void
+     * Accepts consistent string identifiers and integer Unix timestamps.
+     *
+     * @throws InvalidTokenException
+     * If required claims, their types, relationships, issuer or audience are invalid.
+     *
+     * @throws TokenExpiredException
+     * If time checking is enabled and the access token has reached its expiration time.
+     *
+     * @author Oleg Schildt
+     */
+    protected function validatePayload(array $payload, bool $check_time): void
+    {
+        foreach (['access_token', 'user_id', 'client_id', 'sub', 'jti'] as $name) {
+            if (!$this->isIdentifier($payload[$name] ?? null)) {
+                throw new InvalidTokenException("The JWT claim '$name' is invalid.");
+            }
+        }
+
+        foreach (['access_token_expire', 'exp', 'iat'] as $name) {
+            if (!isset($payload[$name]) || !is_int($payload[$name]) || $payload[$name] < 0) {
+                throw new InvalidTokenException("The JWT claim '$name' must be an integer timestamp.");
+            }
+        }
+
+        if (
+            $payload['sub'] !== $payload['user_id'] || $payload['jti'] !== $payload['access_token']
+            || $payload['exp'] !== $payload['access_token_expire'] || $payload['iat'] >= $payload['exp']
+        ) {
+            throw new InvalidTokenException('The JWT claims are inconsistent.');
+        }
+
+        if (array_key_exists('nbf', $payload) && (!is_int($payload['nbf']) || $payload['nbf'] < 0 || $payload['nbf'] >= $payload['exp'])) {
+            throw new InvalidTokenException('The JWT not-before claim is invalid.');
+        }
+
+        if ($this->configuration['issuer'] !== null && ($payload['iss'] ?? null) !== $this->configuration['issuer']) {
+            throw new InvalidTokenException('The JWT issuer is invalid.');
+        }
+
+        if (array_key_exists('iss', $payload) && !$this->isIdentifier($payload['iss'])) {
+            throw new InvalidTokenException('The JWT issuer must be a nonempty string.');
+        }
+
+        $audiences = $payload['aud'] ?? null;
+
+        if (array_key_exists('aud', $payload)) {
+            $audiences = is_string($audiences) ? [$audiences] : $audiences;
+
+            if (!is_array($audiences) || !array_is_list($audiences) || $audiences === []) {
+                throw new InvalidTokenException('The JWT audience is invalid.');
+            }
+
+            foreach ($audiences as $audience) {
+                if (!$this->isIdentifier($audience)) {
+                    throw new InvalidTokenException('A JWT audience is invalid.');
+                }
+            }
+        }
+
+        if ($this->configuration['audience'] !== null && ($audiences === null || array_intersect($this->configuration['audience'], $audiences) === [])) {
+            throw new InvalidTokenException('The JWT is intended for a different audience.');
+        }
+
+        if ($check_time) {
+            $now = $this->getCurrentTime();
+
+            if ($now >= $payload['exp']) {
+                throw new TokenExpiredException('The access token has expired.');
+            }
+
+            if ($payload['iat'] > $now || ($payload['nbf'] ?? 0) > $now) {
+                throw new InvalidTokenException('The access token is not valid yet.');
+            }
+        }
+    } // validatePayload
+
+    /**
+     * Supplies the wall clock for token issuance and JWT lifetime checks.
+     *
+     * @return int
+     * Returns the current Unix timestamp in seconds.
+     *
+     * @author Oleg Schildt
+     */
+    protected function getCurrentTime(): int
+    {
+        return time();
+    } // getCurrentTime
+
+    /**
+     * Returns storage for operations requiring server-side session state.
+     *
+     * @return ITokenStorage
+     * Returns the collaborator supplied by the caller.
+     *
+     * @throws AuthSystemException
+     * If the manager is uninitialized or storage was not configured.
+     *
+     * @author Oleg Schildt
+     */
+    protected function getStorage(): ITokenStorage
+    {
+        $this->validateParameters();
+
+        if ($this->configuration['token_storage'] === null) {
+            throw new AuthSystemException('Token storage is required for this operation.', SmartException::ERR_CODE_CONFIG_ERROR);
+        }
+
+        return $this->configuration['token_storage'];
+    } // getStorage
+
+    /**
+     * Validates request identifiers without treating the string "0" as empty.
+     *
+     * @param ?string $value
+     * The request value to check.
+     *
+     * @param string $name
+     * The parameter name used in error messages.
+     *
+     * @return string
+     * Returns the original valid UTF-8 string.
+     *
+     * @throws MissingParametersException
+     * If the parameter is null or empty.
+     *
+     * @throws InvalidTokenException
+     * If it contains invalid UTF-8, control characters or too many bytes.
+     *
+     * @author Oleg Schildt
+     */
+    protected function requireIdentifier(?string $value, string $name): string
+    {
+        if ($value === null || $value === '') {
+            throw new MissingParametersException("The '$name' is not specified.");
+        }
+
+        if (!$this->isIdentifier($value)) {
+            throw new InvalidTokenException("The '$name' is invalid.");
+        }
+
+        return $value;
+    } // requireIdentifier
+
+    /**
+     * Builds a session and commits it before publishing tokens in the response.
+     *
+     * @param string $user_id
+     * The authenticated user identifier.
+     *
+     * @param string $client_id
+     * The client or device identifier scoped to this user.
+     *
+     * @param array<string, mixed> &$response
+     * Receives the committed response and remains unchanged on failure.
+     *
+     * @param ?string $previous_refresh_token
+     * The refresh token to atomically consume, or null for a new authenticated family.
+     *
+     * @return void
+     * Publishes user_id, client_id, access_token (the JWT), jwt_access_token (its compatibility
+     * alias), token_type (Bearer), expires_in (seconds), both absolute expiry timestamps and
+     * refresh_token. The internal opaque access ID and last_activity are not response fields.
+     *
+     * @throws AuthSystemException
+     * If signing, random generation, timestamp arithmetic or storage configuration fails.
+     *
+     * @throws InvalidTokenException
+     * If identifiers are invalid or rotation rejects an unknown or consumed refresh token.
+     *
+     * @throws TokenExpiredException
+     * If the refresh token expires before atomic replacement.
      *
      * @throws \Exception
-     * It might throw an exception in the case of any system errors:
+     * If storage cannot persist the session.
      *
-     * - if any required initialization parameters are empty.
-     * - if any initialization parameters are invalid.
-     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
-     * - if the private key is invalid.
-     * - if ssl signing fails due to system errors.
-     * - if the token storage fails to save the token record.
+     * @author Oleg Schildt
+     */
+    protected function createTokenRecord(
+        string $user_id,
+        string $client_id,
+        array &$response,
+        ?string $previous_refresh_token = null
+    ): void {
+        $storage = $this->getStorage();
+        $user_id = $this->requireIdentifier($user_id, 'user_id');
+        $client_id = $this->requireIdentifier($client_id, 'client_id');
+        $now = $this->getCurrentTime();
+        $access_seconds = $this->configuration['access_token_ttl_minutes'] * 60;
+        $refresh_seconds = $this->configuration['refresh_token_ttl_days'] * 86400;
+
+        if ($now < 0 || $now > PHP_INT_MAX - max($access_seconds, $refresh_seconds)) {
+            throw new AuthSystemException('The token expiration timestamp would overflow.');
+        }
+
+        $record = [
+            'user_id' => $user_id, 'client_id' => $client_id, 'last_activity' => $now,
+            'refresh_token' => $this->generateToken(), 'refresh_token_expire' => $now + $refresh_seconds,
+            'access_token' => $this->generateToken(), 'access_token_expire' => $now + $access_seconds,
+        ];
+        $payload = [
+            'access_token' => $record['access_token'], 'access_token_expire' => $record['access_token_expire'],
+            'user_id' => $user_id, 'client_id' => $client_id, 'sub' => $user_id,
+            'jti' => $record['access_token'], 'iat' => $now, 'exp' => $record['access_token_expire'],
+        ];
+
+        foreach (['issuer' => 'iss', 'audience' => 'aud'] as $setting => $claim) {
+            if ($this->configuration[$setting] !== null) {
+                $payload[$claim] = $this->configuration[$setting];
+            }
+        }
+
+        $jwt = $this->createJwtToken($payload);
+
+        if ($previous_refresh_token === null) {
+            $storage->saveTokenRecord($record);
+        } else {
+            $storage->rotateTokenRecord($previous_refresh_token, $record);
+        }
+
+        $response = [
+            'user_id' => $user_id, 'client_id' => $client_id, 'access_token' => $jwt,
+            'jwt_access_token' => $jwt, 'token_type' => 'Bearer', 'expires_in' => $access_seconds,
+            'access_token_expire' => $record['access_token_expire'],
+            'refresh_token' => $record['refresh_token'], 'refresh_token_expire' => $record['refresh_token_expire'],
+        ];
+    } // createTokenRecord
+
+    /**
+     * Authenticates credentials and creates a new session for the supplied client.
      *
-     * @throws \OAuth2\InvalidCredentialsException
-     * It might throw the InvalidCredentialsException if the authentication fails.
+     * @param array<string, mixed> $credentials
+     * Authenticator-specific credentials and a nonempty string client_id.
      *
-     * @throws \OAuth2\AuthSystemException
-     * It might throw the AuthSystemException if some system error occurs.
+     * @param array<string, mixed> &$response
+     * Receives the committed token response described by createTokenRecord(); remains unchanged on
+     * failure.
      *
-     * @throws \OAuth2\MissingParametersException
-     * It might throw the MissingParametersException if any required paramters are empty.
+     * @return void
+     * Publishes tokens only after authentication and successful persistence.
      *
-     * @uses OAuthManager::createTokenRecord()
+     * @throws MissingParametersException
+     * If client_id or an authenticator-required credential is missing.
+     *
+     * @throws InvalidCredentialsException
+     * If the authenticator rejects credentials or client_id has an invalid type.
+     *
+     * @throws InvalidTokenException
+     * If the client or returned user identifier is invalid.
+     *
+     * @throws AuthSystemException
+     * If configuration, the authenticator, signing or storage is unavailable.
+     *
+     * @throws \Exception
+     * If the authenticator identity backend or storage fails.
      *
      * @author Oleg Schildt
      */
     public function authenticateUser(array $credentials, array &$response): void
     {
-        if (empty($credentials["client_id"])) {
-            throw new MissingParametersException("The client id is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
+        $this->validateParameters();
+
+        $client_id = $credentials['client_id'] ?? null;
+
+        if ($client_id !== null && !is_string($client_id)) {
+            throw new InvalidCredentialsException('The client_id must be a string.');
         }
 
-        $this->createTokenRecord($this->user_authenticator->authenticateUser($credentials), $credentials["client_id"], $response);
-    }
+        $client_id = $this->requireIdentifier($client_id, 'client_id');
+        $authenticator = $this->configuration['user_authenticator'];
+
+        if ($authenticator === null) {
+            throw new AuthSystemException('A user authenticator is required.', SmartException::ERR_CODE_CONFIG_ERROR);
+        }
+
+        $user_id = $authenticator->authenticateUser($credentials);
+
+        $this->createTokenRecord((string) $user_id, $client_id, $response);
+    } // authenticateUser
 
     /**
-     * Refreshes the access and refresh tokens by using the valid refresh token.
+     * Atomically consumes a refresh token and replaces its session tokens.
      *
      * @param ?string $refresh_token
-     * The refresh token generated upon successful authentication.
+     * The current refresh token.
      *
      * @param ?string $user_id
-     * The user id for which the refresh token was issued.
+     * The user identifier bound to the token.
      *
      * @param ?string $client_id
-     * The client id for which the refresh token was issued.
+     * The client identifier bound to the token.
      *
-     * @param array &$response
-     * The response upon successful refresh. The expected properties are:
-     *
-     * - $response["user_id"] - id of the user.
-     * - $response["client_id"] - id of the client (device token etc.).
-     * - $response["access_token"] - access token generated upon successful authentication.
-     * - $response["access_token_expire"] - expiration time of the access token.
-     * - $response["refresh_token"] - refresh token generated upon successful authentication.
-     * - $response["refresh_token_expire"] - expiration time of the refresh token.
-     * - $response["last_activity"] - last activity time of the user of this token.
-     * - $response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
-     * token is the access token encoded and signed by the JWT standard approach.
+     * @param array<string, mixed> &$response
+     * Receives the committed response and remains unchanged on failure.
      *
      * @return void
+     * Rotates the token once. Reuse revokes its matching active token family.
+     *
+     * @throws MissingParametersException
+     * If a required argument is null or empty.
+     *
+     * @throws InvalidTokenException
+     * If an argument is invalid, the token is unknown, or reuse is detected.
+     *
+     * @throws TokenExpiredException
+     * If the refresh token has reached its expiration time.
+     *
+     * @throws AuthSystemException
+     * If configuration, signing, random generation or storage access fails.
      *
      * @throws \Exception
-     * It might throw an exception in the case of any system errors:
-     *
-     * - if any required initialization parameters are empty.
-     * - if any initialization parameters are invalid.
-     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
-     * - if the private key is invalid.
-     * - if ssl signing fails due to system errors.
-     * - if the token storage fails to verify the token record.
-     * - if the token storage fails to save the token record.
-     *
-     * @throws \OAuth2\InvalidTokenException
-     * It might throw the InvalidTokenException if the refresh token is invalid or expired.
-     *
-     * @throws \OAuth2\TokenExpiredException
-     * It might throw the TokenExpiredException if the refresh token is expired.
-     *
-     * @throws \OAuth2\AuthSystemException
-     * It might throw the AuthSystemException if some system error occurs.
-     *
-     * @throws \OAuth2\MissingParametersException
-     * It might throw the MissingParametersException if any required paramters are empty.
-     *
-     * @uses OAuthManager::createTokenRecord()
-     * @uses OAuthManager::verifyRefreshToken()
+     * If the storage collaborator cannot complete its operation.
      *
      * @author Oleg Schildt
      */
     public function refreshTokens(?string $refresh_token, ?string $user_id, ?string $client_id, array &$response): void
     {
-        $this->verifyRefreshToken($refresh_token, $user_id, $client_id);
+        $refresh_token = $this->requireIdentifier($refresh_token, 'refresh_token');
+        $user_id = $this->requireIdentifier($user_id, 'user_id');
+        $client_id = $this->requireIdentifier($client_id, 'client_id');
 
-        $this->createTokenRecord($user_id, $client_id, $response);
-    }
+        $this->createTokenRecord($user_id, $client_id, $response, $refresh_token);
+    } // refreshTokens
 
     /**
-     * Verifies the jwt access token.
+     * Verifies JWT encoding, signature, claims and optionally its stored session.
      *
      * @param ?string $jwt_access_token
-     * The jwt access token generated upon successful authentication.
+     * The signed access JWT.
      *
-     * @param boolean $check_on_server
-     * This flag defines whether only the signatire should be checked or also the
-     * authentication server should be asked.
+     * @param bool $check_on_server
+     * Whether to enforce server-side revocation. Offline verification cannot observe logout or
+     * refresh-token reuse immediately.
      *
-     * @return array|false
-     * Returns the payload array on successful verification, otherwise false.
+     * @return array<string, mixed>
+     * Returns validated claims; failures throw and never return false.
+     *
+     * @throws MissingParametersException
+     * If the JWT is null or empty.
+     *
+     * @throws InvalidTokenException
+     * If encoding, signature, claims or the stored session are invalid.
+     *
+     * @throws TokenExpiredException
+     * If the JWT or stored access token has reached its expiration time.
+     *
+     * @throws AuthSystemException
+     * If initialization or a required cryptographic or storage service fails.
      *
      * @throws \Exception
-     * It might throw an exception in the case of any system errors:
-     *
-     * - if any required initialization parameters are empty.
-     * - if any initialization parameters are invalid.
-     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
-     * - if the public key is invalid.
-     * - if the ssl verification cannot be performed due to system errors.
-     * - if the token storage fails to verify the token record.
-     *
-     * @throws \OAuth2\InvalidTokenException
-     * It might throw the InvalidTokenException if the jwt access token is invalid.
-     *
-     * @throws \OAuth2\TokenExpiredException
-     * It might throw the TokenExpiredException if the jwt access token is expired.
-     *
-     * @throws \OAuth2\AuthSystemException
-     * It might throw the AuthSystemException if some system error occurs.
-     *
-     * @throws \OAuth2\MissingParametersException
-     * It might throw the MissingParametersException if any required paramters are empty.
-     *
-     * @uses \OAuth2\Interfaces\ITokenStorage::loadTokenRecord()
+     * If storage cannot check the session.
      *
      * @author Oleg Schildt
      */
-    public function verifyJwtAccessToken(?string $jwt_access_token, bool $check_on_server = true): false|array
+    public function verifyJwtAccessToken(?string $jwt_access_token, bool $check_on_server = true): array
     {
-        if (empty($jwt_access_token)) {
-            throw new MissingParametersException("The access token is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
-        }
-
         $payload = $this->getJwtPayload($jwt_access_token);
 
-        if (empty($payload)) {
-            throw new InvalidTokenException("The jwt access token is invalid, the payload is empty!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
-        }
+        $this->validatePayload($payload, true);
 
-        if (empty($payload["access_token"])) {
-            throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'access_token'!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
+        if ($check_on_server) {
+            $this->getStorage()->verifyAccessToken($payload['access_token'], $payload['user_id'], $payload['client_id']);
         }
-
-        if (empty($payload["user_id"])) {
-            throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'user_id'!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
-        }
-
-        if (empty($payload["client_id"])) {
-            throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'client_id'!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
-        }
-
-        if (empty($payload["access_token_expire"])) {
-            throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'access_token_expire'!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
-        }
-
-        if (time() > $payload["access_token_expire"]) {
-            throw new TokenExpiredException("The access token is expired!", "token_expired", "", [], "Expired on " . date("Y-m-d H:i:s", $payload["access_token_expire"]));
-        }
-
-        if (!$check_on_server) {
-            return $payload;
-        }
-
-        $this->token_storage->verifyAccessToken($payload["access_token"], $payload["user_id"], $payload["client_id"]);
 
         return $payload;
-    }
+    } // verifyJwtAccessToken
 
     /**
-     * Verifies the refresh token.
+     * Checks a refresh token without extending its expiry or rotating it.
      *
      * @param ?string $refresh_token
-     * The refresh token to be verified.
+     * The current refresh token.
      *
      * @param ?string $user_id
-     * The user id for which the refresh token was issued.
+     * The user identifier bound to it.
      *
      * @param ?string $client_id
-     * The client id for which the refresh token was issued.
+     * The client identifier bound to it.
      *
      * @return void
+     * Returns for a matching unexpired token; detected reuse revokes its family.
+     *
+     * @throws MissingParametersException
+     * If a required argument is null or empty.
+     *
+     * @throws InvalidTokenException
+     * If an argument is invalid, the token is unknown, or reuse is detected.
+     *
+     * @throws TokenExpiredException
+     * If the refresh token has reached its expiration time.
+     *
+     * @throws AuthSystemException
+     * If configuration, signing, random generation or storage access fails.
      *
      * @throws \Exception
-     * It might throw an exception in the case of any system errors.
-     *
-     * @throws \OAuth2\InvalidTokenException
-     * It should throw the InvalidTokenException if the refresh token is invalid.
-     *
-     * @throws \OAuth2\TokenExpiredException
-     * It might throw the TokenExpiredException if the jwt access token is expired.
-     *
-     * @throws \OAuth2\AuthSystemException
-     * It might throw the AuthSystemException if some system error occurs.
-     *
-     * @throws \OAuth2\MissingParametersException
-     * It should throw the MissingParametersException if any required parameters are empty.
-     *
-     * @uses \OAuth2\Interfaces\ITokenStorage::loadTokenRecord()
+     * If the storage collaborator cannot complete its operation.
      *
      * @author Oleg Schildt
      */
     public function verifyRefreshToken(?string $refresh_token, ?string $user_id, ?string $client_id): void
     {
-        if (empty($user_id)) {
-            throw new MissingParametersException("The user id is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
-        }
-
-        if (empty($client_id)) {
-            throw new MissingParametersException("The client id is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
-        }
-
-        if (empty($refresh_token)) {
-            throw new MissingParametersException("The refresh token is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
-        }
-
-        $this->token_storage->verifyRefreshToken($refresh_token, $user_id, $client_id);
-    }
+        $this->getStorage()->verifyRefreshToken(
+            $this->requireIdentifier($refresh_token, 'refresh_token'),
+            $this->requireIdentifier($user_id, 'user_id'),
+            $this->requireIdentifier($client_id, 'client_id')
+        );
+    } // verifyRefreshToken
 
     /**
-     * Invalidates all token records for the user.
-     *
-     * The invalidation by the user id is asserted by a valid client id and
-     * a valid refresh token. If the refresh token is expired, the invalidation
-     * can be done only after authentication.
-     *
-     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'user_id'.
+     * Atomically authorizes revocation using a current refresh token.
      *
      * @param ?string $user_id
-     * The user id for which the refresh token was issued.
+     * The user owning the sessions.
      *
      * @param ?string $client_id
-     * The client id for which the refresh token was issued.
+     * The client used to authorize the operation.
      *
      * @param ?string $refresh_token
-     * The refresh token generated upon successful authentication.
+     * A current refresh token bound to this exact user/client pair.
      *
      * @return void
+     * Revokes all sessions of this user.
+     *
+     * @throws MissingParametersException
+     * If a required argument is null or empty.
+     *
+     * @throws InvalidTokenException
+     * If an argument is invalid, the token is unknown, or reuse is detected.
+     *
+     * @throws TokenExpiredException
+     * If the refresh token has reached its expiration time.
+     *
+     * @throws AuthSystemException
+     * If configuration, signing, random generation or storage access fails.
      *
      * @throws \Exception
-     * It might throw an exception in the case of any system errors:
-     *
-     * - if the token storage fails to verify the token record.
-     * - if the token storage fails to delete the token record.
-     *
-     * @throws \OAuth2\InvalidTokenException
-     * It might throw the InvalidTokenException if the refresh token is invalid or expired.
-     *
-     * @throws \OAuth2\TokenExpiredException
-     * It might throw the TokenExpiredException if the jwt refresh token is expired.
-     *
-     * @throws \OAuth2\AuthSystemException
-     * It might throw the AuthSystemException if some system error occurs.
-     *
-     * @throws \OAuth2\MissingParametersException
-     * It might throw the MissingParametersException if any required parameters are empty.
-     *
-     * @uses OAuthManager::verifyRefreshToken()
-     * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
+     * If the storage collaborator cannot complete its operation.
      *
      * @author Oleg Schildt
      */
     public function invalidateUser(?string $user_id, ?string $client_id, ?string $refresh_token): void
     {
-        if (empty($user_id)) {
-            throw new MissingParametersException("The user id is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
-        }
-
-        if (empty($client_id)) {
-            throw new MissingParametersException("The client id is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
-        }
-
-        if (empty($refresh_token)) {
-            throw new MissingParametersException("The refresh token is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
-        }
-
-        $this->verifyRefreshToken($refresh_token, $user_id, $client_id);
-
-        $this->token_storage->deleteTokenRecordByKey("user_id", $user_id);
-    }
+        $this->getStorage()->revokeTokenRecords(
+            $this->requireIdentifier($refresh_token, 'refresh_token'),
+            $this->requireIdentifier($user_id, 'user_id'),
+            $this->requireIdentifier($client_id, 'client_id'),
+            true
+        );
+    } // invalidateUser
 
     /**
-     * Invalidates all token records for the client.
-     *
-     * The invalidation by the client id is asserted by a valid client id and
-     * a valid refresh token. If the refresh token is expired, the invalidation
-     * can be done only after authentication.
-     *
-     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'client_id'.
+     * Atomically authorizes revocation using a current refresh token.
      *
      * @param ?string $user_id
-     * The user id for which the refresh token was issued.
+     * The user owning the sessions.
      *
      * @param ?string $client_id
-     * The client id for which the refresh token was issued.
+     * The client used to authorize the operation.
      *
      * @param ?string $refresh_token
-     * The refresh token generated upon successful authentication.
+     * A current refresh token bound to this exact user/client pair.
      *
      * @return void
+     * Revokes only this user/client session; other users with the same client_id are preserved.
+     *
+     * @throws MissingParametersException
+     * If a required argument is null or empty.
+     *
+     * @throws InvalidTokenException
+     * If an argument is invalid, the token is unknown, or reuse is detected.
+     *
+     * @throws TokenExpiredException
+     * If the refresh token has reached its expiration time.
+     *
+     * @throws AuthSystemException
+     * If configuration, signing, random generation or storage access fails.
      *
      * @throws \Exception
-     * It might throw an exception in the case of any system errors:
-     *
-     * - if the token storage fails to verify the token record.
-     * - if the token storage fails to delete the token record.
-     *
-     * @throws \OAuth2\InvalidTokenException
-     * It might throw the InvalidTokenException if the refresh token is invalid or expired.
-     *
-     * @throws \OAuth2\TokenExpiredException
-     * It might throw the TokenExpiredException if the jwt refresh token is expired.
-     *
-     * @throws \OAuth2\AuthSystemException
-     * It might throw the AuthSystemException if some system error occurs.
-     *
-     * @throws \OAuth2\MissingParametersException
-     * It might throw the MissingParametersException if any required parameters are empty.
-     *
-     * @uses OAuthManager::verifyRefreshToken()
-     * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
+     * If the storage collaborator cannot complete its operation.
      *
      * @author Oleg Schildt
      */
     public function invalidateClient(?string $user_id, ?string $client_id, ?string $refresh_token): void
     {
-        if (empty($user_id)) {
-            throw new MissingParametersException("The user id is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
-        }
-
-        if (empty($client_id)) {
-            throw new MissingParametersException("The client id is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
-        }
-
-        if (empty($refresh_token)) {
-            throw new MissingParametersException("The refresh token is not specified!", SmartException::ERR_CODE_MISSING_REQUEST_DATA);
-        }
-
-        $this->verifyRefreshToken($refresh_token, $user_id, $client_id);
-
-        $this->token_storage->deleteTokenRecordByKey("client_id", $client_id);
-    }
+        $this->getStorage()->revokeTokenRecords(
+            $this->requireIdentifier($refresh_token, 'refresh_token'),
+            $this->requireIdentifier($user_id, 'user_id'),
+            $this->requireIdentifier($client_id, 'client_id'),
+            false
+        );
+    } // invalidateClient
 
     /**
-     * Invalidates the token record for the jwt access token.
-     *
-     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'access_token'.
-     *
-     * The origin access token is extracted from the jwt payload.
+     * Revokes a session identified by a correctly signed JWT, including an expired JWT.
      *
      * @param ?string $jwt_access_token
-     * The jwt access token generated upon successful authentication.
+     * The signed token whose opaque access ID identifies the session.
      *
      * @return void
+     * Removes the matching access/refresh pair; already absent records are ignored.
+     *
+     * @throws MissingParametersException
+     * If the JWT is null or empty.
+     *
+     * @throws InvalidTokenException
+     * If its signature, format or session claims are invalid.
+     *
+     * @throws AuthSystemException
+     * If configuration, cryptographic verification or storage access fails.
      *
      * @throws \Exception
-     * It might throw an exception in the case of any errors:
-     *
-     * - if any required initialization parameters are empty.
-     * - if any initialization parameters are invalid.
-     * - if token_storage does not implement {@see \OAuth2\Interfaces\ITokenStorage}.
-     * - if user_authenticator does not implement {@see \OAuth2\Interfaces\IUserAuthenticator}.
-     * - if the public key is invalid.
-     * - if the ssl verification cannot be performed due to system errors.
-     * - if the token storage fails to delete the token record.
-     *
-     * @throws \OAuth2\InvalidTokenException
-     * It might throw the InvalidTokenException if the jwt access token is invalid.
-     *
-     * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
+     * If the storage collaborator cannot persist revocation.
      *
      * @author Oleg Schildt
      */
     public function invalidateJwtAccessToken(?string $jwt_access_token): void
     {
-        $payload = $this->getJwtPayload($jwt_access_token, true);
+        $payload = $this->getJwtPayload($jwt_access_token);
 
-        if (empty($payload)) {
-            throw new InvalidTokenException("The jwt access token is invalid, the payload is empty!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
-        }
+        $this->validatePayload($payload, false);
 
-        if (empty($payload["access_token"])) {
-            throw new InvalidTokenException("The jwt access token is invalid, the payload does not have the property 'access_token'!", SmartException::ERR_CODE_INVALID_REQUEST_DATA);
-        }
-
-        $this->token_storage->deleteTokenRecordByKey("access_token", $payload["access_token"]);
-    }
+        $this->getStorage()->deleteTokenRecordByKey('access_token', $payload['access_token']);
+    } // invalidateJwtAccessToken
 
     /**
-     * Invalidates all token records for the refresh token.
-     *
-     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'refresh_token'.
+     * Revokes a session by possession of a current or previously consumed refresh token.
      *
      * @param ?string $refresh_token
-     * The refresh token generated upon successful authentication.
+     * The nonempty refresh token identifying the family; it need not be unexpired.
      *
      * @return void
+     * Removes its active token family. Unknown tokens are ignored for idempotent revocation.
+     *
+     * @throws MissingParametersException
+     * If the refresh token is null or empty.
+     *
+     * @throws InvalidTokenException
+     * If the token contains invalid characters or exceeds the size limit.
+     *
+     * @throws AuthSystemException
+     * If configuration or storage access fails.
      *
      * @throws \Exception
-     * It might throw an exception in the case of any system errors:
-     *
-     * - if the token storage fails to delete the token record.
-     *
-     * @throws \OAuth2\InvalidTokenException
-     * It should throw the InvalidTokenException if the refresh token is invalid.
-     *
-     * @uses \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()
+     * If the storage collaborator cannot persist revocation.
      *
      * @author Oleg Schildt
      */
     public function invalidateRefreshToken(?string $refresh_token): void
     {
-        $this->token_storage->deleteTokenRecordByKey("refresh_token", $refresh_token);
-    }
-}
+        $this->getStorage()->deleteTokenRecordByKey('refresh_token', $this->requireIdentifier($refresh_token, 'refresh_token'));
+    } // invalidateRefreshToken
+} // OAuthManager

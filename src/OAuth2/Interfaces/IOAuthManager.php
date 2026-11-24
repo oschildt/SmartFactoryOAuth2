@@ -1,298 +1,292 @@
 <?php
-/**
- * This file contains the declaration of the interface IOAuthManager for secure user authentication.
- *
- * @author Oleg Schildt
- */
 
 namespace OAuth2\Interfaces;
 
-use \SmartFactory\Interfaces\IInitable;
+use SmartFactory\Interfaces\IInitable;
 
 /**
- * Interface for secure user authentication.
+ * Defines authenticated token issuance, verification and session revocation.
  *
  * @author Oleg Schildt
  */
 interface IOAuthManager extends IInitable
 {
     /**
-     * Initializes the authentication manager with parameters.
+     * Configures signing, verification, lifetimes and optional collaborators.
+     * Each call replaces all settings. Failed initialization preserves the previous configuration.
      *
-     * @param array $parameters
-     * The parameters may vary depending on implementation.
+     * @param array<string, mixed> $parameters
+     * Supported keys are encryption_algorithm (HS256/384/512 or RS256/384/512), secret_key (raw HMAC
+     * bytes), public_key/private_key (local PEM paths), pass_phrase (private-key password),
+     * access_token_ttl_minutes (integer or decimal integer string, 1..525600, default 10),
+     * refresh_token_ttl_days (same format, 1..3650, default 14), token_storage (ITokenStorage),
+     * user_authenticator (IUserAuthenticator), issuer (nonempty string), audience (string or nonempty
+     * list of strings), key_id (nonempty string), and verification_keys (map of IDs to
+     * encryption_algorithm and secret_key or public_key). Collaborators are optional for offline
+     * verification; RSA verification needs no private key. Issuer and audience restrictions are
+     * enforced when configured; production callers should configure both.
      *
      * @return void
+     * Publishes validated settings and parsed keys together.
      *
-     * @throws \Exception
-     * It might throw an exception in the case of any system errors.
+     * @throws \OAuth2\AuthSystemException
+     * If an unknown or invalid parameter is supplied, a key cannot be loaded, its type or strength is
+     * invalid, its public and private parts do not match, or the same key is assigned to
+     * different algorithms.
      *
      * @author Oleg Schildt
      */
     public function init(array $parameters): void;
 
     /**
-     * Authenticates the user based on the specified credentials and writes the response.
+     * Authenticates credentials and creates a new session for the supplied client.
      *
-     * It should use {@see \OAuth2\Interfaces\IUserAuthenticator} for the authentication.
+     * @param array<string, mixed> $credentials
+     * Authenticator-specific credentials and a nonempty string client_id.
      *
-     * @param array $credentials
-     * The credentials for the authentication. They may vary depending on implementation.
-     *
-     * @param array &$response
-     * The response upon successful authentication. The expected properties are:
-     *
-     * - $response["user_id"] - id of the user.
-     * - $response["client_id"] - id of the client (device token etc.).
-     * - $response["access_token"] - access token generated upon successful authentication.
-     * - $response["access_token_expire"] - expiration time of the access token.
-     * - $response["refresh_token"] - refresh token generated upon successful authentication.
-     * - $response["refresh_token_expire"] - expiration time of the refresh token.
-     * - $response["last_activity"] - last activity time of the user of this token.
-     * - $response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
-     * token is the access token encoded and signed by the JWT standard approach.
+     * @param array<string, mixed> &$response
+     * Receives user_id, client_id, access_token (JWT), jwt_access_token (alias), token_type,
+     * expires_in, access_token_expire, refresh_token and refresh_token_expire. Remains unchanged
+     * on failure.
      *
      * @return void
-     *
-     * @throws \Exception
-     * It might throw an exception in the case of any system errors.
-     *
-     * @throws \OAuth2\InvalidCredentialsException
-     * It should throw the InvalidCredentialsException if the authentication fails.
-     *
-     * @throws \OAuth2\AuthSystemException
-     * It should throw the AuthSystemException if some system error occurs.
+     * Publishes tokens only after authentication and successful persistence.
      *
      * @throws \OAuth2\MissingParametersException
-     * It should throw the MissingParametersException if any required paramters are empty.
+     * If client_id or an authenticator-required credential is missing.
+     *
+     * @throws \OAuth2\InvalidCredentialsException
+     * If the authenticator rejects credentials or client_id has an invalid type.
+     *
+     * @throws \OAuth2\InvalidTokenException
+     * If the client or returned user identifier is invalid.
+     *
+     * @throws \OAuth2\AuthSystemException
+     * If configuration, the authenticator, signing or storage is unavailable.
+     *
+     * @throws \Exception
+     * If the authenticator identity backend or storage fails.
      *
      * @author Oleg Schildt
      */
     public function authenticateUser(array $credentials, array &$response): void;
-    
+
     /**
-     * Refreshes the access and refresh tokens by using the valid refresh token.
+     * Atomically consumes a refresh token and replaces its session tokens.
      *
      * @param ?string $refresh_token
-     * The refresh token generated upon successful authentication.
+     * The current refresh token.
      *
      * @param ?string $user_id
-     * The user id for which the refresh token was issued.
+     * The user identifier bound to the token.
      *
      * @param ?string $client_id
-     * The client id for which the refresh token was issued.
+     * The client identifier bound to the token.
      *
-     * @param array &$response
-     * The response upon successful refresh. The expected properties are:
-     *
-     * - $response["user_id"] - id of the user.
-     * - $response["client_id"] - id of the client (device token etc.).
-     * - $response["access_token"] - access token generated upon successful authentication.
-     * - $response["access_token_expire"] - expiration time of the access token.
-     * - $response["refresh_token"] - refresh token generated upon successful authentication.
-     * - $response["refresh_token_expire"] - expiration time of the refresh token.
-     * - $response["last_activity"] - last activity time of the user of this token.
-     * - $response["jwt_access_token"] - jwt access token generated upon successful authentication. JWT access
-     * token is the access token encoded and signed by the JWT standard approach.
+     * @param array<string, mixed> &$response
+     * Receives the committed response and remains unchanged on failure.
      *
      * @return void
-     *
-     * @throws \Exception
-     * It might throw an exception in the case of any system errors.
-     *
-     * @throws \OAuth2\InvalidTokenException
-     * It should throw the InvalidTokenException if the refresh token is invalid.
-     *
-     * @throws \OAuth2\TokenExpiredException
-     * It might throw the TokenExpiredException if the refresh token is expired.
+     * Rotates the token once. Reuse revokes its matching active token family.
      *
      * @throws \OAuth2\MissingParametersException
-     * It should throw the MissingParametersException if some required parameters are empty.
+     * If a required argument is null or empty.
+     *
+     * @throws \OAuth2\InvalidTokenException
+     * If an argument is invalid, the token is unknown, or reuse is detected.
+     *
+     * @throws \OAuth2\TokenExpiredException
+     * If the refresh token has reached its expiration time.
      *
      * @throws \OAuth2\AuthSystemException
-     * It should throw the AuthSystemException if some system error occurs.
+     * If configuration, signing, random generation or storage access fails.
+     *
+     * @throws \Exception
+     * If the storage collaborator cannot complete its operation.
      *
      * @author Oleg Schildt
      */
     public function refreshTokens(?string $refresh_token, ?string $user_id, ?string $client_id, array &$response): void;
-    
+
     /**
-     * Verifies the jwt access token.
+     * Verifies JWT encoding, signature, claims and optionally its stored session.
      *
      * @param ?string $jwt_access_token
-     * The jwt access token generated upon successful authentication.
+     * The signed access JWT.
      *
-     * @param boolean $check_on_server
-     * This flag defines whether only the signature should be checked or also the
-     * authentication server should be asked.
+     * @param bool $check_on_server
+     * Whether to enforce server-side revocation. Offline verification cannot observe logout or
+     * refresh-token reuse immediately.
      *
-     * @return array|false
-     * The method should return the payload array on successful verification, otherwise false.
-     *
-     * @throws \Exception
-     * It might throw an exception in the case of any system errors.
-     *
-     * @throws \OAuth2\InvalidTokenException
-     * It should throw the InvalidTokenException if the access token is invalid.
-     *
-     * @throws \OAuth2\TokenExpiredException
-     * It might throw the TokenExpiredException if the jwt access token is expired.
+     * @return array<string, mixed>
+     * Returns validated claims; failures throw and never return false.
      *
      * @throws \OAuth2\MissingParametersException
-     * It should throw the MissingParametersException if any required parameters are empty.
+     * If the JWT is null or empty.
+     *
+     * @throws \OAuth2\InvalidTokenException
+     * If encoding, signature, claims or the stored session are invalid.
+     *
+     * @throws \OAuth2\TokenExpiredException
+     * If the JWT or stored access token has reached its expiration time.
      *
      * @throws \OAuth2\AuthSystemException
-     * It should throw the AuthSystemException if some system error occurs.
+     * If initialization or a required cryptographic or storage service fails.
+     *
+     * @throws \Exception
+     * If storage cannot check the session.
      *
      * @author Oleg Schildt
      */
-    public function verifyJwtAccessToken(?string $jwt_access_token, bool $check_on_server = true): false|array;
-    
+    public function verifyJwtAccessToken(?string $jwt_access_token, bool $check_on_server = true): array;
+
     /**
-     * Verifies the refresh token.
+     * Checks a refresh token without extending its expiry or rotating it.
      *
      * @param ?string $refresh_token
-     * The refresh token to be verified.
+     * The current refresh token.
      *
      * @param ?string $user_id
-     * The user id for which the refresh token was issued.
+     * The user identifier bound to it.
      *
      * @param ?string $client_id
-     * The client id for which the refresh token was issued.
+     * The client identifier bound to it.
      *
      * @return void
-     *
-     * @throws \Exception
-     * It might throw an exception in the case of any system errors.
-     *
-     * @throws \OAuth2\InvalidTokenException
-     * It should throw the InvalidTokenException if the refresh token is invalid.
-     *
-     * @throws \OAuth2\TokenExpiredException
-     * It might throw the TokenExpiredException if the refresh token is expired.
+     * Returns for a matching unexpired token; detected reuse revokes its family.
      *
      * @throws \OAuth2\MissingParametersException
-     * It should throw the MissingParametersException if any required parameters are empty.
+     * If a required argument is null or empty.
+     *
+     * @throws \OAuth2\InvalidTokenException
+     * If an argument is invalid, the token is unknown, or reuse is detected.
+     *
+     * @throws \OAuth2\TokenExpiredException
+     * If the refresh token has reached its expiration time.
      *
      * @throws \OAuth2\AuthSystemException
-     * It should throw the AuthSystemException if some system error occurs.
+     * If configuration, signing, random generation or storage access fails.
+     *
+     * @throws \Exception
+     * If the storage collaborator cannot complete its operation.
      *
      * @author Oleg Schildt
      */
     public function verifyRefreshToken(?string $refresh_token, ?string $user_id, ?string $client_id): void;
-    
+
     /**
-     * Invalidates all token records for the user.
-     *
-     * The invalidation by the user id should be asserted by a valid client id and
-     * a valid refresh token. If the refresh token is expired, the invalidation
-     * can be done only after authentication.
-     *
-     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'user_id'.
+     * Atomically authorizes revocation using a current refresh token.
      *
      * @param ?string $user_id
-     * The user id for which the refresh token was issued.
+     * The user owning the sessions.
      *
      * @param ?string $client_id
-     * The client id for which the refresh token was issued.
+     * The client used to authorize the operation.
      *
      * @param ?string $refresh_token
-     * The refresh token generated upon successful authentication.
+     * A current refresh token bound to this exact user/client pair.
      *
      * @return void
-     *
-     * @throws \Exception
-     * It might throw an exception in the case of any system errors.
-     *
-     * @throws \OAuth2\InvalidTokenException
-     * It should throw the InvalidTokenException if the refresh token is invalid.
-     *
-     * @throws \OAuth2\TokenExpiredException
-     * It might throw the TokenExpiredException if the jwt refresh token is expired.
-     *
-     * @throws \OAuth2\AuthSystemException
-     * It should throw the AuthSystemException if some system error occurs.
+     * Revokes all sessions of this user.
      *
      * @throws \OAuth2\MissingParametersException
-     * It should throw the MissingParametersException if some required parameters are empty.
+     * If a required argument is null or empty.
+     *
+     * @throws \OAuth2\InvalidTokenException
+     * If an argument is invalid, the token is unknown, or reuse is detected.
+     *
+     * @throws \OAuth2\TokenExpiredException
+     * If the refresh token has reached its expiration time.
+     *
+     * @throws \OAuth2\AuthSystemException
+     * If configuration, signing, random generation or storage access fails.
+     *
+     * @throws \Exception
+     * If the storage collaborator cannot complete its operation.
      *
      * @author Oleg Schildt
      */
     public function invalidateUser(?string $user_id, ?string $client_id, ?string $refresh_token): void;
-    
+
     /**
-     * Invalidates all token records for the client.
-     *
-     * The invalidation by the client id should be asserted by a valid user id and
-     * a valid refresh token. If the refresh token is expired, the invalidation
-     * can be done only after authentication.
-     *
-     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'client_id'.
+     * Atomically authorizes revocation using a current refresh token.
      *
      * @param ?string $user_id
-     * The user id for which the refresh token was issued.
+     * The user owning the sessions.
      *
      * @param ?string $client_id
-     * The client id for which the refresh token was issued.
+     * The client used to authorize the operation.
      *
      * @param ?string $refresh_token
-     * The refresh token generated upon successful authentication.
+     * A current refresh token bound to this exact user/client pair.
      *
      * @return void
-     *
-     * @throws \Exception
-     * It might throw an exception in the case of any errors.
-     *
-     * @throws \OAuth2\InvalidTokenException
-     * It should throw the InvalidTokenException if the refresh token is invalid.
-     *
-     * @throws \OAuth2\AuthSystemException
-     * It should throw the AuthSystemException if some system error occurs.
+     * Revokes only this user/client session; other users with the same client_id are preserved.
      *
      * @throws \OAuth2\MissingParametersException
-     * It should throw the MissingParametersException if some required parameters are empty.
+     * If a required argument is null or empty.
+     *
+     * @throws \OAuth2\InvalidTokenException
+     * If an argument is invalid, the token is unknown, or reuse is detected.
+     *
+     * @throws \OAuth2\TokenExpiredException
+     * If the refresh token has reached its expiration time.
+     *
+     * @throws \OAuth2\AuthSystemException
+     * If configuration, signing, random generation or storage access fails.
+     *
+     * @throws \Exception
+     * If the storage collaborator cannot complete its operation.
      *
      * @author Oleg Schildt
      */
     public function invalidateClient(?string $user_id, ?string $client_id, ?string $refresh_token): void;
-    
+
     /**
-     * Invalidates the token record for the jwt access token.
-     *
-     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'access_token'.
-     *
-     * The origin access token is extracted from the jwt payload.
+     * Revokes a session identified by a correctly signed JWT, including an expired JWT.
      *
      * @param ?string $jwt_access_token
-     * The jwt access token generated upon successful authentication.
+     * The signed token whose opaque access ID identifies the session.
      *
      * @return void
+     * Removes the matching access/refresh pair; already absent records are ignored.
      *
-     * @throws \Exception
-     * It might throw an exception in the case of any system errors.
+     * @throws \OAuth2\MissingParametersException
+     * If the JWT is null or empty.
      *
      * @throws \OAuth2\InvalidTokenException
-     * It should throw the InvalidTokenException if the access token is invalid.
+     * If its signature, format or session claims are invalid.
+     *
+     * @throws \OAuth2\AuthSystemException
+     * If configuration, cryptographic verification or storage access fails.
+     *
+     * @throws \Exception
+     * If the storage collaborator cannot persist revocation.
      *
      * @author Oleg Schildt
      */
     public function invalidateJwtAccessToken(?string $jwt_access_token): void;
-    
+
     /**
-     * Invalidates all token records for the refresh token.
-     *
-     * The invalidation is done by using {@see \OAuth2\Interfaces\ITokenStorage::deleteTokenRecordByKey()} with the key 'refresh_token'.
+     * Revokes a session by possession of a current or previously consumed refresh token.
      *
      * @param ?string $refresh_token
-     * The refresh token generated upon successful authentication.
+     * The nonempty refresh token identifying the family; it need not be unexpired.
      *
      * @return void
+     * Removes its active token family. Unknown tokens are ignored for idempotent revocation.
      *
-     * @throws \Exception
-     * It might throw an exception in the case of any system errors.
+     * @throws \OAuth2\MissingParametersException
+     * If the refresh token is null or empty.
      *
      * @throws \OAuth2\InvalidTokenException
-     * It should throw the InvalidTokenException if the refresh token is invalid.
+     * If the token contains invalid characters or exceeds the size limit.
+     *
+     * @throws \OAuth2\AuthSystemException
+     * If configuration or storage access fails.
+     *
+     * @throws \Exception
+     * If the storage collaborator cannot persist revocation.
      *
      * @author Oleg Schildt
      */

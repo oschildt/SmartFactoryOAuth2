@@ -87,54 +87,50 @@
                 <div class="col-md-12">
                     <h2>Source Code: OAuth2/Interfaces/IUserAuthenticator.php</h2>
 
-<div id="source"><pre class="code"><code><span class="line" id="1"> 1: </span><span class="xlang">&lt;?php</span>
-<span class="line" id="2"> 2: </span><span class="php-comment">/**
-</span><span class="line" id="3"> 3: </span><span class="php-comment"> * This file contains the declaration of the interface IUserAuthenticator for authentication
-</span><span class="line" id="4"> 4: </span><span class="php-comment"> * of the user upon his credentials before generation of the tokens.
-</span><span class="line" id="5"> 5: </span><span class="php-comment"> *
-</span><span class="line" id="6"> 6: </span><span class="php-comment"> * @author Oleg Schildt
-</span><span class="line" id="7"> 7: </span><span class="php-comment"> */</span>
-<span class="line" id="8"> 8: </span>
-<span class="line" id="9"> 9: </span><span class="php-keyword1">namespace</span> OAuth2\Interfaces;
-<span class="line" id="10">10: </span>
-<span class="line" id="11">11: </span><span class="php-keyword1">use</span> \SmartFactory\Interfaces\IInitable;
-<span class="line" id="12">12: </span>
-<span class="line" id="13">13: </span><span class="php-comment">/**
-</span><span class="line" id="14">14: </span><span class="php-comment"> * Interface for authentication
-</span><span class="line" id="15">15: </span><span class="php-comment"> * of the user upon his credentials before generation of the tokens.
-</span><span class="line" id="16">16: </span><span class="php-comment"> *
-</span><span class="line" id="17">17: </span><span class="php-comment"> * @author Oleg Schildt
-</span><span class="line" id="18">18: </span><span class="php-comment"> */</span>
-<span class="line" id="19">19: </span><span class="php-keyword1">interface</span> IUserAuthenticator <span class="php-keyword1">extends</span> IInitable
-<span class="line" id="20">20: </span>{
-<span class="line" id="21">21: </span>    <span class="php-comment">/**
-</span><span class="line" id="22">22: </span><span class="php-comment">     * Authenticates the user based on the specified credentials.
-</span><span class="line" id="23">23: </span><span class="php-comment">     *
-</span><span class="line" id="24">24: </span><span class="php-comment">     * @param array $credentials
-</span><span class="line" id="25">25: </span><span class="php-comment">     * The credentials may vary depending on implementation.
-</span><span class="line" id="26">26: </span><span class="php-comment">     *
-</span><span class="line" id="27">27: </span><span class="php-comment">     * @return int
-</span><span class="line" id="28">28: </span><span class="php-comment">     * The method should return the user id upon success, otherwise false.
-</span><span class="line" id="29">29: </span><span class="php-comment">     *
-</span><span class="line" id="30">30: </span><span class="php-comment">     * @throws \Exception
-</span><span class="line" id="31">31: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
-</span><span class="line" id="32">32: </span><span class="php-comment">     *
-</span><span class="line" id="33">33: </span><span class="php-comment">     * @throws \OAuth2\InvalidCredentialsException
-</span><span class="line" id="34">34: </span><span class="php-comment">     * It should throw the InvalidCredentialsException if the authentication fails.
-</span><span class="line" id="35">35: </span><span class="php-comment">     *
-</span><span class="line" id="36">36: </span><span class="php-comment">     * @throws \OAuth2\MissingParametersException
-</span><span class="line" id="37">37: </span><span class="php-comment">     * It should throw the MissingParametersException if any required parameters are empty.
-</span><span class="line" id="38">38: </span><span class="php-comment">     *
-</span><span class="line" id="39">39: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="40">40: </span><span class="php-comment">     */</span>
-<span class="line" id="41">41: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> authenticateUser(<span class="php-keyword1">array</span> <span class="php-var">$credentials</span>): int;
-<span class="line" id="42">42: </span>}
+<div id="source"><pre class="code"><code><span class="source-line" id="line-1"><a class="line" id="1" href="#1">1:</a> <span class="xlang">&lt;?php</span></span>
+<span class="source-line" id="line-2"><a class="line" id="2" href="#2">2:</a> </span>
+<span class="source-line" id="line-3"><a class="line" id="3" href="#3">3:</a> <span class="php-keyword1">namespace</span> OAuth2\Interfaces;</span>
+<span class="source-line" id="line-4"><a class="line" id="4" href="#4">4:</a> </span>
+<span class="source-line" id="line-5"><a class="line" id="5" href="#5">5:</a> <span class="php-keyword1">use</span> SmartFactory\Interfaces\IInitable;</span>
+<span class="source-line" id="line-6"><a class="line" id="6" href="#6">6:</a> </span>
+<span class="source-line" id="line-7"><a class="line" id="7" href="#7">7:</a> <span class="php-comment">/**</span></span>
+<span class="source-line" id="line-8"><a class="line" id="8" href="#8">8:</a> <span class="php-comment"> * Authenticates application-specific credentials before token issuance.</span></span>
+<span class="source-line" id="line-9"><a class="line" id="9" href="#9">9:</a> <span class="php-comment"> *</span></span>
+<span class="source-line" id="line-10"><a class="line" id="10" href="#10">10:</a> <span class="php-comment"> * @author Oleg Schildt</span></span>
+<span class="source-line" id="line-11"><a class="line" id="11" href="#11">11:</a> <span class="php-comment"> */</span></span>
+<span class="source-line" id="line-12"><a class="line" id="12" href="#12">12:</a> <span class="php-keyword1">interface</span> IUserAuthenticator <span class="php-keyword1">extends</span> IInitable</span>
+<span class="source-line" id="line-13"><a class="line" id="13" href="#13">13:</a> {</span>
+<span class="source-line" id="line-14"><a class="line" id="14" href="#14">14:</a>     <span class="php-comment">/**</span></span>
+<span class="source-line" id="line-15"><a class="line" id="15" href="#15">15:</a> <span class="php-comment">     * Authenticates credentials and returns the user identifier.</span></span>
+<span class="source-line" id="line-16"><a class="line" id="16" href="#16">16:</a> <span class="php-comment">     * Failure is represented by an exception, never by false or a sentinel user ID.</span></span>
+<span class="source-line" id="line-17"><a class="line" id="17" href="#17">17:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-18"><a class="line" id="18" href="#18">18:</a> <span class="php-comment">     * @param array&lt;string, mixed&gt; $credentials</span></span>
+<span class="source-line" id="line-19"><a class="line" id="19" href="#19">19:</a> <span class="php-comment">     * Application-specific credentials; implementations must validate their types before using them.</span></span>
+<span class="source-line" id="line-20"><a class="line" id="20" href="#20">20:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-21"><a class="line" id="21" href="#21">21:</a> <span class="php-comment">     * @return int|string</span></span>
+<span class="source-line" id="line-22"><a class="line" id="22" href="#22">22:</a> <span class="php-comment">     * Returns the authenticated user identifier. Zero and the string &quot;0&quot; are valid identifiers;</span></span>
+<span class="source-line" id="line-23"><a class="line" id="23" href="#23">23:</a> <span class="php-comment">     * strings must be nonempty UTF-8 without control characters.</span></span>
+<span class="source-line" id="line-24"><a class="line" id="24" href="#24">24:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-25"><a class="line" id="25" href="#25">25:</a> <span class="php-comment">     * @throws \OAuth2\MissingParametersException</span></span>
+<span class="source-line" id="line-26"><a class="line" id="26" href="#26">26:</a> <span class="php-comment">     * If a required credential is absent.</span></span>
+<span class="source-line" id="line-27"><a class="line" id="27" href="#27">27:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-28"><a class="line" id="28" href="#28">28:</a> <span class="php-comment">     * @throws \OAuth2\InvalidCredentialsException</span></span>
+<span class="source-line" id="line-29"><a class="line" id="29" href="#29">29:</a> <span class="php-comment">     * If credentials are malformed or do not authenticate a user.</span></span>
+<span class="source-line" id="line-30"><a class="line" id="30" href="#30">30:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-31"><a class="line" id="31" href="#31">31:</a> <span class="php-comment">     * @throws \Exception</span></span>
+<span class="source-line" id="line-32"><a class="line" id="32" href="#32">32:</a> <span class="php-comment">     * If the identity backend cannot complete authentication.</span></span>
+<span class="source-line" id="line-33"><a class="line" id="33" href="#33">33:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-34"><a class="line" id="34" href="#34">34:</a> <span class="php-comment">     * @author Oleg Schildt</span></span>
+<span class="source-line" id="line-35"><a class="line" id="35" href="#35">35:</a> <span class="php-comment">     */</span></span>
+<span class="source-line" id="line-36"><a class="line" id="36" href="#36">36:</a>     <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> authenticateUser(<span class="php-keyword1">array</span> <span class="php-var">$credentials</span>): <span class="php-keyword1">int</span>|<span class="php-keyword1">string</span>;</span>
+<span class="source-line" id="line-37"><a class="line" id="37" href="#37">37:</a> } <span class="php-comment">// IUserAuthenticator</span></span>
+<span class="source-line" id="line-38"><a class="line" id="38" href="#38">38:</a> </span>
 </code>
 </pre>
 </div>
                     
                     <div id="footer">
-                        Generated on 2025-11-25 16:57 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
+                        Generated on 2026-11-23 01:21 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
                     </div>                    
                 </div>
             </div>

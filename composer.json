@@ -20,8 +20,8 @@
     }
   },
   "require": {
-    "php": ">=8.4",
-    "smartfactory/smartfactory": ">=2.1.25",
+    "php": ">=8.5",
+    "smartfactory/smartfactory": ">=2.2.0",
     "ext-openssl": "*"
   }
 }

@@ -87,61 +87,63 @@
                 <div class="col-md-12">
                     <h2>Source Code: OAuth2/AuthSystemException.php</h2>
 
-<div id="source"><pre class="code"><code><span class="line" id="1"> 1: </span><span class="xlang">&lt;?php</span>
-<span class="line" id="2"> 2: </span><span class="php-comment">/**
-</span><span class="line" id="3"> 3: </span><span class="php-comment"> * This file contains the implementation of the AuthSystemException.
-</span><span class="line" id="4"> 4: </span><span class="php-comment"> *
-</span><span class="line" id="5"> 5: </span><span class="php-comment"> * @author Oleg Schildt
-</span><span class="line" id="6"> 6: </span><span class="php-comment"> */</span>
-<span class="line" id="7"> 7: </span>
-<span class="line" id="8"> 8: </span><span class="php-keyword1">namespace</span> OAuth2;
-<span class="line" id="9"> 9: </span>
-<span class="line" id="10">10: </span><span class="php-keyword1">use</span> \SmartFactory\SmartException;
-<span class="line" id="11">11: </span>
-<span class="line" id="12">12: </span><span class="php-comment">/**
-</span><span class="line" id="13">13: </span><span class="php-comment"> * Class for the exception AuthSystemException.
-</span><span class="line" id="14">14: </span><span class="php-comment"> *
-</span><span class="line" id="15">15: </span><span class="php-comment"> * @author Oleg Schildt
-</span><span class="line" id="16">16: </span><span class="php-comment"> */</span>
-<span class="line" id="17">17: </span><span class="php-keyword1">class</span> AuthSystemException <span class="php-keyword1">extends</span> SmartException
-<span class="line" id="18">18: </span>{
-<span class="line" id="19">19: </span>    <span class="php-comment">/**
-</span><span class="line" id="20">20: </span><span class="php-comment">     * Constructor.
-</span><span class="line" id="21">21: </span><span class="php-comment">     *
-</span><span class="line" id="22">22: </span><span class="php-comment">     * @param string $message
-</span><span class="line" id="23">23: </span><span class="php-comment">     * Error message.
-</span><span class="line" id="24">24: </span><span class="php-comment">     *
-</span><span class="line" id="25">25: </span><span class="php-comment">     * @param string $error_code
-</span><span class="line" id="26">26: </span><span class="php-comment">     * Error code.
-</span><span class="line" id="27">27: </span><span class="php-comment">     *
-</span><span class="line" id="28">28: </span><span class="php-comment">     * Since the error texts can be localized, the unique code of the error might be important fo using
-</span><span class="line" id="29">29: </span><span class="php-comment">     * in comparison.
-</span><span class="line" id="30">30: </span><span class="php-comment">     *
-</span><span class="line" id="31">31: </span><span class="php-comment">     * @param string $error_element
-</span><span class="line" id="32">32: </span><span class="php-comment">     * Error element.
-</span><span class="line" id="33">33: </span><span class="php-comment">     *
-</span><span class="line" id="34">34: </span><span class="php-comment">     * @param array $error_details
-</span><span class="line" id="35">35: </span><span class="php-comment">     * The details might be useful if the message translations are provided on the client, not
-</span><span class="line" id="36">36: </span><span class="php-comment">     * on the server, and the message should contain some details that may vary from case to case.
-</span><span class="line" id="37">37: </span><span class="php-comment">     * In that case, the servers return the message id instead of final text and the details, the client
-</span><span class="line" id="38">38: </span><span class="php-comment">     * uses the message id, gets the final translated text and substitutes the parameters through the details.
-</span><span class="line" id="39">39: </span><span class="php-comment">     *
-</span><span class="line" id="40">40: </span><span class="php-comment">     * @param string $technical_info
-</span><span class="line" id="41">41: </span><span class="php-comment">     * Additional technical infromation. It can be used if it is a programming error and displayed only if the debug mode is active.
-</span><span class="line" id="42">42: </span><span class="php-comment">     *
-</span><span class="line" id="43">43: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="44">44: </span><span class="php-comment">     */</span>
-<span class="line" id="45">45: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> __construct(string <span class="php-var">$message</span>, string <span class="php-var">$error_code</span> = SmartException::ERR_CODE_SYSTEM_ERROR, string <span class="php-var">$error_element</span> = <span class="php-quote">&quot;&quot;</span>, <span class="php-keyword1">array</span> <span class="php-var">$error_details</span> = [], string <span class="php-var">$technical_info</span> = <span class="php-quote">&quot;&quot;</span>)
-<span class="line" id="46">46: </span>    {
-<span class="line" id="47">47: </span>        parent::__construct(<span class="php-var">$message</span>, <span class="php-var">$error_code</span>, <span class="php-var">$error_element</span>, <span class="php-var">$error_details</span>, <span class="php-var">$technical_info</span>);
-<span class="line" id="48">48: </span>    }
-<span class="line" id="49">49: </span>}
+<div id="source"><pre class="code"><code><span class="source-line" id="line-1"><a class="line" id="1" href="#1">1:</a> <span class="xlang">&lt;?php</span></span>
+<span class="source-line" id="line-2"><a class="line" id="2" href="#2">2:</a> </span>
+<span class="source-line" id="line-3"><a class="line" id="3" href="#3">3:</a> <span class="php-keyword1">namespace</span> OAuth2;</span>
+<span class="source-line" id="line-4"><a class="line" id="4" href="#4">4:</a> </span>
+<span class="source-line" id="line-5"><a class="line" id="5" href="#5">5:</a> <span class="php-keyword1">use</span> SmartFactory\SmartException;</span>
+<span class="source-line" id="line-6"><a class="line" id="6" href="#6">6:</a> </span>
+<span class="source-line" id="line-7"><a class="line" id="7" href="#7">7:</a> <span class="php-comment">/**</span></span>
+<span class="source-line" id="line-8"><a class="line" id="8" href="#8">8:</a> <span class="php-comment"> * Represents configuration, cryptographic-provider or persistence failures.</span></span>
+<span class="source-line" id="line-9"><a class="line" id="9" href="#9">9:</a> <span class="php-comment"> *</span></span>
+<span class="source-line" id="line-10"><a class="line" id="10" href="#10">10:</a> <span class="php-comment"> * @author Oleg Schildt</span></span>
+<span class="source-line" id="line-11"><a class="line" id="11" href="#11">11:</a> <span class="php-comment"> */</span></span>
+<span class="source-line" id="line-12"><a class="line" id="12" href="#12">12:</a> <span class="php-keyword1">class</span> AuthSystemException <span class="php-keyword1">extends</span> SmartException</span>
+<span class="source-line" id="line-13"><a class="line" id="13" href="#13">13:</a> {</span>
+<span class="source-line" id="line-14"><a class="line" id="14" href="#14">14:</a> </span>
+<span class="source-line" id="line-15"><a class="line" id="15" href="#15">15:</a>     <span class="php-comment">/**</span></span>
+<span class="source-line" id="line-16"><a class="line" id="16" href="#16">16:</a> <span class="php-comment">     * Creates an authentication exception with structured diagnostics and an optional cause.</span></span>
+<span class="source-line" id="line-17"><a class="line" id="17" href="#17">17:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-18"><a class="line" id="18" href="#18">18:</a> <span class="php-comment">     * @param string $message</span></span>
+<span class="source-line" id="line-19"><a class="line" id="19" href="#19">19:</a> <span class="php-comment">     * The public error message or localization identifier.</span></span>
+<span class="source-line" id="line-20"><a class="line" id="20" href="#20">20:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-21"><a class="line" id="21" href="#21">21:</a> <span class="php-comment">     * @param string $error_code</span></span>
+<span class="source-line" id="line-22"><a class="line" id="22" href="#22">22:</a> <span class="php-comment">     * The stable string code, independent of localized text.</span></span>
+<span class="source-line" id="line-23"><a class="line" id="23" href="#23">23:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-24"><a class="line" id="24" href="#24">24:</a> <span class="php-comment">     * @param string $error_element</span></span>
+<span class="source-line" id="line-25"><a class="line" id="25" href="#25">25:</a> <span class="php-comment">     * The related request field, or an empty string.</span></span>
+<span class="source-line" id="line-26"><a class="line" id="26" href="#26">26:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-27"><a class="line" id="27" href="#27">27:</a> <span class="php-comment">     * @param array&lt;array-key, mixed&gt; $error_details</span></span>
+<span class="source-line" id="line-28"><a class="line" id="28" href="#28">28:</a> <span class="php-comment">     * Structured localization parameters; keys, types and nested values are preserved.</span></span>
+<span class="source-line" id="line-29"><a class="line" id="29" href="#29">29:</a> <span class="php-comment">     * A server may return a message identifier and these details so the client can</span></span>
+<span class="source-line" id="line-30"><a class="line" id="30" href="#30">30:</a> <span class="php-comment">     * translate the message and substitute its variable parameters.</span></span>
+<span class="source-line" id="line-31"><a class="line" id="31" href="#31">31:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-32"><a class="line" id="32" href="#32">32:</a> <span class="php-comment">     * @param string $technical_info</span></span>
+<span class="source-line" id="line-33"><a class="line" id="33" href="#33">33:</a> <span class="php-comment">     * Internal diagnostics intended only for debugging or server-side logs.</span></span>
+<span class="source-line" id="line-34"><a class="line" id="34" href="#34">34:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-35"><a class="line" id="35" href="#35">35:</a> <span class="php-comment">     * @param ?\Throwable $previous</span></span>
+<span class="source-line" id="line-36"><a class="line" id="36" href="#36">36:</a> <span class="php-comment">     * The original exception or error, or null when no underlying cause exists.</span></span>
+<span class="source-line" id="line-37"><a class="line" id="37" href="#37">37:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-38"><a class="line" id="38" href="#38">38:</a> <span class="php-comment">     * @author Oleg Schildt</span></span>
+<span class="source-line" id="line-39"><a class="line" id="39" href="#39">39:</a> <span class="php-comment">     */</span></span>
+<span class="source-line" id="line-40"><a class="line" id="40" href="#40">40:</a>     <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> __construct(</span>
+<span class="source-line" id="line-41"><a class="line" id="41" href="#41">41:</a>         <span class="php-keyword1">string</span> <span class="php-var">$message</span>,</span>
+<span class="source-line" id="line-42"><a class="line" id="42" href="#42">42:</a>         <span class="php-keyword1">string</span> <span class="php-var">$error_code</span> = SmartException::ERR_CODE_SYSTEM_ERROR,</span>
+<span class="source-line" id="line-43"><a class="line" id="43" href="#43">43:</a>         <span class="php-keyword1">string</span> <span class="php-var">$error_element</span> = <span class="php-quote">&quot;&quot;</span>,</span>
+<span class="source-line" id="line-44"><a class="line" id="44" href="#44">44:</a>         <span class="php-keyword1">array</span> <span class="php-var">$error_details</span> = [],</span>
+<span class="source-line" id="line-45"><a class="line" id="45" href="#45">45:</a>         <span class="php-keyword1">string</span> <span class="php-var">$technical_info</span> = <span class="php-quote">&quot;&quot;</span>,</span>
+<span class="source-line" id="line-46"><a class="line" id="46" href="#46">46:</a>         ?\Throwable <span class="php-var">$previous</span> = <span class="php-keyword1">null</span></span>
+<span class="source-line" id="line-47"><a class="line" id="47" href="#47">47:</a>     ) {</span>
+<span class="source-line" id="line-48"><a class="line" id="48" href="#48">48:</a>         <span class="php-keyword1">parent</span>::__construct(<span class="php-var">$message</span>, <span class="php-var">$error_code</span>, <span class="php-var">$error_element</span>, <span class="php-var">$error_details</span>, <span class="php-var">$technical_info</span>, <span class="php-var">$previous</span>);</span>
+<span class="source-line" id="line-49"><a class="line" id="49" href="#49">49:</a>     } <span class="php-comment">// __construct</span></span>
+<span class="source-line" id="line-50"><a class="line" id="50" href="#50">50:</a> } <span class="php-comment">// AuthSystemException</span></span>
+<span class="source-line" id="line-51"><a class="line" id="51" href="#51">51:</a> </span>
 </code>
 </pre>
 </div>
                     
                     <div id="footer">
-                        Generated on 2025-11-25 16:57 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
+                        Generated on 2026-11-23 01:21 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
                     </div>                    
                 </div>
             </div>

@@ -1,49 +1,50 @@
 <?php
-/**
- * This file contains the implementation of the InvalidCredentialsException.
- *
- * @author Oleg Schildt
- */
 
 namespace OAuth2;
 
-use \SmartFactory\SmartException;
+use SmartFactory\SmartException;
 
 /**
- * Class for the exception InvalidCredentialsException.
+ * Represents credentials rejected by the user authenticator.
  *
  * @author Oleg Schildt
  */
 class InvalidCredentialsException extends SmartException
 {
+
     /**
-     * Constructor.
+     * Creates an authentication exception with structured diagnostics and an optional cause.
      *
      * @param string $message
-     * Error message.
+     * The public error message or localization identifier.
      *
      * @param string $error_code
-     * Error code.
-     *
-     * Since the error texts can be localized, the unique code of the error might be important fo using
-     * in comparison.
+     * The stable string code, independent of localized text.
      *
      * @param string $error_element
-     * Error element.
+     * The related request field, or an empty string.
      *
-     * @param array $error_details
-     * The details might be useful if the message translations are provided on the client, not
-     * on the server, and the message should contain some details that may vary from case to case.
-     * In that case, the servers return the message id instead of final text and the details, the client
-     * uses the message id, gets the final translated text and substitutes the parameters through the details.
+     * @param array<array-key, mixed> $error_details
+     * Structured localization parameters; keys, types and nested values are preserved.
+     * A server may return a message identifier and these details so the client can
+     * translate the message and substitute its variable parameters.
      *
      * @param string $technical_info
-     * Additional technical infromation. It can be used if it is a programming error and displayed only if the debug mode is active.
+     * Internal diagnostics intended only for debugging or server-side logs.
+     *
+     * @param ?\Throwable $previous
+     * The original exception or error, or null when no underlying cause exists.
      *
      * @author Oleg Schildt
      */
-    public function __construct($message, $error_code = SmartException::ERR_CODE_SYSTEM_ERROR, $error_element = "", $error_details = [], $technical_info = "")
-    {
-        parent::__construct($message, $error_code, $error_element, $error_details, $technical_info);
-    }
-}
+    public function __construct(
+        string $message,
+        string $error_code = 'invalid_credentials',
+        string $error_element = "",
+        array $error_details = [],
+        string $technical_info = "",
+        ?\Throwable $previous = null
+    ) {
+        parent::__construct($message, $error_code, $error_element, $error_details, $technical_info, $previous);
+    } // __construct
+} // InvalidCredentialsException

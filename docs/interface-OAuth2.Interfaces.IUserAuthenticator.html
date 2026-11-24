@@ -113,12 +113,14 @@
 
 
 
-<div class="definition"></div>
+<div class="definition"><span class="php-keyword1">interface</span> IUserAuthenticator <span class="php-keyword1">extends</span> IInitable
+{
+}</div>
+
 
 
 <div class="short-description">
-<p>Interface for authentication
-of the user upon his credentials before generation of the tokens.</p>
+<p>Authenticates application-specific credentials before token issuance.</p>
 </div>
 
 
@@ -153,7 +155,7 @@ of the user upon his credentials before generation of the tokens.</p>
 
 <h2>Source code</h2>
 <div class="item_list">
-<a href='source-OAuth2.Interfaces.IUserAuthenticator.php.html#19'>OAuth2/Interfaces/IUserAuthenticator.php</a>
+<a href='source-OAuth2.Interfaces.IUserAuthenticator.php.html#12'>OAuth2/Interfaces/IUserAuthenticator.php</a>
 </div>
 
 
@@ -177,9 +179,11 @@ of the user upon his credentials before generation of the tokens.</p>
 
 
 
+
+
 <table class="table table-responsive table-bordered table-striped class_multicolumn">
       <tr><th colspan="2">Methods</th></tr>
-      
+
       <tr>
           <td>
               <div style='float:left'><a href="#authenticateUser">authenticateUser()</a></div>
@@ -191,33 +195,42 @@ of the user upon his credentials before generation of the tokens.</p>
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Authenticates the user based on the specified credentials.</p>
+              <p>Authenticates credentials and returns the user identifier.</p>
           </td>
       </tr>
-      
+
   </table>
 
 
 
+
+
 <hr id="authenticateUser">
-  
+
   <h1>Method: IUserAuthenticator::authenticateUser()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> authenticateUser(<span class="php-keyword1">array</span> <span class="php-var">$credentials</span>): int;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> authenticateUser(<span class="php-keyword1">array</span> <span class="php-var">$credentials</span>): <span class="php-keyword1">int</span>|<span class="php-keyword1">string</span>;</div>
+  
 
   
   <div class="short-description">
-  <p>Authenticates the user based on the specified credentials.</p>
+  <p>Authenticates credentials and returns the user identifier.</p>
   </div>
   
 
+  
+  <div class="long_description">
+  <h2>Details</h2>
+  <p>Failure is represented by an exception, never by false or a sentinel user ID.</p>
+  </div>
   
 
   
 
   <h2>Parameters</h2>
 
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
         <tr>
         <th>Name</th>
         <th>Pass type</th>
@@ -225,7 +238,7 @@ of the user upon his credentials before generation of the tokens.</p>
         <th>Default value</th>
         <th>Description</th>
         </tr>
-        
+
         
         <tr>
             <td>
@@ -235,25 +248,27 @@ of the user upon his credentials before generation of the tokens.</p>
                 by value
             </td>
             <td>
-                array
+                <code class="php-type">array&lt;string, mixed&gt;</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The credentials may vary depending on implementation.</p>
+                <p>Application-specific credentials; implementations must validate their types before using them.</p>
             </td>
         </tr>
         
-        
+
     </table>
+  </div>
 
   
   <h2>Returns</h2>
   <div class="item_list">
-  int<br>
+  <code class="php-type">(int | string)</code><br>
   
-  <div class="item_description"><p>The method should return the user id upon success, otherwise false.</p></div>
+  <div class="item_description"><p>Returns the authenticated user identifier. Zero and the string "0" are valid identifiers;
+strings must be nonempty UTF-8 without control characters.</p></div>
   
   </div>
   
@@ -261,19 +276,19 @@ of the user upon his credentials before generation of the tokens.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-  \Exception<br>
+  <code class="php-type"><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></code><br>
   
-  <div class="item_description"><p>It might throw an exception in the case of any system errors.</p></div>
-  
-  
-  <a href='class-OAuth2.InvalidCredentialsException.html'>\OAuth2\InvalidCredentialsException</a><br>
-  
-  <div class="item_description"><p>It should throw the InvalidCredentialsException if the authentication fails.</p></div>
+  <div class="item_description"><p>If a required credential is absent.</p></div>
   
   
-  <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
+  <code class="php-type"><a href="class-OAuth2.InvalidCredentialsException.html">\OAuth2\InvalidCredentialsException</a></code><br>
   
-  <div class="item_description"><p>It should throw the MissingParametersException if any required parameters are empty.</p></div>
+  <div class="item_description"><p>If credentials are malformed or do not authenticate a user.</p></div>
+  
+  
+  <code class="php-type">\Exception</code><br>
+  
+  <div class="item_description"><p>If the identity backend cannot complete authentication.</p></div>
   
   
   </div>
@@ -294,11 +309,11 @@ of the user upon his credentials before generation of the tokens.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.IUserAuthenticator.php.html#41'>OAuth2/Interfaces/IUserAuthenticator.php</a>
+  <a href='source-OAuth2.Interfaces.IUserAuthenticator.php.html#36'>OAuth2/Interfaces/IUserAuthenticator.php</a>
   </div>
                     
                     <div id="footer">
-                        Generated on 2025-11-25 16:57 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
+                        Generated on 2026-11-23 01:21 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
                     </div>                    
                 </div>
             </div>

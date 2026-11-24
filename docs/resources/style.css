@@ -57,6 +57,28 @@ code, var, pre {
 
 pre {
     margin: 0;
+    font-size: unset;
+    line-height: unset;
+}
+
+.markdown-content pre,
+.markdown-content table {
+    margin: .7em 0 1em;
+}
+
+.markdown-content th,
+.markdown-content td {
+    padding: .45em .65em;
+    border: 1px solid #ddd;
+}
+
+.markdown-content th {
+    background: #ecede5;
+}
+
+.markdown-content img {
+    max-width: 100%;
+    height: auto;
 }
 
 .deprecated {
@@ -268,6 +290,22 @@ table .name > div > .description
 }
 
 /* Source code */
+#source .source-line {
+    display: inline-block;
+    min-width: 100%;
+}
+
+#source .line {
+    display: inline-block;
+    min-width: 6ch;
+    color: #666;
+    text-align: right;
+}
+
+#source .source-line.selected {
+    background-color: #fff4c5;
+}
+
 #source pre {
     background: none;
     border: 0;
@@ -384,12 +422,12 @@ span.l a.l:hover, span.l a.l:active, span.l a.l:focus {
 }
 
 p {
-    line-height: 1.3em;
+    line-height: 1.6em;
 }
 
 .table > tbody > tr td.description_column
 {
-  font-size: 90%;
+  font-size: 96%;
   vertical-align: top;
 }
 
@@ -397,7 +435,9 @@ p {
 code {
     background: none;
     color: inherit;
+    font-size: 16px;
 }
+
 code.keyword {
     color: #c7254e;
 }
@@ -431,21 +471,21 @@ code.keyword {
 .multicolumn tr td:first-child
 {
   width: 27%;
-  word-wrap: break-word; 
+  word-wrap: break-word;
   word-break: break-all;
 }
 
 .multicolumn tr td:nth-child(2)
 {
   width: 27%;
-  word-wrap: break-word; 
+  word-wrap: break-word;
   word-break: break-all;
 }
 
 .class_multicolumn tr td:first-child
 {
   width: 35%;
-  word-wrap: break-word; 
+  word-wrap: break-word;
   word-break: break-all;
 }
 
@@ -470,8 +510,20 @@ code.keyword {
 {
   margin-bottom: 15px;
   font-size: 120%;
-  font-family: monospace;
+  font-family: "Courier New", Courier, monospace;
   white-space: pre-wrap;
+}
+
+.php-type {
+    padding: 0;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 16px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.php-type a {
+    padding: 0;
 }
 
 .item_list
@@ -492,7 +544,7 @@ code.keyword {
 
 .type_label
 {
-  color: #333333; 
+  color: #333333;
   font-weight: bold;
 }
 
@@ -511,9 +563,43 @@ pre
 {
   margin-top: 6px;
   margin-bottom: 6px;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 16px;
   color: gray;
+}
+
+.parameter-table {
+    overflow-x: auto;
+}
+
+/* The type and description columns share the space left by the three sized columns. */
+.param_multicolumn {
+    min-width: 68rem;
+    table-layout: fixed;
+}
+
+.param_multicolumn > tbody > tr > :first-child {
+    width: 12%;
+}
+
+.param_multicolumn > tbody > tr > :nth-child(2) {
+    width: 18rem;
+    white-space: nowrap;
+}
+
+.param_multicolumn > tbody > tr > :nth-child(4) {
+    width: 9rem;
+}
+
+.param_multicolumn > tbody > tr > :first-child,
+.param_multicolumn > tbody > tr > :nth-child(4),
+.param_multicolumn .description_column {
+    overflow-wrap: anywhere;
+}
+
+.param_multicolumn .php-type {
+    display: block;
+    line-height: 1.4;
 }
 
 .param_multicolumn td:first-child

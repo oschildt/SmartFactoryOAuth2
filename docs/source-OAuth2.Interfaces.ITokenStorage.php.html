@@ -87,168 +87,252 @@
                 <div class="col-md-12">
                     <h2>Source Code: OAuth2/Interfaces/ITokenStorage.php</h2>
 
-<div id="source"><pre class="code"><code><span class="line" id="1">  1: </span><span class="xlang">&lt;?php</span>
-<span class="line" id="2">  2: </span><span class="php-comment">/**
-</span><span class="line" id="3">  3: </span><span class="php-comment"> * This file contains the declaration of the interface ITokenStorage for storing and validating of the stored tokens.
-</span><span class="line" id="4">  4: </span><span class="php-comment"> *
-</span><span class="line" id="5">  5: </span><span class="php-comment"> * @author Oleg Schildt
-</span><span class="line" id="6">  6: </span><span class="php-comment"> */</span>
-<span class="line" id="7">  7: </span>
-<span class="line" id="8">  8: </span><span class="php-keyword1">namespace</span> OAuth2\Interfaces;
-<span class="line" id="9">  9: </span>
-<span class="line" id="10"> 10: </span><span class="php-keyword1">use</span> \SmartFactory\Interfaces\IInitable;
-<span class="line" id="11"> 11: </span>
-<span class="line" id="12"> 12: </span><span class="php-comment">/**
-</span><span class="line" id="13"> 13: </span><span class="php-comment"> * Interface for storing and validating of the stored tokens. It can be implemented for a database or
-</span><span class="line" id="14"> 14: </span><span class="php-comment"> * for a cache solution like Redis.
-</span><span class="line" id="15"> 15: </span><span class="php-comment"> *
-</span><span class="line" id="16"> 16: </span><span class="php-comment"> * @author Oleg Schildt
-</span><span class="line" id="17"> 17: </span><span class="php-comment"> */</span>
-<span class="line" id="18"> 18: </span><span class="php-keyword1">interface</span> ITokenStorage <span class="php-keyword1">extends</span> IInitable
-<span class="line" id="19"> 19: </span>{
-<span class="line" id="20"> 20: </span>    <span class="php-comment">/**
-</span><span class="line" id="21"> 21: </span><span class="php-comment">     * Load the token record by specified user_id, client_id and access_token or refresh_token.
-</span><span class="line" id="22"> 22: </span><span class="php-comment">     *
-</span><span class="line" id="23"> 23: </span><span class="php-comment">     * @param array &amp;$token_record
-</span><span class="line" id="24"> 24: </span><span class="php-comment">     * The token record may vary depending on implementation. The expected parameters are:
-</span><span class="line" id="25"> 25: </span><span class="php-comment">     *
-</span><span class="line" id="26"> 26: </span><span class="php-comment">     * @return void
-</span><span class="line" id="27"> 27: </span><span class="php-comment">     *
-</span><span class="line" id="28"> 28: </span><span class="php-comment">     * - $token_record[&quot;user_id&quot;] - id of the user.
-</span><span class="line" id="29"> 29: </span><span class="php-comment">     * - $token_record[&quot;client_id&quot;] - id of the client (device token etc.).
-</span><span class="line" id="30"> 30: </span><span class="php-comment">     * - $token_record[&quot;access_token&quot;] - access token generated upon successful authentication.
-</span><span class="line" id="31"> 31: </span><span class="php-comment">     * - $token_record[&quot;access_token_expire&quot;] - expiration time of the access token.
-</span><span class="line" id="32"> 32: </span><span class="php-comment">     * - $token_record[&quot;refresh_token&quot;] - refresh token generated upon successful authentication.
-</span><span class="line" id="33"> 33: </span><span class="php-comment">     * - $token_record[&quot;refresh_token_expire&quot;] - expiration time of the refresh token.
-</span><span class="line" id="34"> 34: </span><span class="php-comment">     * - $token_record[&quot;last_activity&quot;] - last activity time of the user of this token.
-</span><span class="line" id="35"> 35: </span><span class="php-comment">     *
-</span><span class="line" id="36"> 36: </span><span class="php-comment">     * @throws \Exception
-</span><span class="line" id="37"> 37: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
-</span><span class="line" id="38"> 38: </span><span class="php-comment">     *
-</span><span class="line" id="39"> 39: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="40"> 40: </span><span class="php-comment">     */</span>
-<span class="line" id="41"> 41: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> loadTokenRecord(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>): void;
-<span class="line" id="42"> 42: </span>    
-<span class="line" id="43"> 43: </span>    <span class="php-comment">/**
-</span><span class="line" id="44"> 44: </span><span class="php-comment">     * Saves the token record.
-</span><span class="line" id="45"> 45: </span><span class="php-comment">     *
-</span><span class="line" id="46"> 46: </span><span class="php-comment">     * It is recommender to look for an existing record by user_id and client_id, and if it exists,
-</span><span class="line" id="47"> 47: </span><span class="php-comment">     * it should be overwritten.
-</span><span class="line" id="48"> 48: </span><span class="php-comment">     *
-</span><span class="line" id="49"> 49: </span><span class="php-comment">     * @param array &amp;$token_record
-</span><span class="line" id="50"> 50: </span><span class="php-comment">     * The token record may vary depending on implementation. The expected parameters are:
-</span><span class="line" id="51"> 51: </span><span class="php-comment">     *
-</span><span class="line" id="52"> 52: </span><span class="php-comment">     * - $token_record[&quot;user_id&quot;] - id of the user.
-</span><span class="line" id="53"> 53: </span><span class="php-comment">     * - $token_record[&quot;client_id&quot;] - id of the client (device token etc.).
-</span><span class="line" id="54"> 54: </span><span class="php-comment">     * - $token_record[&quot;access_token&quot;] - access token generated upon successful authentication.
-</span><span class="line" id="55"> 55: </span><span class="php-comment">     * - $token_record[&quot;access_token_expire&quot;] - expiration time of the access token.
-</span><span class="line" id="56"> 56: </span><span class="php-comment">     * - $token_record[&quot;refresh_token&quot;] - refresh token generated upon successful authentication.
-</span><span class="line" id="57"> 57: </span><span class="php-comment">     * - $token_record[&quot;refresh_token_expire&quot;] - expiration time of the refresh token.
-</span><span class="line" id="58"> 58: </span><span class="php-comment">     * - $token_record[&quot;last_activity&quot;] - last activity time of the user of this token.
-</span><span class="line" id="59"> 59: </span><span class="php-comment">     *
-</span><span class="line" id="60"> 60: </span><span class="php-comment">     * @return void
-</span><span class="line" id="61"> 61: </span><span class="php-comment">     *
-</span><span class="line" id="62"> 62: </span><span class="php-comment">     * @throws \Exception
-</span><span class="line" id="63"> 63: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
-</span><span class="line" id="64"> 64: </span><span class="php-comment">     *
-</span><span class="line" id="65"> 65: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="66"> 66: </span><span class="php-comment">     */</span>
-<span class="line" id="67"> 67: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> saveTokenRecord(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>): void;
-<span class="line" id="68"> 68: </span>    
-<span class="line" id="69"> 69: </span>    <span class="php-comment">/**
-</span><span class="line" id="70"> 70: </span><span class="php-comment">     * Deletes the token record by a key.
-</span><span class="line" id="71"> 71: </span><span class="php-comment">     *
-</span><span class="line" id="72"> 72: </span><span class="php-comment">     * @param string $key
-</span><span class="line" id="73"> 73: </span><span class="php-comment">     * The name of the key, by which the record should be located and deleted. The possible keys are:
-</span><span class="line" id="74"> 74: </span><span class="php-comment">     *
-</span><span class="line" id="75"> 75: </span><span class="php-comment">     * - 'user_id' - id of the user.
-</span><span class="line" id="76"> 76: </span><span class="php-comment">     * - 'client_id' - id of the client (device token etc.).
-</span><span class="line" id="77"> 77: </span><span class="php-comment">     * - 'access_token' - access token generated upon successful authentication.
-</span><span class="line" id="78"> 78: </span><span class="php-comment">     * - 'refresh_token' - refresh token generated upon successful authentication.
-</span><span class="line" id="79"> 79: </span><span class="php-comment">     *
-</span><span class="line" id="80"> 80: </span><span class="php-comment">     * @param string $value
-</span><span class="line" id="81"> 81: </span><span class="php-comment">     * The value of the key, by which the record should be located and deleted.
-</span><span class="line" id="82"> 82: </span><span class="php-comment">     *
-</span><span class="line" id="83"> 83: </span><span class="php-comment">     * @return void
-</span><span class="line" id="84"> 84: </span><span class="php-comment">     *
-</span><span class="line" id="85"> 85: </span><span class="php-comment">     * @throws \Exception
-</span><span class="line" id="86"> 86: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
-</span><span class="line" id="87"> 87: </span><span class="php-comment">     *
-</span><span class="line" id="88"> 88: </span><span class="php-comment">     * @used_by IOAuthManager::invalidateUser()
-</span><span class="line" id="89"> 89: </span><span class="php-comment">     * @used_by IOAuthManager::invalidateClient()
-</span><span class="line" id="90"> 90: </span><span class="php-comment">     * @used_by IOAuthManager::invalidateJwtAccessToken()
-</span><span class="line" id="91"> 91: </span><span class="php-comment">     * @used_by IOAuthManager::invalidateRefreshToken()
-</span><span class="line" id="92"> 92: </span><span class="php-comment">     *
-</span><span class="line" id="93"> 93: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="94"> 94: </span><span class="php-comment">     */</span>
-<span class="line" id="95"> 95: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> deleteTokenRecordByKey(string <span class="php-var">$key</span>, string <span class="php-var">$value</span>): void;
-<span class="line" id="96"> 96: </span>
-<span class="line" id="97"> 97: </span>    <span class="php-comment">/**
-</span><span class="line" id="98"> 98: </span><span class="php-comment">     * Verifies the access token.
-</span><span class="line" id="99"> 99: </span><span class="php-comment">     *
-</span><span class="line" id="100">100: </span><span class="php-comment">     * @param string $access_token
-</span><span class="line" id="101">101: </span><span class="php-comment">     * The access token to be verified.
-</span><span class="line" id="102">102: </span><span class="php-comment">     *
-</span><span class="line" id="103">103: </span><span class="php-comment">     * @param string $user_id
-</span><span class="line" id="104">104: </span><span class="php-comment">     * The user id for which the refresh token was issued.
-</span><span class="line" id="105">105: </span><span class="php-comment">     *
-</span><span class="line" id="106">106: </span><span class="php-comment">     * @param string $client_id
-</span><span class="line" id="107">107: </span><span class="php-comment">     * The client id for which the refresh token was issued.
-</span><span class="line" id="108">108: </span><span class="php-comment">     *
-</span><span class="line" id="109">109: </span><span class="php-comment">     * @return void
-</span><span class="line" id="110">110: </span><span class="php-comment">     *
-</span><span class="line" id="111">111: </span><span class="php-comment">     * @throws \Exception
-</span><span class="line" id="112">112: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
-</span><span class="line" id="113">113: </span><span class="php-comment">     *
-</span><span class="line" id="114">114: </span><span class="php-comment">     * @throws \OAuth2\InvalidTokenException
-</span><span class="line" id="115">115: </span><span class="php-comment">     * It should throw the InvalidTokenException if the refresh token is invalid.
-</span><span class="line" id="116">116: </span><span class="php-comment">     *
-</span><span class="line" id="117">117: </span><span class="php-comment">     * @throws \OAuth2\TokenExpiredException
-</span><span class="line" id="118">118: </span><span class="php-comment">     * It might throw the TokenExpiredException if the refresh token is expired.
-</span><span class="line" id="119">119: </span><span class="php-comment">     *
-</span><span class="line" id="120">120: </span><span class="php-comment">     * @throws \OAuth2\MissingParametersException
-</span><span class="line" id="121">121: </span><span class="php-comment">     * It should throw the MissingParametersException if any required parameters are empty.
-</span><span class="line" id="122">122: </span><span class="php-comment">     *
-</span><span class="line" id="123">123: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="124">124: </span><span class="php-comment">     */</span>
-<span class="line" id="125">125: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyAccessToken(string <span class="php-var">$access_token</span>, string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>): void;
-<span class="line" id="126">126: </span>
-<span class="line" id="127">127: </span>    <span class="php-comment">/**
-</span><span class="line" id="128">128: </span><span class="php-comment">     * Verifies the refresh token.
-</span><span class="line" id="129">129: </span><span class="php-comment">     *
-</span><span class="line" id="130">130: </span><span class="php-comment">     * @param string $refresh_token
-</span><span class="line" id="131">131: </span><span class="php-comment">     * The refresh token to be verified.
-</span><span class="line" id="132">132: </span><span class="php-comment">     *
-</span><span class="line" id="133">133: </span><span class="php-comment">     * @param string $user_id
-</span><span class="line" id="134">134: </span><span class="php-comment">     * The user id for which the refresh token was issued.
-</span><span class="line" id="135">135: </span><span class="php-comment">     *
-</span><span class="line" id="136">136: </span><span class="php-comment">     * @param string $client_id
-</span><span class="line" id="137">137: </span><span class="php-comment">     * The client id for which the refresh token was issued.
-</span><span class="line" id="138">138: </span><span class="php-comment">     *
-</span><span class="line" id="139">139: </span><span class="php-comment">     * @return void
-</span><span class="line" id="140">140: </span><span class="php-comment">     *
-</span><span class="line" id="141">141: </span><span class="php-comment">     * @throws \Exception
-</span><span class="line" id="142">142: </span><span class="php-comment">     * It might throw an exception in the case of any system errors.
-</span><span class="line" id="143">143: </span><span class="php-comment">     *
-</span><span class="line" id="144">144: </span><span class="php-comment">     * @throws \OAuth2\InvalidTokenException
-</span><span class="line" id="145">145: </span><span class="php-comment">     * It should throw the InvalidTokenException if the refresh token is invalid.
-</span><span class="line" id="146">146: </span><span class="php-comment">     *
-</span><span class="line" id="147">147: </span><span class="php-comment">     * @throws \OAuth2\TokenExpiredException
-</span><span class="line" id="148">148: </span><span class="php-comment">     * It might throw the TokenExpiredException if the refresh token is expired.
-</span><span class="line" id="149">149: </span><span class="php-comment">     *
-</span><span class="line" id="150">150: </span><span class="php-comment">     * @throws \OAuth2\MissingParametersException
-</span><span class="line" id="151">151: </span><span class="php-comment">     * It should throw the MissingParametersException if any required parameters are empty.
-</span><span class="line" id="152">152: </span><span class="php-comment">     *
-</span><span class="line" id="153">153: </span><span class="php-comment">     * @author Oleg Schildt
-</span><span class="line" id="154">154: </span><span class="php-comment">     */</span>
-<span class="line" id="155">155: </span>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyRefreshToken(string <span class="php-var">$refresh_token</span>, string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>): void;
-<span class="line" id="156">156: </span>} <span class="php-comment">// ITokenStorage</span>
+<div id="source"><pre class="code"><code><span class="source-line" id="line-1"><a class="line" id="1" href="#1">1:</a> <span class="xlang">&lt;?php</span></span>
+<span class="source-line" id="line-2"><a class="line" id="2" href="#2">2:</a> </span>
+<span class="source-line" id="line-3"><a class="line" id="3" href="#3">3:</a> <span class="php-keyword1">namespace</span> OAuth2\Interfaces;</span>
+<span class="source-line" id="line-4"><a class="line" id="4" href="#4">4:</a> </span>
+<span class="source-line" id="line-5"><a class="line" id="5" href="#5">5:</a> <span class="php-keyword1">use</span> SmartFactory\Interfaces\IInitable;</span>
+<span class="source-line" id="line-6"><a class="line" id="6" href="#6">6:</a> </span>
+<span class="source-line" id="line-7"><a class="line" id="7" href="#7">7:</a> <span class="php-comment">/**</span></span>
+<span class="source-line" id="line-8"><a class="line" id="8" href="#8">8:</a> <span class="php-comment"> * Defines process-safe session persistence, refresh-token rotation and revocation.</span></span>
+<span class="source-line" id="line-9"><a class="line" id="9" href="#9">9:</a> <span class="php-comment"> * All readers and writers of the same backend must participate in the same locking or transaction</span></span>
+<span class="source-line" id="line-10"><a class="line" id="10" href="#10">10:</a> <span class="php-comment"> * protocol. Storage must not contain raw bearer tokens.</span></span>
+<span class="source-line" id="line-11"><a class="line" id="11" href="#11">11:</a> <span class="php-comment"> *</span></span>
+<span class="source-line" id="line-12"><a class="line" id="12" href="#12">12:</a> <span class="php-comment"> * @author Oleg Schildt</span></span>
+<span class="source-line" id="line-13"><a class="line" id="13" href="#13">13:</a> <span class="php-comment"> */</span></span>
+<span class="source-line" id="line-14"><a class="line" id="14" href="#14">14:</a> <span class="php-keyword1">interface</span> ITokenStorage <span class="php-keyword1">extends</span> IInitable</span>
+<span class="source-line" id="line-15"><a class="line" id="15" href="#15">15:</a> {</span>
+<span class="source-line" id="line-16"><a class="line" id="16" href="#16">16:</a>     <span class="php-comment">/**</span></span>
+<span class="source-line" id="line-17"><a class="line" id="17" href="#17">17:</a> <span class="php-comment">     * Loads a session matching the exact user/client pair and one supplied token.</span></span>
+<span class="source-line" id="line-18"><a class="line" id="18" href="#18">18:</a> <span class="php-comment">     * Implementations must use constant-time hash comparison and must never return recoverable stored</span></span>
+<span class="source-line" id="line-19"><a class="line" id="19" href="#19">19:</a> <span class="php-comment">     * bearer tokens.</span></span>
+<span class="source-line" id="line-20"><a class="line" id="20" href="#20">20:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-21"><a class="line" id="21" href="#21">21:</a> <span class="php-comment">     * @param array&lt;string, mixed&gt; &amp;$token_record</span></span>
+<span class="source-line" id="line-22"><a class="line" id="22" href="#22">22:</a> <span class="php-comment">     * Input: user_id, client_id and exactly one of access_token or refresh_token. Output: the matching</span></span>
+<span class="source-line" id="line-23"><a class="line" id="23" href="#23">23:</a> <span class="php-comment">     * record with expiry, last_activity, family_id and token hashes; only the supplied raw lookup</span></span>
+<span class="source-line" id="line-24"><a class="line" id="24" href="#24">24:</a> <span class="php-comment">     * token may remain in the array.</span></span>
+<span class="source-line" id="line-25"><a class="line" id="25" href="#25">25:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-26"><a class="line" id="26" href="#26">26:</a> <span class="php-comment">     * @return void</span></span>
+<span class="source-line" id="line-27"><a class="line" id="27" href="#27">27:</a> <span class="php-comment">     * Replaces the array only on success; missing records throw.</span></span>
+<span class="source-line" id="line-28"><a class="line" id="28" href="#28">28:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-29"><a class="line" id="29" href="#29">29:</a> <span class="php-comment">     * @throws \OAuth2\MissingParametersException</span></span>
+<span class="source-line" id="line-30"><a class="line" id="30" href="#30">30:</a> <span class="php-comment">     * If a required lookup value is null or empty.</span></span>
+<span class="source-line" id="line-31"><a class="line" id="31" href="#31">31:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-32"><a class="line" id="32" href="#32">32:</a> <span class="php-comment">     * @throws \OAuth2\InvalidTokenException</span></span>
+<span class="source-line" id="line-33"><a class="line" id="33" href="#33">33:</a> <span class="php-comment">     * If a value is invalid, a token is unknown, or consumed-token reuse is detected.</span></span>
+<span class="source-line" id="line-34"><a class="line" id="34" href="#34">34:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-35"><a class="line" id="35" href="#35">35:</a> <span class="php-comment">     * @throws \OAuth2\AuthSystemException</span></span>
+<span class="source-line" id="line-36"><a class="line" id="36" href="#36">36:</a> <span class="php-comment">     * If storage cannot read, validate, lock or persist session state.</span></span>
+<span class="source-line" id="line-37"><a class="line" id="37" href="#37">37:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-38"><a class="line" id="38" href="#38">38:</a> <span class="php-comment">     * @author Oleg Schildt</span></span>
+<span class="source-line" id="line-39"><a class="line" id="39" href="#39">39:</a> <span class="php-comment">     */</span></span>
+<span class="source-line" id="line-40"><a class="line" id="40" href="#40">40:</a>     <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> loadTokenRecord(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>): <span class="php-keyword1">void</span>;</span>
+<span class="source-line" id="line-41"><a class="line" id="41" href="#41">41:</a> </span>
+<span class="source-line" id="line-42"><a class="line" id="42" href="#42">42:</a>     <span class="php-comment">/**</span></span>
+<span class="source-line" id="line-43"><a class="line" id="43" href="#43">43:</a> <span class="php-comment">     * Atomically replaces the session for one user/client pair after fresh authentication.</span></span>
+<span class="source-line" id="line-44"><a class="line" id="44" href="#44">44:</a> <span class="php-comment">     * Exactly one active record per pair is permitted. Replacement starts a new family, so replay of</span></span>
+<span class="source-line" id="line-45"><a class="line" id="45" href="#45">45:</a> <span class="php-comment">     * an older family cannot revoke the newly authenticated session.</span></span>
+<span class="source-line" id="line-46"><a class="line" id="46" href="#46">46:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-47"><a class="line" id="47" href="#47">47:</a> <span class="php-comment">     * @param array&lt;string, mixed&gt; &amp;$token_record</span></span>
+<span class="source-line" id="line-48"><a class="line" id="48" href="#48">48:</a> <span class="php-comment">     * A record containing nonempty string user_id, client_id, access_token and refresh_token, and</span></span>
+<span class="source-line" id="line-49"><a class="line" id="49" href="#49">49:</a> <span class="php-comment">     * integer Unix timestamps access_token_expire, refresh_token_expire and last_activity. Raw tokens</span></span>
+<span class="source-line" id="line-50"><a class="line" id="50" href="#50">50:</a> <span class="php-comment">     * are inputs only: persist SHA-256 hashes, never recoverable bearer credentials. The caller must</span></span>
+<span class="source-line" id="line-51"><a class="line" id="51" href="#51">51:</a> <span class="php-comment">     * not rely on storage mutating this array.</span></span>
+<span class="source-line" id="line-52"><a class="line" id="52" href="#52">52:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-53"><a class="line" id="53" href="#53">53:</a> <span class="php-comment">     * @return void</span></span>
+<span class="source-line" id="line-54"><a class="line" id="54" href="#54">54:</a> <span class="php-comment">     * Commits the complete record or preserves the previous session on failure.</span></span>
+<span class="source-line" id="line-55"><a class="line" id="55" href="#55">55:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-56"><a class="line" id="56" href="#56">56:</a> <span class="php-comment">     * @throws \OAuth2\MissingParametersException</span></span>
+<span class="source-line" id="line-57"><a class="line" id="57" href="#57">57:</a> <span class="php-comment">     * If a required lookup value is null or empty.</span></span>
+<span class="source-line" id="line-58"><a class="line" id="58" href="#58">58:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-59"><a class="line" id="59" href="#59">59:</a> <span class="php-comment">     * @throws \OAuth2\InvalidTokenException</span></span>
+<span class="source-line" id="line-60"><a class="line" id="60" href="#60">60:</a> <span class="php-comment">     * If a value is invalid, a token is unknown, or consumed-token reuse is detected.</span></span>
+<span class="source-line" id="line-61"><a class="line" id="61" href="#61">61:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-62"><a class="line" id="62" href="#62">62:</a> <span class="php-comment">     * @throws \OAuth2\AuthSystemException</span></span>
+<span class="source-line" id="line-63"><a class="line" id="63" href="#63">63:</a> <span class="php-comment">     * If storage cannot read, validate, lock or persist session state.</span></span>
+<span class="source-line" id="line-64"><a class="line" id="64" href="#64">64:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-65"><a class="line" id="65" href="#65">65:</a> <span class="php-comment">     * @author Oleg Schildt</span></span>
+<span class="source-line" id="line-66"><a class="line" id="66" href="#66">66:</a> <span class="php-comment">     */</span></span>
+<span class="source-line" id="line-67"><a class="line" id="67" href="#67">67:</a>     <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> saveTokenRecord(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>): <span class="php-keyword1">void</span>;</span>
+<span class="source-line" id="line-68"><a class="line" id="68" href="#68">68:</a> </span>
+<span class="source-line" id="line-69"><a class="line" id="69" href="#69">69:</a>     <span class="php-comment">/**</span></span>
+<span class="source-line" id="line-70"><a class="line" id="70" href="#70">70:</a> <span class="php-comment">     * Atomically checks and consumes a refresh token and replaces its session.</span></span>
+<span class="source-line" id="line-71"><a class="line" id="71" href="#71">71:</a> <span class="php-comment">     * The check, expiry test, consumed-token history and replacement must share one transaction or</span></span>
+<span class="source-line" id="line-72"><a class="line" id="72" href="#72">72:</a> <span class="php-comment">     * lock. Reuse of a consumed token must revoke its active family before throwing. Retain consumed</span></span>
+<span class="source-line" id="line-73"><a class="line" id="73" href="#73">73:</a> <span class="php-comment">     * hashes at least until their original expiration time. Never combine a separate verify operation</span></span>
+<span class="source-line" id="line-74"><a class="line" id="74" href="#74">74:</a> <span class="php-comment">     * with an unconditional save.</span></span>
+<span class="source-line" id="line-75"><a class="line" id="75" href="#75">75:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-76"><a class="line" id="76" href="#76">76:</a> <span class="php-comment">     * @param ?string $refresh_token</span></span>
+<span class="source-line" id="line-77"><a class="line" id="77" href="#77">77:</a> <span class="php-comment">     * The previous refresh token to consume exactly once.</span></span>
+<span class="source-line" id="line-78"><a class="line" id="78" href="#78">78:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-79"><a class="line" id="79" href="#79">79:</a> <span class="php-comment">     * @param array&lt;string, mixed&gt; &amp;$token_record</span></span>
+<span class="source-line" id="line-80"><a class="line" id="80" href="#80">80:</a> <span class="php-comment">     * A record containing nonempty string user_id, client_id, access_token and refresh_token, and</span></span>
+<span class="source-line" id="line-81"><a class="line" id="81" href="#81">81:</a> <span class="php-comment">     * integer Unix timestamps access_token_expire, refresh_token_expire and last_activity. Raw tokens</span></span>
+<span class="source-line" id="line-82"><a class="line" id="82" href="#82">82:</a> <span class="php-comment">     * are inputs only: persist SHA-256 hashes, never recoverable bearer credentials. The caller must</span></span>
+<span class="source-line" id="line-83"><a class="line" id="83" href="#83">83:</a> <span class="php-comment">     * not rely on storage mutating this array. The user/client pair must match the previous token.</span></span>
+<span class="source-line" id="line-84"><a class="line" id="84" href="#84">84:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-85"><a class="line" id="85" href="#85">85:</a> <span class="php-comment">     * @return void</span></span>
+<span class="source-line" id="line-86"><a class="line" id="86" href="#86">86:</a> <span class="php-comment">     * Preserves the family ID and commits one replacement.</span></span>
+<span class="source-line" id="line-87"><a class="line" id="87" href="#87">87:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-88"><a class="line" id="88" href="#88">88:</a> <span class="php-comment">     * @throws \OAuth2\MissingParametersException</span></span>
+<span class="source-line" id="line-89"><a class="line" id="89" href="#89">89:</a> <span class="php-comment">     * If a required lookup value is null or empty.</span></span>
+<span class="source-line" id="line-90"><a class="line" id="90" href="#90">90:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-91"><a class="line" id="91" href="#91">91:</a> <span class="php-comment">     * @throws \OAuth2\InvalidTokenException</span></span>
+<span class="source-line" id="line-92"><a class="line" id="92" href="#92">92:</a> <span class="php-comment">     * If a value is invalid, a token is unknown, or consumed-token reuse is detected.</span></span>
+<span class="source-line" id="line-93"><a class="line" id="93" href="#93">93:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-94"><a class="line" id="94" href="#94">94:</a> <span class="php-comment">     * @throws \OAuth2\AuthSystemException</span></span>
+<span class="source-line" id="line-95"><a class="line" id="95" href="#95">95:</a> <span class="php-comment">     * If storage cannot read, validate, lock or persist session state.</span></span>
+<span class="source-line" id="line-96"><a class="line" id="96" href="#96">96:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-97"><a class="line" id="97" href="#97">97:</a> <span class="php-comment">     * @throws \OAuth2\TokenExpiredException</span></span>
+<span class="source-line" id="line-98"><a class="line" id="98" href="#98">98:</a> <span class="php-comment">     * If the current refresh token has reached its expiration time.</span></span>
+<span class="source-line" id="line-99"><a class="line" id="99" href="#99">99:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-100"><a class="line" id="100" href="#100">100:</a> <span class="php-comment">     * @author Oleg Schildt</span></span>
+<span class="source-line" id="line-101"><a class="line" id="101" href="#101">101:</a> <span class="php-comment">     */</span></span>
+<span class="source-line" id="line-102"><a class="line" id="102" href="#102">102:</a>     <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> rotateTokenRecord(?<span class="php-keyword1">string</span> <span class="php-var">$refresh_token</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>): <span class="php-keyword1">void</span>;</span>
+<span class="source-line" id="line-103"><a class="line" id="103" href="#103">103:</a> </span>
+<span class="source-line" id="line-104"><a class="line" id="104" href="#104">104:</a>     <span class="php-comment">/**</span></span>
+<span class="source-line" id="line-105"><a class="line" id="105" href="#105">105:</a> <span class="php-comment">     * Atomically authorizes revocation with a current refresh token and deletes sessions.</span></span>
+<span class="source-line" id="line-106"><a class="line" id="106" href="#106">106:</a> <span class="php-comment">     * Authorization and deletion must share one transaction or lock. Client-scoped revocation must</span></span>
+<span class="source-line" id="line-107"><a class="line" id="107" href="#107">107:</a> <span class="php-comment">     * always include user_id in its deletion predicate.</span></span>
+<span class="source-line" id="line-108"><a class="line" id="108" href="#108">108:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-109"><a class="line" id="109" href="#109">109:</a> <span class="php-comment">     * @param ?string $refresh_token</span></span>
+<span class="source-line" id="line-110"><a class="line" id="110" href="#110">110:</a> <span class="php-comment">     * The current token authorizing revocation.</span></span>
+<span class="source-line" id="line-111"><a class="line" id="111" href="#111">111:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-112"><a class="line" id="112" href="#112">112:</a> <span class="php-comment">     * @param ?string $user_id</span></span>
+<span class="source-line" id="line-113"><a class="line" id="113" href="#113">113:</a> <span class="php-comment">     * The user owning the token and sessions.</span></span>
+<span class="source-line" id="line-114"><a class="line" id="114" href="#114">114:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-115"><a class="line" id="115" href="#115">115:</a> <span class="php-comment">     * @param ?string $client_id</span></span>
+<span class="source-line" id="line-116"><a class="line" id="116" href="#116">116:</a> <span class="php-comment">     * The client bound to the authorizing token.</span></span>
+<span class="source-line" id="line-117"><a class="line" id="117" href="#117">117:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-118"><a class="line" id="118" href="#118">118:</a> <span class="php-comment">     * @param bool $all_user_sessions</span></span>
+<span class="source-line" id="line-119"><a class="line" id="119" href="#119">119:</a> <span class="php-comment">     * Whether to delete every session of this user instead of only this user/client pair.</span></span>
+<span class="source-line" id="line-120"><a class="line" id="120" href="#120">120:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-121"><a class="line" id="121" href="#121">121:</a> <span class="php-comment">     * @return void</span></span>
+<span class="source-line" id="line-122"><a class="line" id="122" href="#122">122:</a> <span class="php-comment">     * Revokes only authorized sessions and preserves all other users.</span></span>
+<span class="source-line" id="line-123"><a class="line" id="123" href="#123">123:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-124"><a class="line" id="124" href="#124">124:</a> <span class="php-comment">     * @throws \OAuth2\MissingParametersException</span></span>
+<span class="source-line" id="line-125"><a class="line" id="125" href="#125">125:</a> <span class="php-comment">     * If a required lookup value is null or empty.</span></span>
+<span class="source-line" id="line-126"><a class="line" id="126" href="#126">126:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-127"><a class="line" id="127" href="#127">127:</a> <span class="php-comment">     * @throws \OAuth2\InvalidTokenException</span></span>
+<span class="source-line" id="line-128"><a class="line" id="128" href="#128">128:</a> <span class="php-comment">     * If a value is invalid, a token is unknown, or consumed-token reuse is detected.</span></span>
+<span class="source-line" id="line-129"><a class="line" id="129" href="#129">129:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-130"><a class="line" id="130" href="#130">130:</a> <span class="php-comment">     * @throws \OAuth2\AuthSystemException</span></span>
+<span class="source-line" id="line-131"><a class="line" id="131" href="#131">131:</a> <span class="php-comment">     * If storage cannot read, validate, lock or persist session state.</span></span>
+<span class="source-line" id="line-132"><a class="line" id="132" href="#132">132:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-133"><a class="line" id="133" href="#133">133:</a> <span class="php-comment">     * @throws \OAuth2\TokenExpiredException</span></span>
+<span class="source-line" id="line-134"><a class="line" id="134" href="#134">134:</a> <span class="php-comment">     * If the authorizing refresh token is expired.</span></span>
+<span class="source-line" id="line-135"><a class="line" id="135" href="#135">135:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-136"><a class="line" id="136" href="#136">136:</a> <span class="php-comment">     * @author Oleg Schildt</span></span>
+<span class="source-line" id="line-137"><a class="line" id="137" href="#137">137:</a> <span class="php-comment">     */</span></span>
+<span class="source-line" id="line-138"><a class="line" id="138" href="#138">138:</a>     <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> revokeTokenRecords(</span>
+<span class="source-line" id="line-139"><a class="line" id="139" href="#139">139:</a>         ?<span class="php-keyword1">string</span> <span class="php-var">$refresh_token</span>,</span>
+<span class="source-line" id="line-140"><a class="line" id="140" href="#140">140:</a>         ?<span class="php-keyword1">string</span> <span class="php-var">$user_id</span>,</span>
+<span class="source-line" id="line-141"><a class="line" id="141" href="#141">141:</a>         ?<span class="php-keyword1">string</span> <span class="php-var">$client_id</span>,</span>
+<span class="source-line" id="line-142"><a class="line" id="142" href="#142">142:</a>         <span class="php-keyword1">bool</span> <span class="php-var">$all_user_sessions</span> = <span class="php-keyword1">false</span></span>
+<span class="source-line" id="line-143"><a class="line" id="143" href="#143">143:</a>     ): <span class="php-keyword1">void</span>;</span>
+<span class="source-line" id="line-144"><a class="line" id="144" href="#144">144:</a> </span>
+<span class="source-line" id="line-145"><a class="line" id="145" href="#145">145:</a>     <span class="php-comment">/**</span></span>
+<span class="source-line" id="line-146"><a class="line" id="146" href="#146">146:</a> <span class="php-comment">     * Atomically revokes sessions by a validated key and exact value.</span></span>
+<span class="source-line" id="line-147"><a class="line" id="147" href="#147">147:</a> <span class="php-comment">     * This low-level administrative operation does not authenticate the caller. Public handlers must</span></span>
+<span class="source-line" id="line-148"><a class="line" id="148" href="#148">148:</a> <span class="php-comment">     * use authorized manager methods. Refresh-token lookup also recognizes retained consumed hashes</span></span>
+<span class="source-line" id="line-149"><a class="line" id="149" href="#149">149:</a> <span class="php-comment">     * and revokes only their matching family.</span></span>
+<span class="source-line" id="line-150"><a class="line" id="150" href="#150">150:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-151"><a class="line" id="151" href="#151">151:</a> <span class="php-comment">     * @param string $key</span></span>
+<span class="source-line" id="line-152"><a class="line" id="152" href="#152">152:</a> <span class="php-comment">     * One of user_id, client_id, access_token or refresh_token. The client_id key is global and</span></span>
+<span class="source-line" id="line-153"><a class="line" id="153" href="#153">153:</a> <span class="php-comment">     * requires administrative authorization.</span></span>
+<span class="source-line" id="line-154"><a class="line" id="154" href="#154">154:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-155"><a class="line" id="155" href="#155">155:</a> <span class="php-comment">     * @param ?string $value</span></span>
+<span class="source-line" id="line-156"><a class="line" id="156" href="#156">156:</a> <span class="php-comment">     * The nonempty exact identifier or raw token to hash and compare.</span></span>
+<span class="source-line" id="line-157"><a class="line" id="157" href="#157">157:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-158"><a class="line" id="158" href="#158">158:</a> <span class="php-comment">     * @return void</span></span>
+<span class="source-line" id="line-159"><a class="line" id="159" href="#159">159:</a> <span class="php-comment">     * Ignores absent records, making possession-based token revocation idempotent.</span></span>
+<span class="source-line" id="line-160"><a class="line" id="160" href="#160">160:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-161"><a class="line" id="161" href="#161">161:</a> <span class="php-comment">     * @throws \OAuth2\MissingParametersException</span></span>
+<span class="source-line" id="line-162"><a class="line" id="162" href="#162">162:</a> <span class="php-comment">     * If a required lookup value is null or empty.</span></span>
+<span class="source-line" id="line-163"><a class="line" id="163" href="#163">163:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-164"><a class="line" id="164" href="#164">164:</a> <span class="php-comment">     * @throws \OAuth2\InvalidTokenException</span></span>
+<span class="source-line" id="line-165"><a class="line" id="165" href="#165">165:</a> <span class="php-comment">     * If a value is invalid, a token is unknown, or consumed-token reuse is detected.</span></span>
+<span class="source-line" id="line-166"><a class="line" id="166" href="#166">166:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-167"><a class="line" id="167" href="#167">167:</a> <span class="php-comment">     * @throws \OAuth2\AuthSystemException</span></span>
+<span class="source-line" id="line-168"><a class="line" id="168" href="#168">168:</a> <span class="php-comment">     * If storage cannot read, validate, lock or persist session state.</span></span>
+<span class="source-line" id="line-169"><a class="line" id="169" href="#169">169:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-170"><a class="line" id="170" href="#170">170:</a> <span class="php-comment">     * @author Oleg Schildt</span></span>
+<span class="source-line" id="line-171"><a class="line" id="171" href="#171">171:</a> <span class="php-comment">     */</span></span>
+<span class="source-line" id="line-172"><a class="line" id="172" href="#172">172:</a>     <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> deleteTokenRecordByKey(<span class="php-keyword1">string</span> <span class="php-var">$key</span>, ?<span class="php-keyword1">string</span> <span class="php-var">$value</span>): <span class="php-keyword1">void</span>;</span>
+<span class="source-line" id="line-173"><a class="line" id="173" href="#173">173:</a> </span>
+<span class="source-line" id="line-174"><a class="line" id="174" href="#174">174:</a>     <span class="php-comment">/**</span></span>
+<span class="source-line" id="line-175"><a class="line" id="175" href="#175">175:</a> <span class="php-comment">     * Checks the exact token/user/client binding and fixed expiration under a storage lock.</span></span>
+<span class="source-line" id="line-176"><a class="line" id="176" href="#176">176:</a> <span class="php-comment">     * Verification must not extend either token lifetime. Refresh-token reuse must revoke its matching</span></span>
+<span class="source-line" id="line-177"><a class="line" id="177" href="#177">177:</a> <span class="php-comment">     * family before reporting failure.</span></span>
+<span class="source-line" id="line-178"><a class="line" id="178" href="#178">178:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-179"><a class="line" id="179" href="#179">179:</a> <span class="php-comment">     * @param ?string $access_token</span></span>
+<span class="source-line" id="line-180"><a class="line" id="180" href="#180">180:</a> <span class="php-comment">     * The raw token to verify.</span></span>
+<span class="source-line" id="line-181"><a class="line" id="181" href="#181">181:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-182"><a class="line" id="182" href="#182">182:</a> <span class="php-comment">     * @param ?string $user_id</span></span>
+<span class="source-line" id="line-183"><a class="line" id="183" href="#183">183:</a> <span class="php-comment">     * The user identifier bound to the token.</span></span>
+<span class="source-line" id="line-184"><a class="line" id="184" href="#184">184:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-185"><a class="line" id="185" href="#185">185:</a> <span class="php-comment">     * @param ?string $client_id</span></span>
+<span class="source-line" id="line-186"><a class="line" id="186" href="#186">186:</a> <span class="php-comment">     * The client identifier bound to the token.</span></span>
+<span class="source-line" id="line-187"><a class="line" id="187" href="#187">187:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-188"><a class="line" id="188" href="#188">188:</a> <span class="php-comment">     * @return void</span></span>
+<span class="source-line" id="line-189"><a class="line" id="189" href="#189">189:</a> <span class="php-comment">     * Returns only for a matching token whose expiration is strictly after the current time.</span></span>
+<span class="source-line" id="line-190"><a class="line" id="190" href="#190">190:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-191"><a class="line" id="191" href="#191">191:</a> <span class="php-comment">     * @throws \OAuth2\MissingParametersException</span></span>
+<span class="source-line" id="line-192"><a class="line" id="192" href="#192">192:</a> <span class="php-comment">     * If a required lookup value is null or empty.</span></span>
+<span class="source-line" id="line-193"><a class="line" id="193" href="#193">193:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-194"><a class="line" id="194" href="#194">194:</a> <span class="php-comment">     * @throws \OAuth2\InvalidTokenException</span></span>
+<span class="source-line" id="line-195"><a class="line" id="195" href="#195">195:</a> <span class="php-comment">     * If a value is invalid, a token is unknown, or consumed-token reuse is detected.</span></span>
+<span class="source-line" id="line-196"><a class="line" id="196" href="#196">196:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-197"><a class="line" id="197" href="#197">197:</a> <span class="php-comment">     * @throws \OAuth2\AuthSystemException</span></span>
+<span class="source-line" id="line-198"><a class="line" id="198" href="#198">198:</a> <span class="php-comment">     * If storage cannot read, validate, lock or persist session state.</span></span>
+<span class="source-line" id="line-199"><a class="line" id="199" href="#199">199:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-200"><a class="line" id="200" href="#200">200:</a> <span class="php-comment">     * @throws \OAuth2\TokenExpiredException</span></span>
+<span class="source-line" id="line-201"><a class="line" id="201" href="#201">201:</a> <span class="php-comment">     * If the matching token has reached its expiration time.</span></span>
+<span class="source-line" id="line-202"><a class="line" id="202" href="#202">202:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-203"><a class="line" id="203" href="#203">203:</a> <span class="php-comment">     * @author Oleg Schildt</span></span>
+<span class="source-line" id="line-204"><a class="line" id="204" href="#204">204:</a> <span class="php-comment">     */</span></span>
+<span class="source-line" id="line-205"><a class="line" id="205" href="#205">205:</a>     <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyAccessToken(?<span class="php-keyword1">string</span> <span class="php-var">$access_token</span>, ?<span class="php-keyword1">string</span> <span class="php-var">$user_id</span>, ?<span class="php-keyword1">string</span> <span class="php-var">$client_id</span>): <span class="php-keyword1">void</span>;</span>
+<span class="source-line" id="line-206"><a class="line" id="206" href="#206">206:</a> </span>
+<span class="source-line" id="line-207"><a class="line" id="207" href="#207">207:</a>     <span class="php-comment">/**</span></span>
+<span class="source-line" id="line-208"><a class="line" id="208" href="#208">208:</a> <span class="php-comment">     * Checks the exact token/user/client binding and fixed expiration under a storage lock.</span></span>
+<span class="source-line" id="line-209"><a class="line" id="209" href="#209">209:</a> <span class="php-comment">     * Verification must not extend either token lifetime. Refresh-token reuse must revoke its matching</span></span>
+<span class="source-line" id="line-210"><a class="line" id="210" href="#210">210:</a> <span class="php-comment">     * family before reporting failure.</span></span>
+<span class="source-line" id="line-211"><a class="line" id="211" href="#211">211:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-212"><a class="line" id="212" href="#212">212:</a> <span class="php-comment">     * @param ?string $refresh_token</span></span>
+<span class="source-line" id="line-213"><a class="line" id="213" href="#213">213:</a> <span class="php-comment">     * The raw token to verify.</span></span>
+<span class="source-line" id="line-214"><a class="line" id="214" href="#214">214:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-215"><a class="line" id="215" href="#215">215:</a> <span class="php-comment">     * @param ?string $user_id</span></span>
+<span class="source-line" id="line-216"><a class="line" id="216" href="#216">216:</a> <span class="php-comment">     * The user identifier bound to the token.</span></span>
+<span class="source-line" id="line-217"><a class="line" id="217" href="#217">217:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-218"><a class="line" id="218" href="#218">218:</a> <span class="php-comment">     * @param ?string $client_id</span></span>
+<span class="source-line" id="line-219"><a class="line" id="219" href="#219">219:</a> <span class="php-comment">     * The client identifier bound to the token.</span></span>
+<span class="source-line" id="line-220"><a class="line" id="220" href="#220">220:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-221"><a class="line" id="221" href="#221">221:</a> <span class="php-comment">     * @return void</span></span>
+<span class="source-line" id="line-222"><a class="line" id="222" href="#222">222:</a> <span class="php-comment">     * Returns only for a matching token whose expiration is strictly after the current time.</span></span>
+<span class="source-line" id="line-223"><a class="line" id="223" href="#223">223:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-224"><a class="line" id="224" href="#224">224:</a> <span class="php-comment">     * @throws \OAuth2\MissingParametersException</span></span>
+<span class="source-line" id="line-225"><a class="line" id="225" href="#225">225:</a> <span class="php-comment">     * If a required lookup value is null or empty.</span></span>
+<span class="source-line" id="line-226"><a class="line" id="226" href="#226">226:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-227"><a class="line" id="227" href="#227">227:</a> <span class="php-comment">     * @throws \OAuth2\InvalidTokenException</span></span>
+<span class="source-line" id="line-228"><a class="line" id="228" href="#228">228:</a> <span class="php-comment">     * If a value is invalid, a token is unknown, or consumed-token reuse is detected.</span></span>
+<span class="source-line" id="line-229"><a class="line" id="229" href="#229">229:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-230"><a class="line" id="230" href="#230">230:</a> <span class="php-comment">     * @throws \OAuth2\AuthSystemException</span></span>
+<span class="source-line" id="line-231"><a class="line" id="231" href="#231">231:</a> <span class="php-comment">     * If storage cannot read, validate, lock or persist session state.</span></span>
+<span class="source-line" id="line-232"><a class="line" id="232" href="#232">232:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-233"><a class="line" id="233" href="#233">233:</a> <span class="php-comment">     * @throws \OAuth2\TokenExpiredException</span></span>
+<span class="source-line" id="line-234"><a class="line" id="234" href="#234">234:</a> <span class="php-comment">     * If the matching token has reached its expiration time.</span></span>
+<span class="source-line" id="line-235"><a class="line" id="235" href="#235">235:</a> <span class="php-comment">     *</span></span>
+<span class="source-line" id="line-236"><a class="line" id="236" href="#236">236:</a> <span class="php-comment">     * @author Oleg Schildt</span></span>
+<span class="source-line" id="line-237"><a class="line" id="237" href="#237">237:</a> <span class="php-comment">     */</span></span>
+<span class="source-line" id="line-238"><a class="line" id="238" href="#238">238:</a>     <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyRefreshToken(?<span class="php-keyword1">string</span> <span class="php-var">$refresh_token</span>, ?<span class="php-keyword1">string</span> <span class="php-var">$user_id</span>, ?<span class="php-keyword1">string</span> <span class="php-var">$client_id</span>): <span class="php-keyword1">void</span>;</span>
+<span class="source-line" id="line-239"><a class="line" id="239" href="#239">239:</a> } <span class="php-comment">// ITokenStorage</span></span>
+<span class="source-line" id="line-240"><a class="line" id="240" href="#240">240:</a> </span>
 </code>
 </pre>
 </div>
                     
                     <div id="footer">
-                        Generated on 2025-11-25 16:57 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
+                        Generated on 2026-11-23 01:21 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
                     </div>                    
                 </div>
             </div>

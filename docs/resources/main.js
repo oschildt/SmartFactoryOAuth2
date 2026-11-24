@@ -4,7 +4,7 @@ $(document).ready(function() {
 
     // Autocomplete search
     $.ui.autocomplete.prototype._renderItem = function (ul, item) {
-        var highlightPattern = new RegExp('(' + this.term.replace(/\\/g, '\\\\') + ')', 'i');
+        var highlightPattern = new RegExp('(' + $.ui.autocomplete.escapeRegex(this.term) + ')', 'i');
         var highligthed = item.label.replace(highlightPattern, "<b>$1</b>");
         return $("<li></li>")
             .data("item.autocomplete", item)
@@ -41,10 +41,10 @@ $(document).ready(function() {
 
     // Save selected lines
     var lastLine;
-    $('.numbers .l a').click(function(event) {
+    $('.numbers .l a, #source .line').click(function(event) {
         event.preventDefault();
 
-        var selectedLine = $(this).parent().index() + 1;
+        var selectedLine = this.id ? parseInt(this.id, 10) : $(this).parent().index() + 1;
 
         if (event.shiftKey) {
             if (lastLine) {
@@ -57,14 +57,15 @@ $(document).ready(function() {
         } else if (event.ctrlKey) {
               $('#' + selectedLine + ', #line-' + selectedLine).toggleClass('selected');
         } else {
-           var selected = $('.l.selected').not('#' + selectedLine + ', #line-' + selectedLine).removeClass('selected');
+           $('.l.selected, #source .line.selected, #source .source-line.selected')
+                .not('#' + selectedLine + ', #line-' + selectedLine).removeClass('selected');
            $('#' + selectedLine + ', #line-' + selectedLine).addClass('selected');
         }
 
         lastLine = $('#' + selectedLine).hasClass('selected') ? selectedLine : null;
 
         // Update hash
-        var lines = $('.numbers .l.selected')
+        var lines = $('.numbers .l.selected, #source .line.selected')
             .map(function() {
                 return parseInt($(this).attr('id'));
             })

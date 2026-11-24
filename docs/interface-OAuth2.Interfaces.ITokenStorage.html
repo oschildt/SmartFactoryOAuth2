@@ -113,15 +113,23 @@
 
 
 
-<div class="definition"></div>
+<div class="definition"><span class="php-keyword1">interface</span> ITokenStorage <span class="php-keyword1">extends</span> IInitable
+{
+}</div>
+
 
 
 <div class="short-description">
-<p>Interface for storing and validating of the stored tokens. It can be implemented for a database or
-for a cache solution like Redis.</p>
+<p>Defines process-safe session persistence, refresh-token rotation and revocation.</p>
 </div>
 
 
+
+<div class="long_description">
+<h2>Details</h2>
+<p>All readers and writers of the same backend must participate in the same locking or transaction
+protocol. Storage must not contain raw bearer tokens.</p>
+</div>
 
 
 
@@ -153,7 +161,7 @@ for a cache solution like Redis.</p>
 
 <h2>Source code</h2>
 <div class="item_list">
-<a href='source-OAuth2.Interfaces.ITokenStorage.php.html#18'>OAuth2/Interfaces/ITokenStorage.php</a>
+<a href='source-OAuth2.Interfaces.ITokenStorage.php.html#14'>OAuth2/Interfaces/ITokenStorage.php</a>
 </div>
 
 
@@ -177,9 +185,11 @@ for a cache solution like Redis.</p>
 
 
 
+
+
 <table class="table table-responsive table-bordered table-striped class_multicolumn">
       <tr><th colspan="2">Methods</th></tr>
-      
+
       <tr>
           <td>
               <div style='float:left'><a href="#deleteTokenRecordByKey">deleteTokenRecordByKey()</a></div>
@@ -191,7 +201,7 @@ for a cache solution like Redis.</p>
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Deletes the token record by a key.</p>
+              <p>Atomically revokes sessions by a validated key and exact value.</p>
           </td>
       </tr><tr>
           <td>
@@ -204,7 +214,33 @@ for a cache solution like Redis.</p>
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Load the token record by specified user_id, client_id and access_token or refresh_token.</p>
+              <p>Loads a session matching the exact user/client pair and one supplied token.</p>
+          </td>
+      </tr><tr>
+          <td>
+              <div style='float:left'><a href="#revokeTokenRecords">revokeTokenRecords()</a></div>
+
+              <div style='float:right'>
+              
+              <span class='label label-success'>public</span>
+              </div>
+              <div style="clear:both"></div>
+          </td>
+          <td class="description_column">
+              <p>Atomically authorizes revocation with a current refresh token and deletes sessions.</p>
+          </td>
+      </tr><tr>
+          <td>
+              <div style='float:left'><a href="#rotateTokenRecord">rotateTokenRecord()</a></div>
+
+              <div style='float:right'>
+              
+              <span class='label label-success'>public</span>
+              </div>
+              <div style="clear:both"></div>
+          </td>
+          <td class="description_column">
+              <p>Atomically checks and consumes a refresh token and replaces its session.</p>
           </td>
       </tr><tr>
           <td>
@@ -217,7 +253,7 @@ for a cache solution like Redis.</p>
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Saves the token record.</p>
+              <p>Atomically replaces the session for one user/client pair after fresh authentication.</p>
           </td>
       </tr><tr>
           <td>
@@ -230,7 +266,7 @@ for a cache solution like Redis.</p>
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Verifies the access token.</p>
+              <p>Checks the exact token/user/client binding and fixed expiration under a storage lock.</p>
           </td>
       </tr><tr>
           <td>
@@ -243,33 +279,44 @@ for a cache solution like Redis.</p>
               <div style="clear:both"></div>
           </td>
           <td class="description_column">
-              <p>Verifies the refresh token.</p>
+              <p>Checks the exact token/user/client binding and fixed expiration under a storage lock.</p>
           </td>
       </tr>
-      
+
   </table>
 
 
 
+
+
 <hr id="deleteTokenRecordByKey">
-  
+
   <h1>Method: ITokenStorage::deleteTokenRecordByKey()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> deleteTokenRecordByKey(string <span class="php-var">$key</span>, string <span class="php-var">$value</span>): void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> deleteTokenRecordByKey(<span class="php-keyword1">string</span> <span class="php-var">$key</span>, ?<span class="php-keyword1">string</span> <span class="php-var">$value</span>): <span class="php-keyword1">void</span>;</div>
+  
 
   
   <div class="short-description">
-  <p>Deletes the token record by a key.</p>
+  <p>Atomically revokes sessions by a validated key and exact value.</p>
   </div>
   
 
+  
+  <div class="long_description">
+  <h2>Details</h2>
+  <p>This low-level administrative operation does not authenticate the caller. Public handlers must
+use authorized manager methods. Refresh-token lookup also recognizes retained consumed hashes
+and revokes only their matching family.</p>
+  </div>
   
 
   
 
   <h2>Parameters</h2>
 
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
         <tr>
         <th>Name</th>
         <th>Pass type</th>
@@ -277,7 +324,7 @@ for a cache solution like Redis.</p>
         <th>Default value</th>
         <th>Description</th>
         </tr>
-        
+
         
         <tr>
             <td>
@@ -287,19 +334,14 @@ for a cache solution like Redis.</p>
                 by value
             </td>
             <td>
-                string
+                <code class="php-type">string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The name of the key, by which the record should be located and deleted. The possible keys are:</p>
-<ul>
-<li>'user_id' - id of the user.</li>
-<li>'client_id' - id of the client (device token etc.).</li>
-<li>'access_token' - access token generated upon successful authentication.</li>
-<li>'refresh_token' - refresh token generated upon successful authentication.</li>
-</ul>
+                <p>One of user_id, client_id, access_token or refresh_token. The client_id key is global and
+requires administrative authorization.</p>
             </td>
         </tr>
         
@@ -311,23 +353,26 @@ for a cache solution like Redis.</p>
                 by value
             </td>
             <td>
-                string
+                <code class="php-type">?string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The value of the key, by which the record should be located and deleted.</p>
+                <p>The nonempty exact identifier or raw token to hash and compare.</p>
             </td>
         </tr>
         
-        
+
     </table>
+  </div>
 
   
   <h2>Returns</h2>
   <div class="item_list">
-  void<br>
+  <code class="php-type">void</code><br>
+  
+  <div class="item_description"><p>Ignores absent records, making possession-based token revocation idempotent.</p></div>
   
   </div>
   
@@ -335,9 +380,19 @@ for a cache solution like Redis.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-  \Exception<br>
+  <code class="php-type"><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></code><br>
   
-  <div class="item_description"><p>It might throw an exception in the case of any system errors.</p></div>
+  <div class="item_description"><p>If a required lookup value is null or empty.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.InvalidTokenException.html">\OAuth2\InvalidTokenException</a></code><br>
+  
+  <div class="item_description"><p>If a value is invalid, a token is unknown, or consumed-token reuse is detected.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">\OAuth2\AuthSystemException</a></code><br>
+  
+  <div class="item_description"><p>If storage cannot read, validate, lock or persist session state.</p></div>
   
   
   </div>
@@ -358,7 +413,7 @@ for a cache solution like Redis.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.ITokenStorage.php.html#95'>OAuth2/Interfaces/ITokenStorage.php</a>
+  <a href='source-OAuth2.Interfaces.ITokenStorage.php.html#172'>OAuth2/Interfaces/ITokenStorage.php</a>
   </div>
   
 
@@ -368,22 +423,7 @@ for a cache solution like Redis.</p>
 
   
 
-  <h2>Used by</h2>
-  <div class="item_list">
   
-  <a href='class-OAuth2.OAuthManager.html#invalidateUser'>\OAuth2\OAuthManager::invalidateUser()</a><br>
-  
-  
-  <a href='class-OAuth2.OAuthManager.html#invalidateClient'>\OAuth2\OAuthManager::invalidateClient()</a><br>
-  
-  
-  <a href='class-OAuth2.OAuthManager.html#invalidateJwtAccessToken'>\OAuth2\OAuthManager::invalidateJwtAccessToken()</a><br>
-  
-  
-  <a href='class-OAuth2.OAuthManager.html#invalidateRefreshToken'>\OAuth2\OAuthManager::invalidateRefreshToken()</a><br>
-  
-  
-  </div>
 
   
 
@@ -392,24 +432,32 @@ for a cache solution like Redis.</p>
   
 
   <hr id="loadTokenRecord">
-  
+
   <h1>Method: ITokenStorage::loadTokenRecord()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> loadTokenRecord(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>): void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> loadTokenRecord(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>): <span class="php-keyword1">void</span>;</div>
+  
 
   
   <div class="short-description">
-  <p>Load the token record by specified user_id, client_id and access_token or refresh_token.</p>
+  <p>Loads a session matching the exact user/client pair and one supplied token.</p>
   </div>
   
 
+  
+  <div class="long_description">
+  <h2>Details</h2>
+  <p>Implementations must use constant-time hash comparison and must never return recoverable stored
+bearer tokens.</p>
+  </div>
   
 
   
 
   <h2>Parameters</h2>
 
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
         <tr>
         <th>Name</th>
         <th>Pass type</th>
@@ -417,7 +465,7 @@ for a cache solution like Redis.</p>
         <th>Default value</th>
         <th>Description</th>
         </tr>
-        
+
         
         <tr>
             <td>
@@ -427,33 +475,28 @@ for a cache solution like Redis.</p>
                 by reference
             </td>
             <td>
-                array
+                <code class="php-type">array&lt;string, mixed&gt;</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The token record may vary depending on implementation. The expected parameters are:</p>
+                <p>Input: user_id, client_id and exactly one of access_token or refresh_token. Output: the matching
+record with expiry, last_activity, family_id and token hashes; only the supplied raw lookup
+token may remain in the array.</p>
             </td>
         </tr>
         
-        
+
     </table>
+  </div>
 
   
   <h2>Returns</h2>
   <div class="item_list">
-  void<br>
+  <code class="php-type">void</code><br>
   
-  <div class="item_description"><ul>
-<li>$token_record["user_id"] - id of the user.</li>
-<li>$token_record["client_id"] - id of the client (device token etc.).</li>
-<li>$token_record["access_token"] - access token generated upon successful authentication.</li>
-<li>$token_record["access_token_expire"] - expiration time of the access token.</li>
-<li>$token_record["refresh_token"] - refresh token generated upon successful authentication.</li>
-<li>$token_record["refresh_token_expire"] - expiration time of the refresh token.</li>
-<li>$token_record["last_activity"] - last activity time of the user of this token.</li>
-</ul></div>
+  <div class="item_description"><p>Replaces the array only on success; missing records throw.</p></div>
   
   </div>
   
@@ -461,9 +504,19 @@ for a cache solution like Redis.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-  \Exception<br>
+  <code class="php-type"><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></code><br>
   
-  <div class="item_description"><p>It might throw an exception in the case of any system errors.</p></div>
+  <div class="item_description"><p>If a required lookup value is null or empty.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.InvalidTokenException.html">\OAuth2\InvalidTokenException</a></code><br>
+  
+  <div class="item_description"><p>If a value is invalid, a token is unknown, or consumed-token reuse is detected.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">\OAuth2\AuthSystemException</a></code><br>
+  
+  <div class="item_description"><p>If storage cannot read, validate, lock or persist session state.</p></div>
   
   
   </div>
@@ -484,7 +537,7 @@ for a cache solution like Redis.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.ITokenStorage.php.html#41'>OAuth2/Interfaces/ITokenStorage.php</a>
+  <a href='source-OAuth2.Interfaces.ITokenStorage.php.html#40'>OAuth2/Interfaces/ITokenStorage.php</a>
   </div>
   
 
@@ -494,16 +547,7 @@ for a cache solution like Redis.</p>
 
   
 
-  <h2>Used by</h2>
-  <div class="item_list">
   
-  <a href='class-OAuth2.OAuthManager.html#verifyJwtAccessToken'>\OAuth2\OAuthManager::verifyJwtAccessToken()</a><br>
-  
-  
-  <a href='class-OAuth2.OAuthManager.html#verifyRefreshToken'>\OAuth2\OAuthManager::verifyRefreshToken()</a><br>
-  
-  
-  </div>
 
   
 
@@ -511,23 +555,24 @@ for a cache solution like Redis.</p>
 
   
 
-  <hr id="saveTokenRecord">
-  
-  <h1>Method: ITokenStorage::saveTokenRecord()</h1>
+  <hr id="revokeTokenRecords">
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> saveTokenRecord(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>): void;</div>
+  <h1>Method: ITokenStorage::revokeTokenRecords()</h1>
+
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> revokeTokenRecords(?<span class="php-keyword1">string</span> <span class="php-var">$refresh_token</span>, ?<span class="php-keyword1">string</span> <span class="php-var">$user_id</span>, ?<span class="php-keyword1">string</span> <span class="php-var">$client_id</span>, <span class="php-keyword1">bool</span> <span class="php-var">$all_user_sessions</span> = <span class="php-keyword1">false</span>): <span class="php-keyword1">void</span>;</div>
+  
 
   
   <div class="short-description">
-  <p>Saves the token record.</p>
+  <p>Atomically authorizes revocation with a current refresh token and deletes sessions.</p>
   </div>
   
 
   
   <div class="long_description">
   <h2>Details</h2>
-  <p>It is recommender to look for an existing record by user_id and client_id, and if it exists,
-it should be overwritten.</p>
+  <p>Authorization and deletion must share one transaction or lock. Client-scoped revocation must
+always include user_id in its deletion predicate.</p>
   </div>
   
 
@@ -535,7 +580,8 @@ it should be overwritten.</p>
 
   <h2>Parameters</h2>
 
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
         <tr>
         <th>Name</th>
         <th>Pass type</th>
@@ -543,7 +589,208 @@ it should be overwritten.</p>
         <th>Default value</th>
         <th>Description</th>
         </tr>
+
         
+        <tr>
+            <td>
+                $refresh_token
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">?string</code>
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The current token authorizing revocation.</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                $user_id
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">?string</code>
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The user owning the token and sessions.</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                $client_id
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">?string</code>
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The client bound to the authorizing token.</p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                $all_user_sessions
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">bool</code>
+            </td>
+            <td>
+                false
+            </td>
+            <td class="description_column">
+                <p>Whether to delete every session of this user instead of only this user/client pair.</p>
+            </td>
+        </tr>
+        
+
+    </table>
+  </div>
+
+  
+  <h2>Returns</h2>
+  <div class="item_list">
+  <code class="php-type">void</code><br>
+  
+  <div class="item_description"><p>Revokes only authorized sessions and preserves all other users.</p></div>
+  
+  </div>
+  
+
+  <h2>Throws</h2>
+  <div class="item_list">
+  
+  <code class="php-type"><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></code><br>
+  
+  <div class="item_description"><p>If a required lookup value is null or empty.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.InvalidTokenException.html">\OAuth2\InvalidTokenException</a></code><br>
+  
+  <div class="item_description"><p>If a value is invalid, a token is unknown, or consumed-token reuse is detected.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">\OAuth2\AuthSystemException</a></code><br>
+  
+  <div class="item_description"><p>If storage cannot read, validate, lock or persist session state.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.TokenExpiredException.html">\OAuth2\TokenExpiredException</a></code><br>
+  
+  <div class="item_description"><p>If the authorizing refresh token is expired.</p></div>
+  
+  
+  </div>
+
+  
+
+  <h2>Authors</h2>
+  <div class="item_list">
+  
+  <div class='item'>Oleg Schildt</div>
+  
+  </div>
+
+  
+
+  
+
+  
+  <h2>Source code</h2>
+  <div class="item_list">
+  <a href='source-OAuth2.Interfaces.ITokenStorage.php.html#138'>OAuth2/Interfaces/ITokenStorage.php</a>
+  </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <hr id="rotateTokenRecord">
+
+  <h1>Method: ITokenStorage::rotateTokenRecord()</h1>
+
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> rotateTokenRecord(?<span class="php-keyword1">string</span> <span class="php-var">$refresh_token</span>, <span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>): <span class="php-keyword1">void</span>;</div>
+  
+
+  
+  <div class="short-description">
+  <p>Atomically checks and consumes a refresh token and replaces its session.</p>
+  </div>
+  
+
+  
+  <div class="long_description">
+  <h2>Details</h2>
+  <p>The check, expiry test, consumed-token history and replacement must share one transaction or
+lock. Reuse of a consumed token must revoke its active family before throwing. Retain consumed
+hashes at least until their original expiration time. Never combine a separate verify operation
+with an unconditional save.</p>
+  </div>
+  
+
+  
+
+  <h2>Parameters</h2>
+
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
+        <tr>
+        <th>Name</th>
+        <th>Pass type</th>
+        <th>Value type</th>
+        <th>Default value</th>
+        <th>Description</th>
+        </tr>
+
+        
+        <tr>
+            <td>
+                $refresh_token
+            </td>
+            <td>
+                by value
+            </td>
+            <td>
+                <code class="php-type">?string</code>
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>The previous refresh token to consume exactly once.</p>
+            </td>
+        </tr>
         
         <tr>
             <td>
@@ -553,32 +800,29 @@ it should be overwritten.</p>
                 by reference
             </td>
             <td>
-                array
+                <code class="php-type">array&lt;string, mixed&gt;</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The token record may vary depending on implementation. The expected parameters are:</p>
-<ul>
-<li>$token_record["user_id"] - id of the user.</li>
-<li>$token_record["client_id"] - id of the client (device token etc.).</li>
-<li>$token_record["access_token"] - access token generated upon successful authentication.</li>
-<li>$token_record["access_token_expire"] - expiration time of the access token.</li>
-<li>$token_record["refresh_token"] - refresh token generated upon successful authentication.</li>
-<li>$token_record["refresh_token_expire"] - expiration time of the refresh token.</li>
-<li>$token_record["last_activity"] - last activity time of the user of this token.</li>
-</ul>
+                <p>A record containing nonempty string user_id, client_id, access_token and refresh_token, and
+integer Unix timestamps access_token_expire, refresh_token_expire and last_activity. Raw tokens
+are inputs only: persist SHA-256 hashes, never recoverable bearer credentials. The caller must
+not rely on storage mutating this array. The user/client pair must match the previous token.</p>
             </td>
         </tr>
         
-        
+
     </table>
+  </div>
 
   
   <h2>Returns</h2>
   <div class="item_list">
-  void<br>
+  <code class="php-type">void</code><br>
+  
+  <div class="item_description"><p>Preserves the family ID and commits one replacement.</p></div>
   
   </div>
   
@@ -586,9 +830,149 @@ it should be overwritten.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-  \Exception<br>
+  <code class="php-type"><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></code><br>
   
-  <div class="item_description"><p>It might throw an exception in the case of any system errors.</p></div>
+  <div class="item_description"><p>If a required lookup value is null or empty.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.InvalidTokenException.html">\OAuth2\InvalidTokenException</a></code><br>
+  
+  <div class="item_description"><p>If a value is invalid, a token is unknown, or consumed-token reuse is detected.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">\OAuth2\AuthSystemException</a></code><br>
+  
+  <div class="item_description"><p>If storage cannot read, validate, lock or persist session state.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.TokenExpiredException.html">\OAuth2\TokenExpiredException</a></code><br>
+  
+  <div class="item_description"><p>If the current refresh token has reached its expiration time.</p></div>
+  
+  
+  </div>
+
+  
+
+  <h2>Authors</h2>
+  <div class="item_list">
+  
+  <div class='item'>Oleg Schildt</div>
+  
+  </div>
+
+  
+
+  
+
+  
+  <h2>Source code</h2>
+  <div class="item_list">
+  <a href='source-OAuth2.Interfaces.ITokenStorage.php.html#102'>OAuth2/Interfaces/ITokenStorage.php</a>
+  </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <hr id="saveTokenRecord">
+
+  <h1>Method: ITokenStorage::saveTokenRecord()</h1>
+
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> saveTokenRecord(<span class="php-keyword1">array</span> &amp;<span class="php-var">$token_record</span>): <span class="php-keyword1">void</span>;</div>
+  
+
+  
+  <div class="short-description">
+  <p>Atomically replaces the session for one user/client pair after fresh authentication.</p>
+  </div>
+  
+
+  
+  <div class="long_description">
+  <h2>Details</h2>
+  <p>Exactly one active record per pair is permitted. Replacement starts a new family, so replay of
+an older family cannot revoke the newly authenticated session.</p>
+  </div>
+  
+
+  
+
+  <h2>Parameters</h2>
+
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
+        <tr>
+        <th>Name</th>
+        <th>Pass type</th>
+        <th>Value type</th>
+        <th>Default value</th>
+        <th>Description</th>
+        </tr>
+
+        
+        <tr>
+            <td>
+                $token_record
+            </td>
+            <td>
+                by reference
+            </td>
+            <td>
+                <code class="php-type">array&lt;string, mixed&gt;</code>
+            </td>
+            <td>
+                
+            </td>
+            <td class="description_column">
+                <p>A record containing nonempty string user_id, client_id, access_token and refresh_token, and
+integer Unix timestamps access_token_expire, refresh_token_expire and last_activity. Raw tokens
+are inputs only: persist SHA-256 hashes, never recoverable bearer credentials. The caller must
+not rely on storage mutating this array.</p>
+            </td>
+        </tr>
+        
+
+    </table>
+  </div>
+
+  
+  <h2>Returns</h2>
+  <div class="item_list">
+  <code class="php-type">void</code><br>
+  
+  <div class="item_description"><p>Commits the complete record or preserves the previous session on failure.</p></div>
+  
+  </div>
+  
+
+  <h2>Throws</h2>
+  <div class="item_list">
+  
+  <code class="php-type"><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></code><br>
+  
+  <div class="item_description"><p>If a required lookup value is null or empty.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.InvalidTokenException.html">\OAuth2\InvalidTokenException</a></code><br>
+  
+  <div class="item_description"><p>If a value is invalid, a token is unknown, or consumed-token reuse is detected.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">\OAuth2\AuthSystemException</a></code><br>
+  
+  <div class="item_description"><p>If storage cannot read, validate, lock or persist session state.</p></div>
   
   
   </div>
@@ -619,13 +1003,7 @@ it should be overwritten.</p>
 
   
 
-  <h2>Used by</h2>
-  <div class="item_list">
   
-  <a href='class-OAuth2.OAuthManager.html#createTokenRecord'>\OAuth2\OAuthManager::createTokenRecord()</a><br>
-  
-  
-  </div>
 
   
 
@@ -634,24 +1012,32 @@ it should be overwritten.</p>
   
 
   <hr id="verifyAccessToken">
-  
+
   <h1>Method: ITokenStorage::verifyAccessToken()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyAccessToken(string <span class="php-var">$access_token</span>, string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>): void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyAccessToken(?<span class="php-keyword1">string</span> <span class="php-var">$access_token</span>, ?<span class="php-keyword1">string</span> <span class="php-var">$user_id</span>, ?<span class="php-keyword1">string</span> <span class="php-var">$client_id</span>): <span class="php-keyword1">void</span>;</div>
+  
 
   
   <div class="short-description">
-  <p>Verifies the access token.</p>
+  <p>Checks the exact token/user/client binding and fixed expiration under a storage lock.</p>
   </div>
   
 
+  
+  <div class="long_description">
+  <h2>Details</h2>
+  <p>Verification must not extend either token lifetime. Refresh-token reuse must revoke its matching
+family before reporting failure.</p>
+  </div>
   
 
   
 
   <h2>Parameters</h2>
 
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
         <tr>
         <th>Name</th>
         <th>Pass type</th>
@@ -659,7 +1045,7 @@ it should be overwritten.</p>
         <th>Default value</th>
         <th>Description</th>
         </tr>
-        
+
         
         <tr>
             <td>
@@ -669,13 +1055,13 @@ it should be overwritten.</p>
                 by value
             </td>
             <td>
-                string
+                <code class="php-type">?string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The access token to be verified.</p>
+                <p>The raw token to verify.</p>
             </td>
         </tr>
         
@@ -687,13 +1073,13 @@ it should be overwritten.</p>
                 by value
             </td>
             <td>
-                string
+                <code class="php-type">?string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The user id for which the refresh token was issued.</p>
+                <p>The user identifier bound to the token.</p>
             </td>
         </tr>
         
@@ -705,23 +1091,26 @@ it should be overwritten.</p>
                 by value
             </td>
             <td>
-                string
+                <code class="php-type">?string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The client id for which the refresh token was issued.</p>
+                <p>The client identifier bound to the token.</p>
             </td>
         </tr>
         
-        
+
     </table>
+  </div>
 
   
   <h2>Returns</h2>
   <div class="item_list">
-  void<br>
+  <code class="php-type">void</code><br>
+  
+  <div class="item_description"><p>Returns only for a matching token whose expiration is strictly after the current time.</p></div>
   
   </div>
   
@@ -729,24 +1118,24 @@ it should be overwritten.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-  \Exception<br>
+  <code class="php-type"><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></code><br>
   
-  <div class="item_description"><p>It might throw an exception in the case of any system errors.</p></div>
-  
-  
-  <a href='class-OAuth2.InvalidTokenException.html'>\OAuth2\InvalidTokenException</a><br>
-  
-  <div class="item_description"><p>It should throw the InvalidTokenException if the refresh token is invalid.</p></div>
+  <div class="item_description"><p>If a required lookup value is null or empty.</p></div>
   
   
-  <a href='class-OAuth2.TokenExpiredException.html'>\OAuth2\TokenExpiredException</a><br>
+  <code class="php-type"><a href="class-OAuth2.InvalidTokenException.html">\OAuth2\InvalidTokenException</a></code><br>
   
-  <div class="item_description"><p>It might throw the TokenExpiredException if the refresh token is expired.</p></div>
+  <div class="item_description"><p>If a value is invalid, a token is unknown, or consumed-token reuse is detected.</p></div>
   
   
-  <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">\OAuth2\AuthSystemException</a></code><br>
   
-  <div class="item_description"><p>It should throw the MissingParametersException if any required parameters are empty.</p></div>
+  <div class="item_description"><p>If storage cannot read, validate, lock or persist session state.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.TokenExpiredException.html">\OAuth2\TokenExpiredException</a></code><br>
+  
+  <div class="item_description"><p>If the matching token has reached its expiration time.</p></div>
   
   
   </div>
@@ -767,7 +1156,7 @@ it should be overwritten.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.ITokenStorage.php.html#125'>OAuth2/Interfaces/ITokenStorage.php</a>
+  <a href='source-OAuth2.Interfaces.ITokenStorage.php.html#205'>OAuth2/Interfaces/ITokenStorage.php</a>
   </div>
   
 
@@ -786,24 +1175,32 @@ it should be overwritten.</p>
   
 
   <hr id="verifyRefreshToken">
-  
+
   <h1>Method: ITokenStorage::verifyRefreshToken()</h1>
 
-  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyRefreshToken(string <span class="php-var">$refresh_token</span>, string <span class="php-var">$user_id</span>, string <span class="php-var">$client_id</span>): void;</div>
+  <div class="definition"><span class="php-keyword1">public</span> <span class="php-keyword1">function</span> verifyRefreshToken(?<span class="php-keyword1">string</span> <span class="php-var">$refresh_token</span>, ?<span class="php-keyword1">string</span> <span class="php-var">$user_id</span>, ?<span class="php-keyword1">string</span> <span class="php-var">$client_id</span>): <span class="php-keyword1">void</span>;</div>
+  
 
   
   <div class="short-description">
-  <p>Verifies the refresh token.</p>
+  <p>Checks the exact token/user/client binding and fixed expiration under a storage lock.</p>
   </div>
   
 
+  
+  <div class="long_description">
+  <h2>Details</h2>
+  <p>Verification must not extend either token lifetime. Refresh-token reuse must revoke its matching
+family before reporting failure.</p>
+  </div>
   
 
   
 
   <h2>Parameters</h2>
 
-    <table class="table table-responsive table-bordered table-striped param_multicolumn">
+  <div class="parameter-table">
+    <table class="table table-bordered table-striped param_multicolumn">
         <tr>
         <th>Name</th>
         <th>Pass type</th>
@@ -811,7 +1208,7 @@ it should be overwritten.</p>
         <th>Default value</th>
         <th>Description</th>
         </tr>
-        
+
         
         <tr>
             <td>
@@ -821,13 +1218,13 @@ it should be overwritten.</p>
                 by value
             </td>
             <td>
-                string
+                <code class="php-type">?string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The refresh token to be verified.</p>
+                <p>The raw token to verify.</p>
             </td>
         </tr>
         
@@ -839,13 +1236,13 @@ it should be overwritten.</p>
                 by value
             </td>
             <td>
-                string
+                <code class="php-type">?string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The user id for which the refresh token was issued.</p>
+                <p>The user identifier bound to the token.</p>
             </td>
         </tr>
         
@@ -857,23 +1254,26 @@ it should be overwritten.</p>
                 by value
             </td>
             <td>
-                string
+                <code class="php-type">?string</code>
             </td>
             <td>
                 
             </td>
             <td class="description_column">
-                <p>The client id for which the refresh token was issued.</p>
+                <p>The client identifier bound to the token.</p>
             </td>
         </tr>
         
-        
+
     </table>
+  </div>
 
   
   <h2>Returns</h2>
   <div class="item_list">
-  void<br>
+  <code class="php-type">void</code><br>
+  
+  <div class="item_description"><p>Returns only for a matching token whose expiration is strictly after the current time.</p></div>
   
   </div>
   
@@ -881,24 +1281,24 @@ it should be overwritten.</p>
   <h2>Throws</h2>
   <div class="item_list">
   
-  \Exception<br>
+  <code class="php-type"><a href="class-OAuth2.MissingParametersException.html">\OAuth2\MissingParametersException</a></code><br>
   
-  <div class="item_description"><p>It might throw an exception in the case of any system errors.</p></div>
-  
-  
-  <a href='class-OAuth2.InvalidTokenException.html'>\OAuth2\InvalidTokenException</a><br>
-  
-  <div class="item_description"><p>It should throw the InvalidTokenException if the refresh token is invalid.</p></div>
+  <div class="item_description"><p>If a required lookup value is null or empty.</p></div>
   
   
-  <a href='class-OAuth2.TokenExpiredException.html'>\OAuth2\TokenExpiredException</a><br>
+  <code class="php-type"><a href="class-OAuth2.InvalidTokenException.html">\OAuth2\InvalidTokenException</a></code><br>
   
-  <div class="item_description"><p>It might throw the TokenExpiredException if the refresh token is expired.</p></div>
+  <div class="item_description"><p>If a value is invalid, a token is unknown, or consumed-token reuse is detected.</p></div>
   
   
-  <a href='class-OAuth2.MissingParametersException.html'>\OAuth2\MissingParametersException</a><br>
+  <code class="php-type"><a href="class-OAuth2.AuthSystemException.html">\OAuth2\AuthSystemException</a></code><br>
   
-  <div class="item_description"><p>It should throw the MissingParametersException if any required parameters are empty.</p></div>
+  <div class="item_description"><p>If storage cannot read, validate, lock or persist session state.</p></div>
+  
+  
+  <code class="php-type"><a href="class-OAuth2.TokenExpiredException.html">\OAuth2\TokenExpiredException</a></code><br>
+  
+  <div class="item_description"><p>If the matching token has reached its expiration time.</p></div>
   
   
   </div>
@@ -919,11 +1319,11 @@ it should be overwritten.</p>
   
   <h2>Source code</h2>
   <div class="item_list">
-  <a href='source-OAuth2.Interfaces.ITokenStorage.php.html#155'>OAuth2/Interfaces/ITokenStorage.php</a>
+  <a href='source-OAuth2.Interfaces.ITokenStorage.php.html#238'>OAuth2/Interfaces/ITokenStorage.php</a>
   </div>
                     
                     <div id="footer">
-                        Generated on 2025-11-25 16:57 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
+                        Generated on 2026-11-23 01:21 with <a href="https://github.com/oschildt/PhpDoxy" target="_blank">PhpDoxy</a>
                     </div>                    
                 </div>
             </div>
